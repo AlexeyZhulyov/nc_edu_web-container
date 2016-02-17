@@ -119,4 +119,11 @@
     <option name="KEYWORD_SUBSTITUTION_WRAPPERS" value="" />
     <option name="MAKE_NEW_FILES_READ_ONLY" value="false" />
   </component>
+  <component name="SvnApplicationSettings">
+    <option name="myTypedURLs">
+      <list>
+        <option value="https://github.com/AlexeyZhulyov/test.git" />
+      </list>
+    </option>
+  </component>
 </application>
