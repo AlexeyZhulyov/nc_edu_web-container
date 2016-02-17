@@ -7,6 +7,8 @@
 /ide.general.xml
 ### Java template
 *.class
+*.properties
+*.jar
 
 # Mobile Tools for Java (J2ME)
 .mtj.tmp/
