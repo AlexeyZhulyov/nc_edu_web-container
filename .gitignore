@@ -1,14 +1,5 @@
-/.idea/.name
-/.idea/compiler.xml
-/.idea/copyright
-/.idea/copyright/profiles_settings.xml
-/.idea/misc.xml
-/.idea/TestGit.iml
-/.idea/modules.xml
-/.idea/vcs.xml
+/ignore.xml
 /.idea
-/.idea/workspace.xml
-/.idea/encodings.xml
 /_windows
 /inspection
 /databaseSettings.xml
