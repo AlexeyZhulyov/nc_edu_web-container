@@ -2,12 +2,12 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-    <modelVersion>${model.version}</modelVersion>
+    <modelVersion>4.0.0</modelVersion>
 
     <groupId>nc.edu.webcontainer</groupId>
     <artifactId>web-container</artifactId>
     <packaging>pom</packaging>
-    <version>${web-container.version}</version>
+    <version>0.1</version>
     <modules>
         <module>modules/cgi</module>
         <module>modules/configuration</module>
@@ -15,8 +15,6 @@
     </modules>
 
     <properties>
-        <model.version>4.0.0</model.version>
-        <web-container.version>0.1</web-container.version>
         <junit.version>4.12</junit.version>
         <maven-compiler-plugin.version>3.5.1</maven-compiler-plugin.version>
     </properties>
