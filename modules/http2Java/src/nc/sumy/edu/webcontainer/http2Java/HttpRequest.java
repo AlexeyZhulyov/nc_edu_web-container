@@ -1,3 +1,7 @@
+package nc.sumy.edu.webcontainer.http2Java;
+
+import org.apache.commons.lang3.StringUtils;
+
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
@@ -6,9 +10,9 @@ import java.util.Objects;
  * Class that parse HTTP request and contain request-data.
  * @author Vinogradov Maxim
  */
-public class HttpRequest implements Request{
+public class HttpRequest implements Request {
     private HttpMethod method;
-    private String URI;
+    private String URN;
     private Map<String, String> headers = new HashMap();
     private Map<String, String> parameters = new HashMap();
     private String request;
@@ -17,11 +21,7 @@ public class HttpRequest implements Request{
 
     public HttpRequest(String request) {
         this.request = request;
-        parceRequest();
-    }
-
-    private void parceRequest() {
-        requestLines = request.split("\n");
+        requestLines = request.split("\n"); // \r\n
         firstLine = requestLines[0].split(" ");
         parseMethod();
         parseURI();
@@ -30,11 +30,11 @@ public class HttpRequest implements Request{
     }
 
     private void parseMethod() {
-        if (request.startsWith("GET")) {
+        if (StringUtils.indexOf(request, "GET") == 0) {
             method = HttpMethod.GET;
-        } else if (request.startsWith("POST")) {
+        } else if (StringUtils.indexOf(request, "POST") == 0) {
             method = HttpMethod.POST;
-        } else if (request.startsWith("OPTIONS")) {
+        } else if (StringUtils.indexOf(request, "OPTION") == 0) {
             method = HttpMethod.OPTIONS;
         } else {
             method = HttpMethod.UNKNOWN;
@@ -53,9 +53,9 @@ public class HttpRequest implements Request{
             headers.put("Host", host);
             firstLine[1] = firstLine[1].replace(host, "");
         }
-        if (method == HttpMethod.GET && firstLine[1].contains("?")) {
+        if (method == HttpMethod.GET && StringUtils.contains(firstLine[1], '?')) {
             String[] pathParts = firstLine[1].split("\\?");
-            URI = pathParts[0];
+            URN = pathParts[0];
             String paramPairs[] = pathParts[1].split("&");
             String pairParts[];
             for (String pair : paramPairs) {
@@ -63,14 +63,14 @@ public class HttpRequest implements Request{
                 parameters.put(pairParts[0], pairParts[1]);
             }
         } else {
-            URI = firstLine[1];
+            URN = firstLine[1];
         }
     }
 
     private void parseHeaders() {
         String temp[];
         for (int i = 1; i < requestLines.length; i++) {
-            if (requestLines[i].equals("")) {
+            if (StringUtils.equals(requestLines[i], "")) {
                 break;
             }
             temp = requestLines[i].split(": ");
@@ -96,8 +96,8 @@ public class HttpRequest implements Request{
         return method;
     }
 
-    public String getURI() {
-        return URI;
+    public String getURN() {
+        return URN;
     }
 
     public Map<String, String> getHeaders() {
