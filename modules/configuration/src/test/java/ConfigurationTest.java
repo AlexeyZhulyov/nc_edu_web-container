@@ -1,6 +1,7 @@
 
 import org.junit.*;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 
 public class ConfigurationTest extends Assert {
@@ -25,7 +26,7 @@ public class ConfigurationTest extends Assert {
             fail("File had to be found");
             e.printStackTrace();
         }
-        assertEquals("Port must be 8880", 8880, config.getPort());
+        assertEquals("Port must be 8890", 8890, config.getPort());
     }
 
     @Test
@@ -36,7 +37,7 @@ public class ConfigurationTest extends Assert {
             fail("File had to be found");
             e.printStackTrace();
         }
-        config.setPort(8890);
-        assertEquals("Port must be 8890", 8890, config.getPort());
+        config.setPort(100);
+        assertEquals("Port must be 100", 100, config.getPort());
     }
 }
