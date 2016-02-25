@@ -1,24 +1,24 @@
 package nc.sumy.edu.webcontainer.http2java;
 
 import nc.sumy.edu.webcontainer.http2Java.HttpResponse;
-import org.junit.Assert;
 import org.junit.Test;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+import static org.junit.Assert.assertEquals;
+
 public class HttpResponseTest {
     private HttpResponse response;
     private Map<String, String> headers;
-    private String endl = "\r\n";
-    private String sparator = ": ";
-    private String httpVersion = "HTTP/1.1 ";
-    private String host = "Host";
-    private String accept = "Accept";
-    private String connection = "Connection";
-    private String close  = "close";
-    private String connectionClose = "Connection: close";
-    private String bodyString1 = "<!DOCTYPE html>\n" +
+    private static final String endl = "\r\n";
+    private static final String sparator = ": ";
+    private static final String httpVersion = "HTTP/1.1 ";
+    private static final String host = "Host";
+    private static final String connection = "Connection";
+    private static final String close  = "close";
+    private static final String connectionClose = "Connection: close";
+    private static final String bodyString1 = "<!DOCTYPE html>\n" +
             "<html lang=\"en\">\n" +
             "<head>\n" +
             "\t<meta charset=\"UTF-8\">\n" +
@@ -28,7 +28,7 @@ public class HttpResponseTest {
             "\t\n" +
             "</body>\n" +
             "</html>";
-    private String bodyString2 = "<!DOCTYPE html>\n" +
+    private static final String bodyString2 = "<!DOCTYPE html>\n" +
             "<html lang=\"en\">\n" +
             "<head>\n" +
             "\t<meta charset=\"UTF-8\">\n" +
@@ -58,11 +58,10 @@ public class HttpResponseTest {
             "\t</div>\n" +
             "</body>\n" +
             "</html>";
-    String result;
-
+    private String result;
 
     @Test
-    public void testResponse1() {
+    public void response1() {
         headers = new LinkedHashMap<String, String>() {{
             put(host, "vk.com");
             put(connection, close);
@@ -73,14 +72,14 @@ public class HttpResponseTest {
                 connectionClose + endl + endl +
                 bodyString1;
 
-        Assert.assertEquals(result.getBytes().length, response.getResponse().length);
+        assertEquals(result.getBytes().length, response.getResponse().length);
         for (int i = 0; i < response.getResponse().length; i++) {
-            Assert.assertEquals(result.getBytes()[i], response.getResponse()[i]);
+            assertEquals(result.getBytes()[i], response.getResponse()[i]);
         }
     }
 
     @Test
-    public void testResponse2() {
+    public void response2() {
         headers = new LinkedHashMap<String, String>() {{
             put(host, "jclubteam.slack.com");
             put(connection, close);
@@ -91,7 +90,7 @@ public class HttpResponseTest {
                 connectionClose + endl + endl +
                 bodyString2;
 
-        Assert.assertEquals(result.getBytes().length, response.getResponse().length);
-        Assert.assertEquals(result, new String(response.getResponse()));
+        assertEquals(result.getBytes().length, response.getResponse().length);
+        assertEquals(result, new String(response.getResponse()));
     }
 }

@@ -1,5 +1,6 @@
 package nc.sumy.edu.webcontainer.http2Java;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -88,4 +89,28 @@ public class HttpResponse implements Response {
         return headersStr.toString();
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        HttpResponse that = (HttpResponse) o;
+
+        if (code != that.code) return false;
+        if (!responseCodes.equals(that.responseCodes)) return false;
+        if (!response.equals(that.response)) return false;
+        if (headers != null ? !headers.equals(that.headers) : that.headers != null) return false;
+        return Arrays.equals(body, that.body);
+
+    }
+
+    @Override
+    public int hashCode() {
+        int result = responseCodes.hashCode();
+        result = 31 * result + code;
+        result = 31 * result + response.hashCode();
+        result = 31 * result + (headers != null ? headers.hashCode() : 0);
+        result = 31 * result + Arrays.hashCode(body);
+        return result;
+    }
 }

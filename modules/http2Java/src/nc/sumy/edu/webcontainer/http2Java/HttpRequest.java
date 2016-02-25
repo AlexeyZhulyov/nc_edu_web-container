@@ -2,9 +2,13 @@ package nc.sumy.edu.webcontainer.http2Java;
 
 import org.apache.commons.lang3.StringUtils;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+
+import static org.apache.commons.lang3.StringUtils.contains;
+import static org.apache.commons.lang3.StringUtils.indexOf;
 
 /**
  * Class that parse HTTP request and contain request-data.
@@ -21,7 +25,7 @@ public class HttpRequest implements Request {
 
     public HttpRequest(String request) {
         this.request = request;
-        requestLines = request.split("\n"); // \r\n
+        requestLines = request.split("\r\n");
         firstLine = requestLines[0].split(" ");
         parseMethod();
         parseURI();
@@ -30,11 +34,11 @@ public class HttpRequest implements Request {
     }
 
     private void parseMethod() {
-        if (StringUtils.indexOf(request, "GET") == 0) {
+        if (indexOf(request, "GET") == 0) {
             method = HttpMethod.GET;
-        } else if (StringUtils.indexOf(request, "POST") == 0) {
+        } else if (indexOf(request, "POST") == 0) {
             method = HttpMethod.POST;
-        } else if (StringUtils.indexOf(request, "OPTION") == 0) {
+        } else if (indexOf(request, "OPTION") == 0) {
             method = HttpMethod.OPTIONS;
         } else {
             method = HttpMethod.UNKNOWN;
@@ -53,7 +57,7 @@ public class HttpRequest implements Request {
             headers.put("Host", host);
             firstLine[1] = firstLine[1].replace(host, "");
         }
-        if (method == HttpMethod.GET && StringUtils.contains(firstLine[1], '?')) {
+        if (method == HttpMethod.GET && contains(firstLine[1], '?')) {
             String[] pathParts = firstLine[1].split("\\?");
             URN = pathParts[0];
             String paramPairs[] = pathParts[1].split("&");
@@ -124,5 +128,34 @@ public class HttpRequest implements Request {
             value = "";
         }
         return value;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        HttpRequest that = (HttpRequest) o;
+
+        if (method != that.method) return false;
+        if (URN != null ? !URN.equals(that.URN) : that.URN != null) return false;
+        if (headers != null ? !headers.equals(that.headers) : that.headers != null) return false;
+        if (parameters != null ? !parameters.equals(that.parameters) : that.parameters != null) return false;
+        if (request != null ? !request.equals(that.request) : that.request != null) return false;
+        if (!Arrays.equals(requestLines, that.requestLines)) return false;
+        return Arrays.equals(firstLine, that.firstLine);
+
+    }
+
+    @Override
+    public int hashCode() {
+        int result = method != null ? method.hashCode() : 0;
+        result = 31 * result + (URN != null ? URN.hashCode() : 0);
+        result = 31 * result + (headers != null ? headers.hashCode() : 0);
+        result = 31 * result + (parameters != null ? parameters.hashCode() : 0);
+        result = 31 * result + (request != null ? request.hashCode() : 0);
+        result = 31 * result + Arrays.hashCode(requestLines);
+        result = 31 * result + Arrays.hashCode(firstLine);
+        return result;
     }
 }
