@@ -22,7 +22,7 @@ public class HttpRequestTest {
 
     // Check valid http get request #1: with relative URI and without parameters
     @Test
-    public void GetRequest1() {
+    public void getRequest1() {
         str = methodGet + "/JavaPower.gif " + httpVersion + "\r\n" +
                 host + ": www.devresource.org\r\n" +
                 "Range-Unit: 3388 | 1024";
