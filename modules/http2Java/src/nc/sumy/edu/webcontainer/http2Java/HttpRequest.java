@@ -7,8 +7,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
-import static org.apache.commons.lang3.StringUtils.contains;
-import static org.apache.commons.lang3.StringUtils.indexOf;
+import static org.apache.commons.lang3.StringUtils.*;
 
 /**
  * Class that parse HTTP request and contain request-data.
@@ -25,8 +24,8 @@ public class HttpRequest implements Request {
 
     public HttpRequest(String request) {
         this.request = request;
-        requestLines = request.split("\r\n");
-        firstLine = requestLines[0].split(" ");
+        requestLines = split(request, "\r\n");
+        firstLine = split(requestLines[0], " ");
         parseMethod();
         parseURI();
         parseHeaders();
@@ -34,11 +33,11 @@ public class HttpRequest implements Request {
     }
 
     private void parseMethod() {
-        if (indexOf(request, "GET") == 0) {
+        if (startsWith(request, "GET")) {
             method = HttpMethod.GET;
-        } else if (indexOf(request, "POST") == 0) {
+        } else if (startsWith(request, "POST")) {
             method = HttpMethod.POST;
-        } else if (indexOf(request, "OPTION") == 0) {
+        } else if (startsWith(request, "OPTION")) {
             method = HttpMethod.OPTIONS;
         } else {
             method = HttpMethod.UNKNOWN;
@@ -46,24 +45,24 @@ public class HttpRequest implements Request {
     }
 
     private void parseURI() {
-        if (firstLine[1].startsWith("http")) {
-            if (firstLine[1].startsWith("http://")) {
-                firstLine[1] = firstLine[1].replace("http://", "");
-            } else if (firstLine[1].startsWith("https://")) {
-                firstLine[1] = firstLine[1].replace("https://", "");
+        if (startsWith(firstLine[1], ("http"))) {
+            if (startsWith(firstLine[1],"http://")) {
+                firstLine[1] = replace(firstLine[1], "http://", "");
+            } else if (startsWith(firstLine[1], "https://")) {
+                firstLine[1] = replace(firstLine[1], "https://", "");
             }
-            int pos = firstLine[1].indexOf('/');
-            String host = firstLine[1].substring(0, pos);
+            int pos = indexOf(firstLine[1], '/');
+            String host = substring(firstLine[1], 0, pos);
             headers.put("Host", host);
-            firstLine[1] = firstLine[1].replace(host, "");
+            firstLine[1] = replace(firstLine[1], host, "");
         }
         if (method == HttpMethod.GET && contains(firstLine[1], '?')) {
-            String[] pathParts = firstLine[1].split("\\?");
+            String[] pathParts = split(firstLine[1], "\\?");
             URN = pathParts[0];
-            String paramPairs[] = pathParts[1].split("&");
+            String paramPairs[] = split(pathParts[1], "&");
             String pairParts[];
             for (String pair : paramPairs) {
-                pairParts = pair.split("=");
+                pairParts = split(pair, "=");
                 parameters.put(pairParts[0], pairParts[1]);
             }
         } else {
@@ -77,9 +76,9 @@ public class HttpRequest implements Request {
             if (StringUtils.equals(requestLines[i], "")) {
                 break;
             }
-            temp = requestLines[i].split(": ");
+            temp = split(requestLines[i], ": ");
             if (temp.length == 2) {
-                headers.put(temp[0].trim(), temp[1].trim());
+                headers.put(trim(temp[0]), trim(temp[1]));
             }
         }
     }
@@ -87,10 +86,10 @@ public class HttpRequest implements Request {
     private void parsePostParam() {
         int i = requestLines.length - 1;
         if (method == HttpMethod.POST  && !Objects.isNull(requestLines[i])) {
-            String paramPairs[] = requestLines[i].trim().split("&");
+            String paramPairs[] = split(trim(requestLines[i]), "&");
             String pairParts[];
             for (String pair : paramPairs) {
-                pairParts = pair.split("=");
+                pairParts = split(pair, "=");
                 parameters.put(pairParts[0], pairParts[1]);
             }
         }
