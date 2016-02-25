@@ -1,4 +1,5 @@
 language: java
-
+jdk:
+  - oraclejdk8
 notifications:
   slack: jclubteam:v9UOWixN194lhKvUgK3UX1jv
