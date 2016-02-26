@@ -138,11 +138,12 @@ body.vline {
 /* your logo */
 .logo {
     background: url("images/logo.png") no-repeat scroll left top transparent;
+    background-size: cover;
     display: block;
-    height: 128px;
-    margin: -160px -190px 0;
+    height: 85px;
+    margin: -120px -100px 0;
     text-indent: -9999px;
-    width: 560px;
+    width: 373px;
 }
 
 /* robot message holder */
