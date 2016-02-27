@@ -12,6 +12,7 @@
         <module>modules/cgi</module>
         <module>modules/configuration</module>
         <module>modules/http2Java</module>
+        <module>modules/dispatcher</module>
     </modules>
 
     <properties>
