@@ -92,7 +92,6 @@
                     <version>${maven-pmd-plugin.version}</version>
                     <configuration>
                         <rulesets>
-                            <ruleset>java-code-rules.xml</ruleset>
                             <ruleset>${project.parent.basedir}\java-code-rules.xml</ruleset>
                         </rulesets>
                         <targetJdk>${java.version}</targetJdk>
