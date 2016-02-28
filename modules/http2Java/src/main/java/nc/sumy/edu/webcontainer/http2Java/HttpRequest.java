@@ -1,8 +1,7 @@
-package nc.sumy.edu.webcontainer.http2Java;
+package nc.sumy.edu.webcontainer.http2java;
 
 import org.apache.commons.lang3.StringUtils;
 
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
@@ -15,12 +14,12 @@ import static org.apache.commons.lang3.StringUtils.*;
  */
 public class HttpRequest implements Request {
     private HttpMethod method;
-    private String URN;
-    private Map<String, String> headers = new HashMap();
-    private Map<String, String> parameters = new HashMap();
-    private String request;
-    private String requestLines[];
-    private String firstLine[];
+    private String urn;
+    private final Map<String, String> headers = new HashMap();
+    private final Map<String, String> parameters = new HashMap();
+    private final String request;
+    private final String requestLines[];
+    private final String firstLine[];
 
     public HttpRequest(String request) {
         this.request = request;
@@ -58,7 +57,7 @@ public class HttpRequest implements Request {
         }
         if (method == HttpMethod.GET && contains(firstLine[1], '?')) {
             String[] pathParts = split(firstLine[1], "\\?");
-            URN = pathParts[0];
+            urn = pathParts[0];
             String paramPairs[] = split(pathParts[1], "&");
             String pairParts[];
             for (String pair : paramPairs) {
@@ -66,7 +65,7 @@ public class HttpRequest implements Request {
                 parameters.put(pairParts[0], pairParts[1]);
             }
         } else {
-            URN = firstLine[1];
+            urn = firstLine[1];
         }
     }
 
@@ -87,9 +86,9 @@ public class HttpRequest implements Request {
     }
 
     private void parsePostParam() {
-        int i = requestLines.length - 1;
-        if (method == HttpMethod.POST  && !Objects.isNull(requestLines[i])) {
-            String paramPairs[] = split(trim(requestLines[i]), "&");
+        int lastItem = requestLines.length - 1;
+        if (method == HttpMethod.POST  && !Objects.isNull(requestLines[lastItem])) {
+            String paramPairs[] = split(trim(requestLines[lastItem]), "&");
             String pairParts[];
             for (String pair : paramPairs) {
                 pairParts = split(pair, "=");
@@ -102,8 +101,8 @@ public class HttpRequest implements Request {
         return method;
     }
 
-    public String getURN() {
-        return URN;
+    public String getUrn() {
+        return urn;
     }
 
     public Map<String, String> getHeaders() {
@@ -133,31 +132,13 @@ public class HttpRequest implements Request {
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        HttpRequest that = (HttpRequest) o;
-
-        if (method != that.method) return false;
-        if (URN != null ? !URN.equals(that.URN) : that.URN != null) return false;
-        if (headers != null ? !headers.equals(that.headers) : that.headers != null) return false;
-        if (parameters != null ? !parameters.equals(that.parameters) : that.parameters != null) return false;
-        if (request != null ? !request.equals(that.request) : that.request != null) return false;
-        if (!Arrays.equals(requestLines, that.requestLines)) return false;
-        return Arrays.equals(firstLine, that.firstLine);
+    public boolean equals(Object obj) {
+        return Objects.deepEquals(this, obj);
 
     }
 
     @Override
     public int hashCode() {
-        int result = method != null ? method.hashCode() : 0;
-        result = 31 * result + (URN != null ? URN.hashCode() : 0);
-        result = 31 * result + (headers != null ? headers.hashCode() : 0);
-        result = 31 * result + (parameters != null ? parameters.hashCode() : 0);
-        result = 31 * result + (request != null ? request.hashCode() : 0);
-        result = 31 * result + Arrays.hashCode(requestLines);
-        result = 31 * result + Arrays.hashCode(firstLine);
-        return result;
+        return Objects.hash(method, urn, headers, parameters, request);
     }
 }

@@ -1,10 +1,10 @@
-package nc.sumy.edu.webcontainer.http2Java;
+package nc.sumy.edu.webcontainer.http2java;
 
 import java.util.Map;
 
 public interface Request {
     HttpMethod getMethod();
-    String getURN();
+    String getUrn();
     Map<String, String> getHeaders();
     Map<String, String> getParameters();
     String getHeader(String key);

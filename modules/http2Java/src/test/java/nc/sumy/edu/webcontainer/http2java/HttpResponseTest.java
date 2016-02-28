@@ -1,6 +1,5 @@
 package nc.sumy.edu.webcontainer.http2java;
 
-import nc.sumy.edu.webcontainer.http2Java.HttpResponse;
 import org.junit.Test;
 
 import java.util.LinkedHashMap;
@@ -11,14 +10,14 @@ import static org.junit.Assert.assertEquals;
 public class HttpResponseTest {
     private HttpResponse response;
     private Map<String, String> headers;
-    private static final String endl = "\r\n";
-    private static final String sparator = ": ";
-    private static final String httpVersion = "HTTP/1.1 ";
-    private static final String host = "Host";
-    private static final String connection = "Connection";
-    private static final String close  = "close";
-    private static final String connectionClose = "Connection: close";
-    private static final String bodyString1 = "<!DOCTYPE html>\n" +
+    private static final String ENDL = "\r\n";
+    private static final String SPARATOR = ": ";
+    private static final String HTTP_VERSION = "HTTP/1.1 ";
+    private static final String HOST = "Host";
+    private static final String CONNECTION = "Connection";
+    private static final String CLOSE_STR = "close";
+    private static final String CONNECTION_CLOSE = "Connection: close";
+    private static final String STRING = "<!DOCTYPE html>\n" +
             "<html lang=\"en\">\n" +
             "<head>\n" +
             "\t<meta charset=\"UTF-8\">\n" +
@@ -28,7 +27,7 @@ public class HttpResponseTest {
             "\t\n" +
             "</body>\n" +
             "</html>";
-    private static final String bodyString2 = "<!DOCTYPE html>\n" +
+    private static final String STRING1 = "<!DOCTYPE html>\n" +
             "<html lang=\"en\">\n" +
             "<head>\n" +
             "\t<meta charset=\"UTF-8\">\n" +
@@ -62,15 +61,14 @@ public class HttpResponseTest {
 
     @Test
     public void response1() {
-        headers = new LinkedHashMap<String, String>() {{
-            put(host, "vk.com");
-            put(connection, close);
-        }};
-        response = new HttpResponse(200, headers, bodyString1.getBytes());
-        result = httpVersion + "200 OK" + endl +
-                host + sparator + "vk.com" + endl  +
-                connectionClose + endl + endl +
-                bodyString1;
+        headers = new LinkedHashMap<String, String>();
+        headers.put(HOST, "vk.com");
+        headers.put(CONNECTION, CLOSE_STR);
+        response = new HttpResponse(200, headers, STRING.getBytes());
+        result = HTTP_VERSION + "200 OK" + ENDL +
+                HOST + SPARATOR + "vk.com" + ENDL +
+                CONNECTION_CLOSE + ENDL + ENDL +
+                STRING;
 
         assertEquals(result.getBytes().length, response.getResponse().length);
         for (int i = 0; i < response.getResponse().length; i++) {
@@ -80,15 +78,14 @@ public class HttpResponseTest {
 
     @Test
     public void response2() {
-        headers = new LinkedHashMap<String, String>() {{
-            put(host, "jclubteam.slack.com");
-            put(connection, close);
-        }};
-        response = new HttpResponse(200, headers, bodyString2.getBytes());
-        result = httpVersion + "200 OK" + endl +
-                host + sparator + "jclubteam.slack.com" + endl  +
-                connectionClose + endl + endl +
-                bodyString2;
+        headers = new LinkedHashMap<String, String>();
+        headers.put(HOST, "jclubteam.slack.com");
+        headers.put(CONNECTION, CLOSE_STR);
+        response = new HttpResponse(200, headers, STRING1.getBytes());
+        result = HTTP_VERSION + "200 OK" + ENDL +
+                HOST + SPARATOR + "jclubteam.slack.com" + ENDL +
+                CONNECTION_CLOSE + ENDL + ENDL +
+                STRING1;
 
         assertEquals(result.getBytes().length, response.getResponse().length);
         assertEquals(result, new String(response.getResponse()));
