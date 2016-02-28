@@ -1,25 +1,24 @@
-package nc.sumy.edu.webcontainer.http2Java;
+package nc.sumy.edu.webcontainer.http2java;
 
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.Map;
+import java.util.*;
 
 public class HttpResponse implements Response {
-    private final String endl = "\r\n";
-    private final Map<Integer, String> responseCodes = new HashMap<Integer, String>() {{
-        put(200, "200 OK");
-        put(400, "400 Bad Request");
-        put(403, "403 Forbidden");
-        put(404, "404 Not Found");
-        put(405, "405 Method Not Allowed");
-        put(500, "500 Internal Server Error");
-        put(501, "501 Not Implemented");
-    }};
+    private static final String ENDL = "\r\n";
+    private static final Map<Integer, String> RESPONSE_CODES = new HashMap<Integer, String>();
     private int code;
-    private StringBuilder response = new StringBuilder("HTTP/1.1 ");
+    private String response = "HTTP/1.1 ";
     private Map<String, String> headers;
     private byte[] body;
+
+    static {
+        RESPONSE_CODES.put(200, "200 OK");
+        RESPONSE_CODES.put(400, "400 Bad Request");
+        RESPONSE_CODES.put(403, "403 Forbidden");
+        RESPONSE_CODES.put(404, "404 Not Found");
+        RESPONSE_CODES.put(405, "405 Method Not Allowed");
+        RESPONSE_CODES.put(500, "500 Internal Server Error");
+        RESPONSE_CODES.put(501, "501 Not Implemented");
+    }
 
     public HttpResponse(int code) {
         this.code = code;
@@ -29,16 +28,17 @@ public class HttpResponse implements Response {
     public HttpResponse(int code, Map<String, String> headers, byte[] body) {
         this.code = code;
         this.headers = headers;
-        this.body = body;
+        this.body = new byte[body.length];
+        System.arraycopy(body, 0, this.body, 0, body.length);
     }
 
     public byte[] getResponse() {
-        response = new StringBuilder("HTTP/1.1 ");
-        response.append(responseCodes.get(code))
-                .append(endl)
-                .append(getHeadersSting())
-                .append(new String(body));
-        return response.toString().getBytes();
+        response = "HTTP/1.1 ";
+        response += RESPONSE_CODES.get(code)
+                + ENDL
+                + getHeadersSting()
+                + new String(body);
+        return response.getBytes();
     }
 
     public Response setCode(int code) {
@@ -69,12 +69,15 @@ public class HttpResponse implements Response {
     }
 
     public Response setBody(byte[] body) {
-        this.body = body;
+        this.body = new byte[body.length];
+        System.arraycopy(body, 0, this.body, 0, body.length);
         return this;
     }
 
     public byte[] getBody() {
-        return body;
+        byte[] newBody = new byte[body.length];
+        System.arraycopy(body, 0, newBody, 0, body.length);
+        return newBody;
     }
 
     private String getHeadersSting() {
@@ -83,34 +86,20 @@ public class HttpResponse implements Response {
             headersStr.append(entry.getKey())
                     .append(": ")
                     .append(entry.getValue())
-                    .append(endl);
+                    .append(ENDL);
         }
-        headersStr.append(endl);
+        headersStr.append(ENDL);
         return headersStr.toString();
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        HttpResponse that = (HttpResponse) o;
-
-        if (code != that.code) return false;
-        if (!responseCodes.equals(that.responseCodes)) return false;
-        if (!response.equals(that.response)) return false;
-        if (headers != null ? !headers.equals(that.headers) : that.headers != null) return false;
-        return Arrays.equals(body, that.body);
-
+    public boolean equals(Object obj) {
+        return Objects.deepEquals(this, obj);
     }
 
     @Override
     public int hashCode() {
-        int result = responseCodes.hashCode();
-        result = 31 * result + code;
-        result = 31 * result + response.hashCode();
-        result = 31 * result + (headers != null ? headers.hashCode() : 0);
-        result = 31 * result + Arrays.hashCode(body);
-        return result;
+        return Objects.hash(RESPONSE_CODES, code, response, headers, headers);
     }
+
 }

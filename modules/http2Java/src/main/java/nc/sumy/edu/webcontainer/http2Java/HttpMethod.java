@@ -1,4 +1,4 @@
-package nc.sumy.edu.webcontainer.http2Java;
+package nc.sumy.edu.webcontainer.http2java;
 
 public enum HttpMethod {
     GET,
