@@ -8,12 +8,8 @@ import com.google.gson.*;
 public class JSONConfiguration implements Configuration {
     private int port;
     public JSONConfiguration(File configurationFile) throws IOException {
-        InputStream inputStream = JSONConfiguration.class.getResourceAsStream("..\\..\\..\\..\\..\\"
-                + configurationFile.getName());
-        if (inputStream == null) {
-            throw new FileNotFoundException("Such file wasn't found");
-        }
-        BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
+        BufferedReader bufferedReader = new BufferedReader(new FileReader(configurationFile));
+
         try{
             JSONConfiguration thus = new Gson().fromJson(bufferedReader, JSONConfiguration.class);
             this.port = thus.getPort();
