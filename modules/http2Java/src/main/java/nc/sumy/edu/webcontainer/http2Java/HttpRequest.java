@@ -71,13 +71,16 @@ public class HttpRequest implements Request {
     }
 
     private void parseHeaders() {
-        String temp[];
+        String temp[] = new String[2];
+        int pos;
         for (int i = 1; i < requestLines.length; i++) {
             if (StringUtils.equals(requestLines[i], "")) {
                 break;
             }
-            temp = split(requestLines[i], ": ");
-            if (temp.length == 2) {
+            pos = indexOf(requestLines[i],':');
+            temp[0] = substring(requestLines[i], 0, pos);
+            temp[1] = substring(requestLines[i], pos+1, length(requestLines[i]));
+            if (pos != -1) {
                 headers.put(trim(temp[0]), trim(temp[1]));
             }
         }

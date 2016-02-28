@@ -25,11 +25,13 @@ public class HttpRequestTest {
     public void getRequest1() {
         str = methodGet + "/JavaPower.gif " + httpVersion + "\r\n" +
                 host + ": www.devresource.org\r\n" +
+                accept + ": text/html\r\n" +
                 "Range-Unit: 3388 | 1024";
         request = new HttpRequest(str);
 
         assertEquals(request.getMethod(), HttpMethod.GET);
         assertEquals(request.getURN(), "/JavaPower.gif");
+        assertEquals(request.getHeader(accept), "text/html");
         assertEquals(request.getHeader("Range-Unit"), "3388 | 1024");
         assertEquals(request.getHeader(nonexistentVar), "");
         assertEquals(request.getParameter(nonexistentVar), "");
@@ -106,7 +108,7 @@ public class HttpRequestTest {
         str = methodPost + "http://www.site.ru/news.html " + httpVersion + "\r\n" +
                 host + ": www.site.ru\r\n" +
                 "Referer: http://www.site.ru/index.html\r\n" +
-                "Cookie: income=1\n" +
+                "Cookie: income=1\r\n" +
                 "Content-Type: application/x-www-form-urlencoded\r\n" +
                 "Content-Length: 35\r\n" +
                 "login=Petya%20Vasechkin&password=qq\r\n";
