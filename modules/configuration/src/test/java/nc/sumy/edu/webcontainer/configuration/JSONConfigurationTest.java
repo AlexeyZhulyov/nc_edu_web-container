@@ -1,7 +1,6 @@
+package nc.sumy.edu.webcontainer.configuration;
 
 import org.junit.*;
-
-import com.google.gson.JsonSyntaxException;
 
 import java.io.File;
 import java.io.FileNotFoundException;
