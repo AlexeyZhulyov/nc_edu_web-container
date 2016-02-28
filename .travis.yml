@@ -1,5 +1,6 @@
 language: java
 jdk:
   - oraclejdk8
+script: mvn clean pmd:check package
 notifications:
   slack: jclubteam:v9UOWixN194lhKvUgK3UX1jv
