@@ -1,7 +1,7 @@
 package nc.sumy.edu.webcontainer.configuration;
 
-import org.junit.*;
-
+import org.junit.Assert;
+import org.junit.Test;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.text.ParseException;
@@ -37,7 +37,7 @@ public class JSONConfigurationTest {
             config = new JSONConfiguration(new File("validTestConfiguration.json"));
             Assert.assertEquals("Port must be 8890", 8890, config.getPort());
         } catch (FileNotFoundException e) {
-            Assert.fail("Existing file has to be read");
+            Assert.fail("Existing file has to be read: " + e.getMessage());
         }
     }
 
@@ -59,7 +59,7 @@ public class JSONConfigurationTest {
             config.setPort(100);
             Assert.assertEquals("Port must be 100", 100, config.getPort());
         } catch (FileNotFoundException e) {
-            Assert.fail("Existing file has to be read");
+            Assert.fail("Existing file has to be read: " + e.getMessage());
         }
 
     }

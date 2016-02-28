@@ -10,7 +10,8 @@ import com.google.gson.JsonSyntaxException;
 public class JSONConfiguration implements Configuration {
     private int port;
     public JSONConfiguration(File configurationFile) throws FileNotFoundException {
-        InputStream inputStream = JSONConfiguration.class.getResourceAsStream(configurationFile.getName());
+        InputStream inputStream = JSONConfiguration.class.getResourceAsStream("..\\..\\..\\..\\..\\"
+                + configurationFile.getName());
         if (inputStream == null) {
             throw new FileNotFoundException("Such file wasn't found");
         }
