@@ -1,15 +1,13 @@
 package nc.sumy.edu.webcontainer.configuration;
 
 import java.io.*;
-import java.text.ParseException;
 
 import com.google.gson.*;
-import com.google.gson.JsonSyntaxException;
 
 
 public class JSONConfiguration implements Configuration {
     private int port;
-    public JSONConfiguration(File configurationFile) throws FileNotFoundException {
+    public JSONConfiguration(File configurationFile) throws IOException {
         InputStream inputStream = JSONConfiguration.class.getResourceAsStream("..\\..\\..\\..\\..\\"
                 + configurationFile.getName());
         if (inputStream == null) {
@@ -21,7 +19,7 @@ public class JSONConfiguration implements Configuration {
             this.port = thus.getPort();
         }
         catch (JsonSyntaxException e) {
-            throw new FileNotFoundException("File has inappropriate format");
+            throw new IOException("File has inappropriate format", e);
         }
         finally {
             try {
@@ -34,13 +32,13 @@ public class JSONConfiguration implements Configuration {
 
     }
 
-    public JSONConfiguration(String configurationString) throws ParseException {
+    public JSONConfiguration(String configurationString) throws IOException {
         try{
             JSONConfiguration thus = new Gson().fromJson(configurationString, JSONConfiguration.class);
             this.port = thus.getPort();
         }
         catch (JsonSyntaxException e) {
-            throw new ParseException("String has inappropriate format",0);
+            throw new IOException("String has inappropriate format", e);
         }
     }
 
@@ -49,11 +47,15 @@ public class JSONConfiguration implements Configuration {
         this.port = 8010;
     }
 
-    public synchronized int getPort() {
-        return port;
+    public int getPort() {
+        synchronized(this) {
+            return port;
+        }
     }
 
-    public synchronized void setPort(int port) {
-        this.port = port;
+    public void setPort(int port) {
+        synchronized(this) {
+            this.port = port;
+        }
     }
 }
