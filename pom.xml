@@ -86,6 +86,21 @@
                         <encoding>UTF-8</encoding>
                     </configuration>
                 </plugin>
+                <!-- Activate PMD for java code checking -->
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-pmd-plugin</artifactId>
+                    <version>${maven-pmd-plugin.version}</version>
+                    <configuration>
+                        <rulesets>
+                            <ruleset>java-code-rules.xml</ruleset>
+                        </rulesets>
+                        <targetJdk>${target.version}</targetJdk>
+                        <includeTests>true</includeTests>
+                        <outputEncoding>UTF-8</outputEncoding>
+                        <verbose>true</verbose>
+                    </configuration>
+                </plugin>
             </plugins>
         </pluginManagement>
     </build>
@@ -112,14 +127,6 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-jxr-plugin</artifactId>
                 <version>${maven-jxr-plugin.version}</version>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-pmd-plugin</artifactId>
-                <version>${maven-pmd-plugin.version}</version>
-                <configuration>
-                    <targetJdk>${target.version}</targetJdk>
-                </configuration>
             </plugin>
         </plugins>
     </reporting>
