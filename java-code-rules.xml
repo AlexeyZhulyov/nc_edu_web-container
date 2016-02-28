@@ -480,7 +480,7 @@
     <rule ref="rulesets/java/design.xml/NonThreadSafeSingleton">
         <priority>5</priority>
     </rule>
-    <rule ref="rulesets/java/design.xml/UncommentedEmptyMethod">
+    <rule ref="rulesets/java/design.xml/UncommentedEmptyMethodBody">
         <priority>5</priority>
     </rule>
     <rule ref="rulesets/java/design.xml/AvoidConstantsInterface">
@@ -553,8 +553,6 @@
         <priority>5</priority>
     </rule>
 
-
-
     <!-- sunsecure.xml -->
     <rule ref="rulesets/java/sunsecure.xml/MethodReturnsInternalArray">
         <priority>3</priority>
@@ -568,4 +566,5 @@
         <exclude name="IfStmtsMustUseBraces"/>
         <exclude name="ForLoopsMustUseBraces"/>
     </rule>
+
 </ruleset>
