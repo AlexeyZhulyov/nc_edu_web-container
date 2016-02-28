@@ -35,9 +35,9 @@ public class JSONConfigurationTest {
     public void validFileParametersConfigurationStartAndGetTest() {
         Configuration config;
         try {
-            config = new JSONConfiguration("validTestConfiguration.json");
+            config = new JSONConfiguration(new File("validTestConfiguration.json"));
             Assert.assertEquals("Port must be 8890", 8890, config.getPort());
-        } catch (ParseException e) {
+        } catch (FileNotFoundException e) {
             Assert.fail("Existing file has to be read");
         }
     }
@@ -56,10 +56,10 @@ public class JSONConfigurationTest {
     public void setConfigurationTest() {
         Configuration config;
         try {
-            config = new JSONConfiguration("validTestConfiguration.json");
+            config = new JSONConfiguration(new File("validTestConfiguration.json"));
             config.setPort(100);
             Assert.assertEquals("Port must be 100", 100, config.getPort());
-        } catch (ParseException e) {
+        } catch (FileNotFoundException e) {
             Assert.fail("Existing file has to be read");
         }
 
