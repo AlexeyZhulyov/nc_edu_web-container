@@ -89,5 +89,25 @@ public class HttpResponseTest {
 
         assertEquals(result.getBytes().length, response.getResponse().length);
         assertEquals(result, new String(response.getResponse()));
+        response.setHeader("testKey", "testValue");
+        assertEquals(response.getHeader("testKey"), "testValue");
+    }
+
+    @Test
+    public void equalsChecking() {
+        headers = new LinkedHashMap<String, String>();
+        headers.put(HOST, "OMcenter.slack.com");
+        headers.put(CONNECTION, CLOSE_STR);
+        response = new HttpResponse(200, headers, STRING1.getBytes());
+        result = HTTP_VERSION + "200 OK" + ENDL +
+                HOST + SPARATOR + "OMcenter.slack.com" + ENDL +
+                CONNECTION_CLOSE + ENDL + ENDL +
+                STRING1;
+        HttpResponse response1 = new HttpResponse(200);
+        response1.setBody(STRING1.getBytes());
+        response1.setHeaders(headers);
+        assertEquals(response.equals(response1), true);
+        response1.setCode(404);
+        assertEquals(response.equals(response1), false);
     }
 }

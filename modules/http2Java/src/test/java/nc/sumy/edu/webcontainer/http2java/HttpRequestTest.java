@@ -10,6 +10,7 @@ public class HttpRequestTest {
     private static final String ENDL = "\r\n";
     private static final String METHOD_GET = "GET ";
     private static final String METHOD_POST = "POST ";
+    private static final String METHOD_OPTION = "OPTION ";
     private static final String HTTP_VERSION = "HTTP/1.1";
     private static final String HOST = "Host";
     private static final String NONEXISTENT_VAR = "qqq";
@@ -18,6 +19,7 @@ public class HttpRequestTest {
     private static final String CONNECTION = "Connection";
     private static final String CLOSE_STR = "close";
     private static final String CONNECTION_CLOSE = "Connection: close";
+    private static final String URI_SAMPLE = "http://www.site.ru/news.html";
 
     // Check valid http get request #1: with relative URI and without parameters
     @Test
@@ -104,9 +106,9 @@ public class HttpRequestTest {
     // Check valid http post request: with absolute URI and with parameters
     @Test
     public void postRequest() {
-        str = METHOD_POST + "http://www.site.ru/news.html " + HTTP_VERSION + ENDL +
+        str = METHOD_POST + URI_SAMPLE + " " + HTTP_VERSION + ENDL +
                 HOST + ": www.site.ru" + ENDL +
-                "Referer: http://www.site.ru/index.html" + ENDL +
+                "Referer: "+ URI_SAMPLE + ENDL +
                 "Cookie: income=1" +  ENDL +
                 "Content-Type: application/x-www-form-urlencoded" + ENDL +
                 "Content-Length: 35" + ENDL +
@@ -116,7 +118,7 @@ public class HttpRequestTest {
         assertEquals(request.getMethod(), HttpMethod.POST);
         assertEquals(request.getUrn(), "/news.html");
         assertEquals(request.getHeader(HOST), "www.site.ru");
-        assertEquals(request.getHeader("Referer"), "http://www.site.ru/index.html");
+        assertEquals(request.getHeader("Referer"), URI_SAMPLE);
         assertEquals(request.getHeader("Cookie"), "income=1");
         assertEquals(request.getHeader("Content-Type"), "application/x-www-form-urlencoded");
         assertEquals(request.getHeader("Content-Length"), "35");
@@ -125,5 +127,57 @@ public class HttpRequestTest {
         assertEquals(request.getParameter("login"), "Petya%20Vasechkin");
         assertEquals(request.getParameter("password"), "qq");
         assertEquals(request.getParameter(NONEXISTENT_VAR), "");
+    }
+
+    @Test
+    public void optionRequest() {
+        str = METHOD_OPTION + URI_SAMPLE + " " + HTTP_VERSION + ENDL;
+        request = new HttpRequest(str);
+        assertEquals(request.getMethod(), HttpMethod.OPTIONS);
+        assertEquals(request.getUrn(), "/news.html");
+        assertEquals(request.getHeader(HOST), "www.site.ru");
+        assertEquals(request.getHeader(NONEXISTENT_VAR), "");
+        assertEquals(request.getHeader(null), "");
+        assertEquals(request.getParameter(NONEXISTENT_VAR), "");
+        assertEquals(request.getParameter(null), "");
+    }
+
+    @Test
+    public void equalsChecking1() {
+        str = METHOD_POST + URI_SAMPLE + " " + HTTP_VERSION + ENDL +
+                HOST + ": www.site.ru" + ENDL +
+                "Referer: " + URI_SAMPLE + ENDL +
+                "Cookie: income=1" +  ENDL +
+                "Content-Type: application/x-www-form-urlencoded" + ENDL +
+                "Content-Length: 35" + ENDL +
+                "login=Petya%20Vasechkin&password=qq";
+        HttpRequest request1 = new HttpRequest(str);
+        HttpRequest request2 = new HttpRequest(str);
+        assertEquals(request1.getHeader("Content-Length"), request2.getHeader("Content-Length"));
+        assertEquals(request1.getHeader("Cookie"), request2.getHeader("Cookie"));
+        assertEquals(request1.getUrn(), request2.getUrn());
+        assertEquals(request1.getHeaders(), request2.getHeaders());
+        assertEquals(request1.getParameters(), request2.getParameters());
+        assertEquals(request1.equals(request2), true);
+    }
+
+    @Test
+    public void equalsChecking2() {
+        str = METHOD_POST + URI_SAMPLE + " " + HTTP_VERSION + ENDL +
+                HOST + ": www.site.ru" + ENDL +
+                "Referer: http://www.site.ru/index.html" + ENDL +
+                "Cookie: income=1" +  ENDL +
+                "Content-Type: application/x-www-form-urlencoded" + ENDL +
+                "Content-Length: 35" + ENDL +
+                "login=Petya%20Vasechkin&password=qq";
+        String str1 = METHOD_GET + "http://foo.com/someservlet.jsp?param1=foo " + HTTP_VERSION + ENDL +
+                ACCEPT + ": text/jsp" + ENDL +
+                CONNECTION_CLOSE;
+        HttpRequest request1 = new HttpRequest(str);
+        HttpRequest request2 = new HttpRequest(str);
+        HttpRequest request3 = new HttpRequest(str1);
+        assertEquals(request1.equals(request2), true);
+        assertEquals(request1.equals(request3), false);
+        assertEquals(request1.hashCode(), request2.hashCode());
     }
 }

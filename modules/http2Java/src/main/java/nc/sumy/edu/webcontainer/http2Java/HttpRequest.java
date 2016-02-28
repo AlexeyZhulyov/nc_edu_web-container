@@ -1,6 +1,8 @@
 package nc.sumy.edu.webcontainer.http2java;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -133,12 +135,27 @@ public class HttpRequest implements Request {
 
     @Override
     public boolean equals(Object obj) {
-        return Objects.deepEquals(this, obj);
+        if (this == obj) return true;
 
+        if (obj == null || getClass() != obj.getClass()) return false;
+
+        HttpRequest that = (HttpRequest) obj;
+
+        return new EqualsBuilder()
+                .append(method, that.method)
+                .append(urn, that.urn)
+                .append(headers, that.headers)
+                .append(parameters, that.parameters)
+                .isEquals();
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(method, urn, headers, parameters, request);
+        return new HashCodeBuilder(17, 37)
+                .append(method)
+                .append(urn)
+                .append(headers)
+                .append(parameters)
+                .toHashCode();
     }
 }

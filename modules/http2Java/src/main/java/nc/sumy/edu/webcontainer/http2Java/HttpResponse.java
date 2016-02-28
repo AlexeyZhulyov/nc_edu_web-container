@@ -1,5 +1,8 @@
 package nc.sumy.edu.webcontainer.http2java;
 
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
+
 import java.util.*;
 
 public class HttpResponse implements Response {
@@ -94,12 +97,24 @@ public class HttpResponse implements Response {
 
     @Override
     public boolean equals(Object obj) {
-        return Objects.deepEquals(this, obj);
+        if (this == obj) return true;
+        if (obj == null || getClass() != obj.getClass()) return false;
+        HttpResponse that = (HttpResponse) obj;
+        return new EqualsBuilder()
+                .append(code, that.code)
+                .append(response, that.response)
+                .append(headers, that.headers)
+                .append(body, that.body)
+                .isEquals();
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(RESPONSE_CODES, code, response, headers, headers);
+        return new HashCodeBuilder(17, 37)
+                .append(code)
+                .append(response)
+                .append(headers)
+                .append(body)
+                .toHashCode();
     }
-
 }
