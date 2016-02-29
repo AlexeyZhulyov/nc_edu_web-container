@@ -4,6 +4,7 @@ import org.junit.Test;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.Random;
 
 import static org.junit.Assert.assertEquals;
 
@@ -107,7 +108,13 @@ public class HttpResponseTest {
         response1.setBody(STRING1.getBytes());
         response1.setHeaders(headers);
         assertEquals(response.equals(response1), true);
+        assertEquals(response.equals(response), true);
+        assertEquals(response.equals(new Random(25)), false);
+        assertEquals(response.hashCode(), response1.hashCode());
+        assertEquals(new String(response.getBody()), new String(response1.getBody()));
         response1.setCode(404);
         assertEquals(response.equals(response1), false);
+        assertEquals(response.hashCode() != response1.hashCode(), true);
+        assertEquals(response.getCode() != response1.getCode(), true);
     }
 }

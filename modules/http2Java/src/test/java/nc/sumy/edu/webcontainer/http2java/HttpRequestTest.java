@@ -129,6 +129,7 @@ public class HttpRequestTest {
         assertEquals(request.getParameter(NONEXISTENT_VAR), "");
     }
 
+    // Check valid http option request
     @Test
     public void optionRequest() {
         str = METHOD_OPTION + URI_SAMPLE + " " + HTTP_VERSION + ENDL;
@@ -142,6 +143,7 @@ public class HttpRequestTest {
         assertEquals(request.getParameter(null), "");
     }
 
+    // Check http post request for equals and hashcode
     @Test
     public void equalsChecking1() {
         str = METHOD_POST + URI_SAMPLE + " " + HTTP_VERSION + ENDL +
@@ -161,6 +163,7 @@ public class HttpRequestTest {
         assertEquals(request1.equals(request2), true);
     }
 
+    // Check http post request for equals and hashcode
     @Test
     public void equalsChecking2() {
         str = METHOD_POST + URI_SAMPLE + " " + HTTP_VERSION + ENDL +
@@ -179,5 +182,18 @@ public class HttpRequestTest {
         assertEquals(request1.equals(request2), true);
         assertEquals(request1.equals(request3), false);
         assertEquals(request1.hashCode(), request2.hashCode());
+        assertEquals(request1.getHeaders(), request2.getHeaders());
+    }
+
+    // Check invalid http post request
+    @Test
+    public void errorInput() {
+        str = "FGgGFSDF " + "https://foo.com" + " " + HTTP_VERSION + ENDL;
+        request = new HttpRequest(str);
+        assertEquals(request.getMethod(), HttpMethod.UNKNOWN);
+        assertEquals(request.getHeader(null), "");
+
+        str = "FGgGFSDF " + "http://foo.com " + HTTP_VERSION + ENDL;
+        request = new HttpRequest(str);
     }
 }
