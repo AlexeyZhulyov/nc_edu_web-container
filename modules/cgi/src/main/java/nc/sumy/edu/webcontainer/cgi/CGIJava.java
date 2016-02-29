@@ -1,8 +1,8 @@
 package nc.sumy.edu.webcontainer.cgi;
 
 
-import nc.sumy.edu.webcontainer.http2java.HttpMethod;
-import nc.sumy.edu.webcontainer.http2java.Request;
+import nc.sumy.edu.webcontainer.http.HttpMethod;
+import nc.sumy.edu.webcontainer.http.Request;
 
 import java.io.*;
 import java.lang.reflect.InvocationTargetException;

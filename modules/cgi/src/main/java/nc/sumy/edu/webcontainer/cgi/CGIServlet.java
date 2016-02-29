@@ -1,7 +1,7 @@
 package nc.sumy.edu.webcontainer.cgi;
 
-import nc.sumy.edu.webcontainer.http2java.Request;
-import nc.sumy.edu.webcontainer.http2java.Response;
+import nc.sumy.edu.webcontainer.http.Request;
+import nc.sumy.edu.webcontainer.http.Response;
 
 import javax.servlet.Servlet;
 

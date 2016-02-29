@@ -1,4 +1,4 @@
-package nc.sumy.edu.webcontainer.http2java;
+package nc.sumy.edu.webcontainer.http;
 
 import java.util.Map;
 

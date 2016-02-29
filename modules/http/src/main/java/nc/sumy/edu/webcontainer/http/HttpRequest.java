@@ -1,4 +1,4 @@
-package nc.sumy.edu.webcontainer.http2java;
+package nc.sumy.edu.webcontainer.http;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.builder.EqualsBuilder;

@@ -1,4 +1,4 @@
-package nc.sumy.edu.webcontainer.http2java;
+package nc.sumy.edu.webcontainer.http;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
@@ -10,7 +10,7 @@ import java.util.*;
  */
 public class HttpResponse implements Response {
     private static final String ENDL = "\r\n";
-    private static final Map<Integer, String> RESPONSE_CODES = new HashMap<Integer, String>();
+    private static final Map<Integer, String> RESPONSE_CODES = new HashMap<>();
     private int code;
     private String response = "HTTP/1.1 ";
     private Map<String, String> headers;
