@@ -1,7 +1,5 @@
 package nc.sumy.edu.webcontainer.http2java;
 
-import nc.sumy.edu.webcontainer.http2java.HttpMethod;
-
 import java.util.Map;
 
 public interface Request {
