@@ -2,9 +2,12 @@ package nc.sumy.edu.webcontainer.http2java;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
-
 import java.util.*;
 
+/**
+ * Class that build HTTP response and contain response-data.
+ * @author Vinogradov Maxim
+ */
 public class HttpResponse implements Response {
     private static final String ENDL = "\r\n";
     private static final Map<Integer, String> RESPONSE_CODES = new HashMap<Integer, String>();
