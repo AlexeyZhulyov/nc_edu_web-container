@@ -12,4 +12,12 @@
 
     <artifactId>cgi</artifactId>
 
+    <dependencies>
+        <dependency>
+            <groupId>nc.edu.webcontainer</groupId>
+            <artifactId>http2Java</artifactId>
+            <version>0.1</version>
+        </dependency>
+    </dependencies>
+
 </project>
