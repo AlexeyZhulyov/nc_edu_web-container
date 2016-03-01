@@ -4,3 +4,4 @@ jdk:
 script: mvn clean pmd:check package cobertura:check -X
 notifications:
   slack: jclubteam:v9UOWixN194lhKvUgK3UX1jv
+after_success: coveralls
