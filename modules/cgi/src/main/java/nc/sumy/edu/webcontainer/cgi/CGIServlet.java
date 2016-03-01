@@ -15,19 +15,14 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLClassLoader;
 
-
-public class CGIServlet  {
-
-
+public class CgiServlet  {
     public void process(Request request, Response response) {
 
         String uri = ""; //request.getURL();
         String servletName = uri.substring(uri.lastIndexOf("/") + 1);
-
         URLClassLoader loader = null;
-
         URL url = null;
-
+        Class newClass = null;
         Servlet servlet = null;
 
 //      servletPath get from Configuration
@@ -37,37 +32,36 @@ public class CGIServlet  {
         File classPath = new File(servletPath);
 
         String repository = null;
+
         try {
             repository = "file:" + classPath.getCanonicalPath() + File.separator;
         } catch (IOException e) {
-            e.printStackTrace();
+            throw new CgiException("Cannot get class path", e);
         }
         try {
             url = new URL(repository);
         } catch (MalformedURLException e) {
-            e.printStackTrace();
+            throw new CgiException("Cannot create URL", e);
         }
         loader = new URLClassLoader(new URL[]{url});
 
-        Class newClass = null;
         try {
             newClass = loader.loadClass(servletName);
         } catch (ClassNotFoundException e) {
-            e.printStackTrace();
+            throw new CgiException("Class \"" + servletName + "\" not found", e);
         }
-
 
         try {
             servlet = (Servlet) newClass.newInstance();
             servlet.service((ServletRequest) request, (ServletResponse) response);
         } catch (InstantiationException e) {
-            e.printStackTrace();
+            throw new CgiException("Cannot create new instance for class \"" + servletName + "\"", e);
         } catch (IllegalAccessException e) {
-            e.printStackTrace();
+            throw new CgiException("No access", e);
         } catch (ServletException e) {
-            e.printStackTrace();
+            throw new CgiException("Servlet exception", e);
         } catch (IOException e) {
-            e.printStackTrace();
+            throw new CgiException("Input/output exception", e);
         }
     }
 }

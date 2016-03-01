@@ -1,25 +1,23 @@
 package nc.sumy.edu.webcontainer.cgi;
 
-
 import nc.sumy.edu.webcontainer.http.HttpMethod;
 import nc.sumy.edu.webcontainer.http.Request;
+import org.atteo.classindex.ClassIndex;
 
 import java.io.*;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.util.Map;
 import java.util.Properties;
 
-public class CGIJava implements CGI {
+public class CgiJava implements CgiHandler {
 
     Request request = null;
     private File tmp = null;
     PrintStream printStream = null;
     Properties properties = null;
-    File file = null;
     String queryString = null;
     URLClassLoader loader = null;
     URL url = null;
@@ -28,31 +26,26 @@ public class CGIJava implements CGI {
     Class newClass = null;
     String className = null;
 
-    public CGIJava(Request request, File file) {
-        this.request = request;
-        this.file = file;
+    public CgiJava(String className) {
+        this.className = className;
+
         try {
             File tmpDir = new File("TmpDir");
             tmpDir.mkdir();
             tmp = File.createTempFile("cgi_", ".tmp", tmpDir);
         } catch (IOException e) {
-            e.printStackTrace();
+            throw new CgiException("Cannot create temporary file", e);
         }
+
         try {
             printStream = new PrintStream(tmp);
         } catch (FileNotFoundException e) {
-            e.printStackTrace();
+            throw new CgiException("Cannot create new stream to file", e);
         }
+
         System.setOut(printStream);
+
         properties = System.getProperties();
-
-        queryString = "";
-        for (Map.Entry entry : request.getParameters().entrySet()) {
-            if (!queryString.isEmpty()) queryString += "&";
-            queryString += urlDecode(entry.getKey().toString()) + "=";
-            queryString += urlDecode(entry.getValue().toString());
-        }
-
     }
 
     public void setEnvironmentVariable(String name, String value) {
@@ -63,7 +56,6 @@ public class CGIJava implements CGI {
         StringBuffer out = new StringBuffer(in.length());
         int i = 0;
         int j = 0;
-
         while (i < in.length()) {
             char ch = in.charAt(i);
             i++;
@@ -80,11 +72,20 @@ public class CGIJava implements CGI {
 
     @Override
     public String process(Request request) {
+        this.request = request;
+
+        newClass = searchClass(className);
+
+        queryString = "";
+        for (Map.Entry entry : request.getParameters().entrySet()) {
+            if (!queryString.isEmpty()) queryString += "&";
+            queryString += urlDecode(entry.getKey().toString()) + "=";
+            queryString += urlDecode(entry.getValue().toString());
+        }
 
         setEnvironmentVariable("REDIRECT_STATUS", "true");
         setEnvironmentVariable("REQUEST_METHOD", request.getMethod().name());
-        setEnvironmentVariable("SCRIPT_FILENAME", file.getPath());
-        setEnvironmentVariable("SCRIPT_NAME", "Hello");
+        setEnvironmentVariable("SCRIPT_NAME", className);
         setEnvironmentVariable("GATEWAY_INTERFACE", "CGI/1.1");
         setEnvironmentVariable("CONTENT_LENGTH", Integer.toString(queryString.length()));
         setEnvironmentVariable("CONTENT_TYPE", "text/html");
@@ -92,57 +93,47 @@ public class CGIJava implements CGI {
             setEnvironmentVariable("QUERY_STRING", queryString);
         }
 
-        classPath = new File("modules\\cgi\\target\\classes\\");
         try {
-            repository = "file:" + classPath.getCanonicalPath();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        try {
-            url = new URL(repository);
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
-        }
-        loader = new URLClassLoader(new URL[]{url});
-        className = "nc.sumy.edu.webcontainer.cgi." + System.getProperty("SCRIPT_NAME");
-        try {
-            newClass = loader.loadClass(className);
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        }
-
-        try {
-            Class<?> c = Class.forName(className);
             Class[] argTypes = new Class[]{String[].class};
-            Method main = c.getDeclaredMethod("main", argTypes);
+            Method main = newClass.getDeclaredMethod("main", argTypes);
             String[] mainArgs = new String[]{""};
             main.invoke(null, (Object) mainArgs);
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
         } catch (NoSuchMethodException e) {
-            e.printStackTrace();
+            throw new CgiException("Method \"main\" not found", e);
         } catch (IllegalAccessException e) {
-            e.printStackTrace();
+            throw new CgiException("No access", e);
         } catch (InvocationTargetException e) {
-            e.printStackTrace();
+            throw new CgiException("Invocation target exception", e);
         }
 
         StringBuilder sb = new StringBuilder();
 
+        BufferedReader in = null;
+
         try {
-            BufferedReader in = new BufferedReader(new FileReader(tmp));
-            try {
-                String s;
-                while ((s = in.readLine()) != null) {
-                    sb.append(s);
-                    sb.append("\n");
-                }
-            } finally {
-                in.close();
-            }
-        } catch(IOException e) {
-            throw new RuntimeException(e);
+            in = new BufferedReader(new FileReader(tmp));
+        } catch (FileNotFoundException e) {
+            throw new CgiException("Cannot create new reader for temporary file", e);
         }
+        String s = null;
+        try {
+            while ((s = in.readLine()) != null) {
+                sb.append(s);
+                sb.append("\n");
+            }
+        } catch (IOException e) {
+            throw new CgiException("Cannot read temporary file", e);
+        }
+        tmp.deleteOnExit();
         return sb.toString();
+    }
+
+    public Class searchClass(String className) {
+        for (Class<?> klass : ClassIndex.getAnnotated(Cgi.class)) {
+            if (klass.getSimpleName().equals(className))
+                return klass;
+            //klass.getAnnotation(Cgi.class).id();
+        }
+        throw new CgiException("Class \"" + className + "\" not found");
     }
 }
