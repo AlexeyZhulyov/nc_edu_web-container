@@ -15,11 +15,11 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLClassLoader;
 
-public class CgiServlet  {
+public class CgiServlet {
     public void process(Request request, Response response) {
 
         String uri = ""; //request.getURL();
-        String servletName = uri.substring(uri.lastIndexOf("/") + 1);
+        String servletName = uri.substring(uri.lastIndexOf('/') + 1);
         URLClassLoader loader = null;
         URL url = null;
         Class newClass = null;
