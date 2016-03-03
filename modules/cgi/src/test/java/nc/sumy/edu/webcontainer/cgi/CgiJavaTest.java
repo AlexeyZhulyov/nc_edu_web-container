@@ -14,8 +14,8 @@ public class CgiJavaTest {
     nc.sumy.edu.webcontainer.cgi.Test testClass = null;
     Request request = null;
     String processResult = null;
-    final String CLASS_NAME = "Test";
-    final String EXPECT_EXCEPTION = "Expected an CgiException to be thrown";
+    final static String CLASS_NAME = "Test";
+    final static String EXPECT_EXCEPTION = "Expected an CgiException to be thrown";
 
     @Before
     public void setUp() {

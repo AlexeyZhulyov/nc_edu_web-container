@@ -6,7 +6,7 @@ import org.junit.rules.ExpectedException;
 
 
 public class CgiExceptionTest {
-    final String MESSAGE = "Some message";
+    final static String MESSAGE = "Some message";
 
     @Rule
     public ExpectedException cgiException = ExpectedException.none();
