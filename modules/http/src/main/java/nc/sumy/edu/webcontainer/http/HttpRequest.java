@@ -25,7 +25,7 @@ public class HttpRequest implements Request {
     private final String requestLines[];
     private final String firstLine[];
 
-    public HttpRequest(String request) throws UnsupportedEncodingException {
+    public HttpRequest(String request) {
         this.request = request;
         requestLines = split(request, "\r\n");
         firstLine = split(requestLines[0], " ");
@@ -102,9 +102,13 @@ public class HttpRequest implements Request {
         }
     }
 
-    private void decodeParameters() throws UnsupportedEncodingException {
+    private void decodeParameters() {
         for (Map.Entry<String, String> param : parameters.entrySet()) {
-            param.setValue(URLDecoder.decode(param.getValue(), "UTF-8"));
+            try {
+                param.setValue(URLDecoder.decode(param.getValue(), "UTF-8"));
+            } catch (UnsupportedEncodingException e) {
+                throw new ParameterEncodingException("Cannot decode all parameters.", e);
+            }
         }
     }
 
