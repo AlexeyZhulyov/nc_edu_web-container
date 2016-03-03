@@ -4,6 +4,8 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
@@ -23,7 +25,7 @@ public class HttpRequest implements Request {
     private final String requestLines[];
     private final String firstLine[];
 
-    public HttpRequest(String request) {
+    public HttpRequest(String request) throws UnsupportedEncodingException {
         this.request = request;
         requestLines = split(request, "\r\n");
         firstLine = split(requestLines[0], " ");
@@ -31,6 +33,7 @@ public class HttpRequest implements Request {
         parseURI();
         parseHeaders();
         parsePostParam();
+        decodeParameters();
     }
 
     private void parseMethod() {
@@ -96,6 +99,12 @@ public class HttpRequest implements Request {
                 pairParts = split(pair, "=");
                 parameters.put(pairParts[0], pairParts[1]);
             }
+        }
+    }
+
+    private void decodeParameters() throws UnsupportedEncodingException {
+        for (Map.Entry<String, String> param : parameters.entrySet()) {
+            param.setValue(URLDecoder.decode(param.getValue(), "UTF-8"));
         }
     }
 
