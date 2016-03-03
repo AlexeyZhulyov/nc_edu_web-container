@@ -33,8 +33,8 @@ public class CgiJavaTest {
         request = new HttpRequest(requestStr);
 
         processResult = "Content-type: text/html\n\n" +
-                "<html>\n" + "<head>\n" + "<title>\n" + "Hello There " + "Petya%20Vasechkin" + "!" +
-                "\n" + "</title>\n" + "</head>\n" + "<body>\n" + "<h1 align=center>Hello There " + "Petya%20Vasechkin" +
+                "<html>\n" + "<head>\n" + "<title>\n" + "Hello There " + "Petya Vasechkin" + "!" +
+                "\n" + "</title>\n" + "</head>\n" + "<body>\n" + "<h1 align=center>Hello There " + "Petya Vasechkin" +
                 "!</h1>" + "</body>\n</html>\n";
     }
 
