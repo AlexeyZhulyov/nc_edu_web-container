@@ -1,8 +1,8 @@
 package nc.sumy.edu.webcontainer.cgi;
 
-
-import nc.sumy.edu.webcontainer.http.Request;
+import java.util.Map;
 
 public interface CgiHandler {
-    public String process(Request request);
+
+    String process(String className, Map<String, String> parameters);
 }

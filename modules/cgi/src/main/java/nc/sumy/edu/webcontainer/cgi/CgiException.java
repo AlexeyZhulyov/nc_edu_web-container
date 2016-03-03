@@ -17,8 +17,4 @@ public class CgiException extends RuntimeException {
     public CgiException(Throwable cause) {
         super(cause);
     }
-
-    public CgiException(String message, Throwable cause, boolean enableSuppression, boolean writableStackTrace) {
-        super(message, cause, enableSuppression, writableStackTrace);
-    }
 }
