@@ -28,7 +28,7 @@ public class HttpResponse implements Response {
 
     public HttpResponse(int code) {
         this.code = code;
-        headers = new LinkedHashMap<String, String>();
+        headers = new LinkedHashMap<>();
     }
 
     public HttpResponse(int code, Map<String, String> headers, byte[] body) {
@@ -101,7 +101,7 @@ public class HttpResponse implements Response {
     @Override
     public boolean equals(Object obj) {
         if (this == obj) return true;
-        if (obj == null || getClass() != obj.getClass()) return false;
+        if (Objects.isNull(obj) || getClass() != obj.getClass()) return false;
         HttpResponse that = (HttpResponse) obj;
         return new EqualsBuilder()
                 .append(code, that.code)

@@ -17,8 +17,8 @@ import static org.apache.commons.lang3.StringUtils.*;
 public class HttpRequest implements Request {
     private HttpMethod method;
     private String urn;
-    private final Map<String, String> headers = new HashMap();
-    private final Map<String, String> parameters = new HashMap();
+    private final Map<String, String> headers = new HashMap<>();
+    private final Map<String, String> parameters = new HashMap<>();
     private final String request;
     private final String requestLines[];
     private final String firstLine[];
@@ -89,7 +89,7 @@ public class HttpRequest implements Request {
 
     private void parsePostParam() {
         int lastItem = requestLines.length - 1;
-        if (method == HttpMethod.POST  && !Objects.isNull(requestLines[lastItem])) {
+        if (method == HttpMethod.POST  && Objects.nonNull(requestLines[lastItem])) {
             String paramPairs[] = split(trim(requestLines[lastItem]), "&");
             String pairParts[];
             for (String pair : paramPairs) {
@@ -116,28 +116,18 @@ public class HttpRequest implements Request {
     }
 
     public String getHeader(String key) {
-        String value;
-        value = headers.get(key);
-        if (Objects.isNull(value)) {
-            value = "";
-        }
-        return value;
+        return Objects.isNull(headers.get(key)) ? "" : headers.get(key);
     }
 
     public String getParameter(String key) {
-        String value;
-        value = parameters.get(key);
-        if (Objects.isNull(value)) {
-            value = "";
-        }
-        return value;
+        return Objects.isNull(parameters.get(key)) ? "" : parameters.get(key);
     }
 
     @Override
     public boolean equals(Object obj) {
         if (this == obj) return true;
 
-        if (obj == null || getClass() != obj.getClass()) return false;
+        if (Objects.isNull(obj) || getClass() != obj.getClass()) return false;
 
         HttpRequest that = (HttpRequest) obj;
 
