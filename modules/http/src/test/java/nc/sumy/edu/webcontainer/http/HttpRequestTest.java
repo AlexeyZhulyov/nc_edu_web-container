@@ -2,6 +2,8 @@ package nc.sumy.edu.webcontainer.http;
 
 import org.junit.Test;
 
+import java.io.UnsupportedEncodingException;
+
 import static org.junit.Assert.assertEquals;
 
 public class HttpRequestTest {
@@ -23,7 +25,7 @@ public class HttpRequestTest {
 
     // Check valid http get request #1: with relative URI and without parameters
     @Test
-    public void getRequest1() {
+    public void getRequest1() throws UnsupportedEncodingException {
         str = METHOD_GET + "/JavaPower.gif " + HTTP_VERSION + ENDL +
                 HOST + ": www.devresource.org" + ENDL +
                 ACCEPT + ": text/html" + ENDL +
@@ -40,7 +42,7 @@ public class HttpRequestTest {
 
     // Check valid http get request #2: with relative URI and without parameters (more sophisticated)
     @Test
-    public void getRequest2() {
+    public void getRequest2() throws UnsupportedEncodingException {
         str = METHOD_GET + "/wiki/page.html " + HTTP_VERSION + ENDL +
                 HOST + ": ru.wikipedia.org" + ENDL +
                 USER_AGENT + ": Mozilla/5.0 (X11; U; Linux i686; ru; rv:1.9b5) Gecko/2008050509 Firefox/3.0b5" + ENDL +
@@ -61,7 +63,7 @@ public class HttpRequestTest {
 
     // Check valid http get request #3: with relative URI and with parameters
     @Test
-    public void getRequest3() {
+    public void getRequest3() throws UnsupportedEncodingException {
         str = METHOD_GET + "/someservlet.jsp?param1=foo&param2=bar " + HTTP_VERSION + ENDL +
                 HOST + ": foo.com" + ENDL +
                 USER_AGENT + ": Google Chrome/5.0 (X11; U; Linux i686; ru; rv:1.9b5) " +
@@ -86,7 +88,7 @@ public class HttpRequestTest {
 
     // Check valid http get request #3: with absolute URI and with parameters
     @Test
-    public void getRequest4() {
+    public void getRequest4() throws UnsupportedEncodingException {
         str = METHOD_GET + "http://foo.com/someservlet.jsp?param1=foo " + HTTP_VERSION + ENDL +
                 ACCEPT + ": text/jsp" + ENDL +
                 CONNECTION_CLOSE;
@@ -105,7 +107,7 @@ public class HttpRequestTest {
 
     // Check valid http post request: with absolute URI and with parameters
     @Test
-    public void postRequest() {
+    public void postRequest() throws UnsupportedEncodingException {
         str = METHOD_POST + URI_SAMPLE + " " + HTTP_VERSION + ENDL +
                 HOST + ": www.site.ru" + ENDL +
                 "Referer: "+ URI_SAMPLE + ENDL +
@@ -124,14 +126,14 @@ public class HttpRequestTest {
         assertEquals(request.getHeader("Content-Length"), "35");
         assertEquals(request.getHeader(NONEXISTENT_VAR), "");
 
-        assertEquals(request.getParameter("login"), "Petya%20Vasechkin");
+        assertEquals(request.getParameter("login"), "Petya Vasechkin");
         assertEquals(request.getParameter("password"), "qq");
         assertEquals(request.getParameter(NONEXISTENT_VAR), "");
     }
 
     // Check valid http option request
     @Test
-    public void optionRequest() {
+    public void optionRequest() throws UnsupportedEncodingException {
         str = METHOD_OPTION + URI_SAMPLE + " " + HTTP_VERSION + ENDL;
         request = new HttpRequest(str);
         assertEquals(request.getMethod(), HttpMethod.OPTIONS);
@@ -145,7 +147,7 @@ public class HttpRequestTest {
 
     // Check http post request for equals and hashcode
     @Test
-    public void equalsChecking1() {
+    public void equalsChecking1() throws UnsupportedEncodingException {
         str = METHOD_POST + URI_SAMPLE + " " + HTTP_VERSION + ENDL +
                 HOST + ": www.site.ru" + ENDL +
                 "Referer: " + URI_SAMPLE + ENDL +
@@ -165,7 +167,7 @@ public class HttpRequestTest {
 
     // Check http post request for equals and hashcode
     @Test
-    public void equalsChecking2() {
+    public void equalsChecking2() throws UnsupportedEncodingException {
         str = METHOD_POST + URI_SAMPLE + " " + HTTP_VERSION + ENDL +
                 HOST + ": www.site.ru" + ENDL +
                 "Referer: http://www.site.ru/index.html" + ENDL +
@@ -187,7 +189,7 @@ public class HttpRequestTest {
 
     // Check invalid http post request
     @Test
-    public void errorInput() {
+    public void errorInput() throws UnsupportedEncodingException {
         str = "FGgGFSDF " + "https://foo.com" + " " + HTTP_VERSION + ENDL;
         request = new HttpRequest(str);
         assertEquals(request.getMethod(), HttpMethod.UNKNOWN);
