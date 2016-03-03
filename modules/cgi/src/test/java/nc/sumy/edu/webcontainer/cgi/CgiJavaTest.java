@@ -75,7 +75,7 @@ public class CgiJavaTest {
             cgiJava.process("TestWithoutGenerate", new HashMap<>());
             fail(EXPECT_EXCEPTION);
         } catch (CgiException e) {
-            assertEquals("Method \"generate\" not found", e.getMessage());
+            assertEquals("Cannot invoke method \"generate\"", e.getMessage());
         }
     }
 
@@ -85,7 +85,7 @@ public class CgiJavaTest {
             cgiJava.process("TestWithPrivateConstructor", new HashMap<>());
             fail(EXPECT_EXCEPTION);
         } catch (CgiException e) {
-            assertEquals("No access", e.getMessage());
+            assertEquals("Cannot invoke method \"generate\"", e.getMessage());
         }
     }
 

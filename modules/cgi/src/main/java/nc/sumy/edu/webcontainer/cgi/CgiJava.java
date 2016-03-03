@@ -42,13 +42,9 @@ public class CgiJava implements CgiHandler {
             Method generate = klass.getDeclaredMethod("generate", argTypes);
             Map<String, String> generateArgs = parameters;
             generateResult = (String) generate.invoke(instance, (Object) generateArgs);
-        } catch (NoSuchMethodException e) {
-            throw new CgiException("Method \"generate\" not found", e);
-        } catch (IllegalAccessException e) {
-            throw new CgiException("No access", e);
-        } catch (InvocationTargetException e) {
-            throw new CgiException("Invocation target exception", e);
-        } catch (InstantiationException e) {
+        } catch (NoSuchMethodException|IllegalAccessException e) {
+            throw new CgiException("Cannot invoke method \"generate\"", e);
+        } catch (InvocationTargetException|InstantiationException e) {
             throw new CgiException("Cannot create new instance", e);
         }
         return generateResult;
