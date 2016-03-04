@@ -25,7 +25,7 @@ public class CgiJava implements CgiHandler {
         return generateResult;
     }
 
-    private Class searchClass(String className) {
+    public Class searchClass(String className) {
         for (Class<?> klass : ClassIndex.getAnnotated(Cgi.class)) {
             if (klass.getSimpleName().equals(className))
                 return klass;
