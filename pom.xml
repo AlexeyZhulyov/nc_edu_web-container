@@ -32,8 +32,11 @@
         <javax.servlet-api.version>4.0.0-b01</javax.servlet-api.version>
         <!-- Java code/tests analysis-->
         <pmd.version>3.6</pmd.version>
+        <jacoco.version>0.7.6.201602180812</jacoco.version>
         <cobertura.version>2.7</cobertura.version>
         <coveralls.version>4.1.0</coveralls.version>
+        <!-- Other -->
+        <surefire.plugin.version>2.14.1</surefire.plugin.version>
     </properties>
 
     <dependencies>
@@ -107,28 +110,52 @@
                 </plugin>
                 <!-- Collect coverage information -->
                 <plugin>
-                    <groupId>org.codehaus.mojo</groupId>
-                    <artifactId>cobertura-maven-plugin</artifactId>
-                    <version>${cobertura.version}</version>
-                    <configuration>
-                        <check>
-                            <branchRate>85</branchRate>
-                            <lineRate>85</lineRate>
-                            <haltOnFailure>true</haltOnFailure>
-                            <totalBranchRate>85</totalBranchRate>
-                            <totalLineRate>85</totalLineRate>
-                            <packageLineRate>85</packageLineRate>
-                            <packageBranchRate>85</packageBranchRate>
-                        </check>
-                    </configuration>
-                </plugin>
-                <!-- Show current coverage status -->
-                <plugin>
                     <groupId>org.eluder.coveralls</groupId>
                     <artifactId>coveralls-maven-plugin</artifactId>
                     <version>${coveralls.version}</version>
                     <configuration>
                         <repoToken>HRXdH9zy58YzqEvkzNWixIsqsaHBSBqdf</repoToken>
+                    </configuration>
+                </plugin>
+                <plugin>
+                    <groupId>org.jacoco</groupId>
+                    <artifactId>jacoco-maven-plugin</artifactId>
+                    <version>${jacoco.version}</version>
+                    <executions>
+                        <execution>
+                            <id>prepare-agent</id>
+                            <goals>
+                                <goal>prepare-agent</goal>
+                            </goals>
+                        </execution>
+                        <execution>
+                            <id>report</id>
+                            <phase>prepare-package</phase>
+                            <goals>
+                                <goal>report</goal>
+                            </goals>
+                        </execution>
+                    </executions>
+                    <configuration>
+                        <rules>
+                            <rule implementation="org.jacoco.maven.RuleConfiguration">
+                                <element>BUNDLE</element>
+                                <limits>
+                                     <limit implementation="org.jacoco.report.check.Limit">
+                                        <counter>INSTRUCTION</counter>
+                                        <value>COVEREDRATIO</value>
+                                        <minimum>0.85</minimum>
+                                    </limit>
+                                </limits>
+                            </rule>
+                        </rules>
+                    </configuration>
+                </plugin>
+                <plugin>
+                    <artifactId>maven-surefire-plugin</artifactId>
+                    <version>${surefire.plugin.version}</version>
+                    <configuration>
+                        <argLine>${argLine}</argLine>
                     </configuration>
                 </plugin>
             </plugins>
