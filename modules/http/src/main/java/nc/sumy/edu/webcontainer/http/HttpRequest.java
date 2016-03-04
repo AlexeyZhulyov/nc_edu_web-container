@@ -3,6 +3,8 @@ package nc.sumy.edu.webcontainer.http;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
@@ -21,6 +23,8 @@ public class HttpRequest implements Request {
     private String urn;
     private final Map<String, String> headers = new HashMap<>();
     private final Map<String, String> parameters = new HashMap<>();
+    private static final Logger LOGGER = LoggerFactory.getLogger(HttpRequest.class);
+    private static final String UTF8 = "UTF-8";
     private final String request;
     private final String requestLines[];
     private final String firstLine[];
@@ -105,9 +109,9 @@ public class HttpRequest implements Request {
     private void decodeParameters() {
         for (Map.Entry<String, String> param : parameters.entrySet()) {
             try {
-                param.setValue(URLDecoder.decode(param.getValue(), "UTF-8"));
+                param.setValue(URLDecoder.decode(param.getValue(), UTF8));
             } catch (UnsupportedEncodingException e) {
-                throw new ParameterEncodingException("Cannot decode all parameters.", e);
+                LOGGER.error("Cannot decode with UTF-8.", e);
             }
         }
     }
