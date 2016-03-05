@@ -65,7 +65,7 @@ public class CgiJavaTest {
             cgiJava.searchClass("Absent");
             fail(EXPECT_EXCEPTION);
         } catch (CgiException e) {
-            assertEquals("Class \"Absent\" not found", e.getMessage());
+            assertEquals(String.format(CgiException.MESSAGE_CLASS_NOT_FOUND, "Absent"), e.getMessage());
         }
     }
 
@@ -75,7 +75,7 @@ public class CgiJavaTest {
             cgiJava.process("TestWithoutGenerate", new HashMap<>());
             fail(EXPECT_EXCEPTION);
         } catch (CgiException e) {
-            assertEquals("Cannot invoke method \"generate\"", e.getMessage());
+            assertEquals(String.format(CgiException.MESSAGE_CANNOT_INVOKE_METHOD,"generate"), e.getMessage());
         }
     }
 
@@ -85,7 +85,7 @@ public class CgiJavaTest {
             cgiJava.process("TestWithPrivateConstructor", new HashMap<>());
             fail(EXPECT_EXCEPTION);
         } catch (CgiException e) {
-            assertEquals("Cannot invoke method \"generate\"", e.getMessage());
+            assertEquals(String.format(CgiException.MESSAGE_CANNOT_INVOKE_METHOD,"generate"), e.getMessage());
         }
     }
 
@@ -95,7 +95,7 @@ public class CgiJavaTest {
             cgiJava.process("AbstractTest", new HashMap<>());
             fail(EXPECT_EXCEPTION);
         } catch (CgiException e) {
-            assertEquals("Cannot create new instance", e.getMessage());
+            assertEquals(CgiException.MESSAGE_CANNOT_CREATE_INSTANCE, e.getMessage());
         }
     }
 }

@@ -31,7 +31,7 @@ public class CgiJava implements CgiHandler {
                 return klass;
             //klass.getAnnotation(Cgi.class).id();
         }
-        throw new CgiException("Class \"" + className + "\" not found");
+        throw new CgiException(String.format(CgiException.MESSAGE_CLASS_NOT_FOUND, className));
     }
 
     private String invokeGenerateMethod(Class klass, Map<String, String> parameters) {
@@ -43,9 +43,9 @@ public class CgiJava implements CgiHandler {
             Map<String, String> generateArgs = parameters;
             generateResult = (String) generate.invoke(instance, (Object) generateArgs);
         } catch (NoSuchMethodException | IllegalAccessException e) {
-            throw new CgiException("Cannot invoke method \"generate\"", e);
+            throw new CgiException(String.format(CgiException.MESSAGE_CANNOT_INVOKE_METHOD,"generate"), e);
         } catch (InvocationTargetException | InstantiationException e) {
-            throw new CgiException("Cannot create new instance", e);
+            throw new CgiException(CgiException.MESSAGE_CANNOT_CREATE_INSTANCE, e);
         }
         return generateResult;
     }
