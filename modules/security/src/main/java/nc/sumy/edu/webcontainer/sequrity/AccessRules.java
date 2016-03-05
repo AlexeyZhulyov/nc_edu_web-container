@@ -5,6 +5,10 @@ import nc.sumy.edu.webcontainer.sequrity.interfaces.Rules;
 
 import java.util.Set;
 
+/**
+ * Class-containers that include http-access info about all folder.
+ * @author Vinogradov Maxim
+ */
 public class AccessRules implements Rules{
     private final String order;
     private final Set<AccessFile> files;

@@ -4,6 +4,10 @@ import nc.sumy.edu.webcontainer.sequrity.interfaces.AccessFile;
 
 import java.util.Set;
 
+/**
+ * Class-containers that include http-access info about separated files.
+ * @author Vinogradov Maxim
+ */
 public class ServerAccessFile implements AccessFile {
     private final String name;
     private final String order;

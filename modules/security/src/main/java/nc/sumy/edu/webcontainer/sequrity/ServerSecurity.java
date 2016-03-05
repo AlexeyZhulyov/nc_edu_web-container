@@ -18,7 +18,6 @@ import java.util.*;
  * It's find and parse .httpacces files, and make a conclusion about it.
  * @author Vinogradov Maxim
  */
-
 public class ServerSecurity implements Security {
     public enum RuleTypes { ALL, HOST, IP, IPWITHMASK, IPWITHCIDRMASK }
     private static final String DIR   = "dir";
