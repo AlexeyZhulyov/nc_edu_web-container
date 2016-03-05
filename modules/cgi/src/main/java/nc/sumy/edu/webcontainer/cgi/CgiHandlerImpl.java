@@ -2,8 +2,6 @@ package nc.sumy.edu.webcontainer.cgi;
 
 import org.atteo.classindex.ClassIndex;
 
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import java.util.Map;
 import java.util.Properties;
 
@@ -39,15 +37,16 @@ public class CgiHandlerImpl implements CgiHandler {
 
     private String invokeGenerateMethod(Class klass, Map<String, String> parameters) {
         String generateResult = null;
+        if (!CgiAction.class.isAssignableFrom(klass)) {
+            throw new CgiException(format(INVALID_CLASS, klass.getSimpleName()));
+        }
         try {
-            Object instance = klass.newInstance();
-            Class[] argTypes = new Class[]{Map.class};
-            Method generate = klass.getDeclaredMethod("generate", argTypes);
+            CgiAction instance = (CgiAction) klass.newInstance();
             Map<String, String> generateArgs = parameters;
-            generateResult = (String) generate.invoke(instance, (Object) generateArgs);
-        } catch (NoSuchMethodException | IllegalAccessException e) {
-            throw new CgiException(format(CANNOT_INVOKE_METHOD,"generate"), e);
-        } catch (InvocationTargetException | InstantiationException e) {
+            generateResult = instance.generate(generateArgs);
+        } catch (IllegalAccessException e) {
+            throw new CgiException(format(CANNOT_INVOKE_METHOD, "generate"), e);
+        } catch (InstantiationException e) {
             throw new CgiException(CANNOT_CREATE_INSTANCE, e);
         }
         return generateResult;

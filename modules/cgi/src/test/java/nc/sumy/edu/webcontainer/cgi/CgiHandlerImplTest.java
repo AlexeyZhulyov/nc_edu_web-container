@@ -11,9 +11,9 @@ import static java.lang.String.*;
 import static nc.sumy.edu.webcontainer.cgi.CgiException.*;
 import static org.junit.Assert.*;
 
-public class CgiJavaTest {
-    private CgiHandlerImpl cgiJava = null;
-    private nc.sumy.edu.webcontainer.cgi.stub.Test testClass = null;
+public class CgiHandlerImplTest {
+    private CgiHandlerImpl cgiHandlerImpl = null;
+    private CgiAction testClass = null;
     private Request request = null;
     private String processResult = null;
     private final static String CLASS_NAME_TEST = "Test";
@@ -22,9 +22,9 @@ public class CgiJavaTest {
     @Before
     public void setUp() {
         testClass = new nc.sumy.edu.webcontainer.cgi.stub.Test();
-        cgiJava = new CgiHandlerImpl();
-        cgiJava.setEnvironmentVariable("REQUEST_METHOD", "POST");
-        cgiJava.setEnvironmentVariable("SCRIPT_NAME", CLASS_NAME_TEST);
+        cgiHandlerImpl = new CgiHandlerImpl();
+        cgiHandlerImpl.setEnvironmentVariable("REQUEST_METHOD", "POST");
+        cgiHandlerImpl.setEnvironmentVariable("SCRIPT_NAME", CLASS_NAME_TEST);
 
         String queryString = "login=Petya%20Vasechkin&password=qq";
         String requestStr = "GET " + "/" + CLASS_NAME_TEST + ".cgi?" + queryString + " HTTP/1.1" + "\r\n" +
@@ -48,23 +48,23 @@ public class CgiJavaTest {
 
     @Test
     public void process() {
-        assertEquals(processResult, cgiJava.process(CLASS_NAME_TEST, request.getParameters()));
+        assertEquals(processResult, cgiHandlerImpl.process(CLASS_NAME_TEST, request.getParameters()));
     }
 
     @Test
     public void searchClass() {
-        assertEquals(testClass.getClass(), cgiJava.searchClass("Test"));
+        assertEquals(testClass.getClass(), cgiHandlerImpl.searchClass("Test"));
     }
 
     @Test(expected = CgiException.class)
     public void searchClassException() {
-        cgiJava.searchClass("Absent");
+        cgiHandlerImpl.searchClass("Absent");
     }
 
     @Test
     public void searchClassExceptionMessage() {
         try {
-            cgiJava.searchClass("Absent");
+            cgiHandlerImpl.searchClass("Absent");
             fail(EXPECT_EXCEPTION);
         } catch (CgiException e) {
             assertEquals(format(CLASS_NOT_FOUND, "Absent"), e.getMessage());
@@ -74,17 +74,17 @@ public class CgiJavaTest {
     @Test
     public void invokeGenerateMethodExceptionMessage1() {
         try {
-            cgiJava.process("TestWithoutGenerate", new HashMap<>());
+            cgiHandlerImpl.process("TestWithoutGenerate", new HashMap<>());
             fail(EXPECT_EXCEPTION);
         } catch (CgiException e) {
-            assertEquals(format(CANNOT_INVOKE_METHOD,"generate"), e.getMessage());
+            assertEquals(format(INVALID_CLASS,"TestWithoutGenerate"), e.getMessage());
         }
     }
 
     @Test
     public void invokeGenerateMethodExceptionMessage2() {
         try {
-            cgiJava.process("TestWithPrivateConstructor", new HashMap<>());
+            cgiHandlerImpl.process("TestWithPrivateConstructor", new HashMap<>());
             fail(EXPECT_EXCEPTION);
         } catch (CgiException e) {
             assertEquals(format(CANNOT_INVOKE_METHOD,"generate"), e.getMessage());
@@ -94,7 +94,7 @@ public class CgiJavaTest {
     @Test
     public void invokeGenerateMethodExceptionMessage3() {
         try {
-            cgiJava.process("AbstractTest", new HashMap<>());
+            cgiHandlerImpl.process("AbstractTest", new HashMap<>());
             fail(EXPECT_EXCEPTION);
         } catch (CgiException e) {
             assertEquals(CANNOT_CREATE_INSTANCE, e.getMessage());
