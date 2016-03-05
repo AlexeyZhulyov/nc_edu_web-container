@@ -1,6 +1,7 @@
 package nc.sumy.edu.webcontainer.sequrity;
 
 import nc.sumy.edu.webcontainer.http.HttpRequest;
+import nc.sumy.edu.webcontainer.sequrity.interfaces.Security;
 import org.apache.commons.lang3.StringUtils;
 
 import static org.apache.commons.lang3.StringUtils.*;
@@ -18,7 +19,7 @@ import java.util.*;
  * @author Vinogradov Maxim
  */
 
-public class ServerSecurity implements Security{
+public class ServerSecurity implements Security {
     public enum RuleTypes { ALL, HOST, IP, IPWITHMASK, IPWITHCIDRMASK }
     private static final String DIR   = "dir";
     private static final String DENY  = "deny";

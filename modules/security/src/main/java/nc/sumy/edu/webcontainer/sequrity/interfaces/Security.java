@@ -1,4 +1,4 @@
-package nc.sumy.edu.webcontainer.sequrity;
+package nc.sumy.edu.webcontainer.sequrity.interfaces;
 
 public interface Security {
 
