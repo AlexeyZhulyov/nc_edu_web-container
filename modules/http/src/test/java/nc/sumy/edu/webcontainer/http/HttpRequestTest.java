@@ -7,12 +7,14 @@ import static org.junit.Assert.assertEquals;
 public class HttpRequestTest {
     private HttpRequest request;
     private String str;
+    private static final String HOST = "nc.pc";
+    private static final String IP_ADDRESS = "";
     private static final String ENDL = "\r\n";
     private static final String METHOD_GET = "GET ";
     private static final String METHOD_POST = "POST ";
     private static final String METHOD_OPTION = "OPTION ";
     private static final String HTTP_VERSION = "HTTP/1.1";
-    private static final String HOST = "Host";
+    private static final String HOST_HEADER = "Host";
     private static final String NONEXISTENT_VAR = "qqq";
     private static final String USER_AGENT = "User-Agent";
     private static final String ACCEPT = "Accept";
@@ -25,10 +27,10 @@ public class HttpRequestTest {
     @Test
     public void getRequest1() {
         str = METHOD_GET + "/JavaPower.gif " + HTTP_VERSION + ENDL +
-                HOST + ": www.devresource.org" + ENDL +
+                HOST_HEADER + ": www.devresource.org" + ENDL +
                 ACCEPT + ": text/html" + ENDL +
                 "Range-Unit: 3388 | 1024";
-        request = new HttpRequest(str);
+        request = new HttpRequest(str, IP_ADDRESS, HOST);
 
         assertEquals(request.getMethod(), HttpMethod.GET);
         assertEquals(request.getUrn(), "/JavaPower.gif");
@@ -42,15 +44,15 @@ public class HttpRequestTest {
     @Test
     public void getRequest2() {
         str = METHOD_GET + "/wiki/page.html " + HTTP_VERSION + ENDL +
-                HOST + ": ru.wikipedia.org" + ENDL +
+                HOST_HEADER + ": ru.wikipedia.org" + ENDL +
                 USER_AGENT + ": Mozilla/5.0 (X11; U; Linux i686; ru; rv:1.9b5) Gecko/2008050509 Firefox/3.0b5" + ENDL +
                 ACCEPT + ": text/html" + ENDL +
                 CONNECTION_CLOSE;
-        request = new HttpRequest(str);
+        request = new HttpRequest(str, IP_ADDRESS, HOST);
 
         assertEquals(request.getMethod(), HttpMethod.GET);
         assertEquals(request.getUrn(), "/wiki/page.html");
-        assertEquals(request.getHeader(HOST), "ru.wikipedia.org");
+        assertEquals(request.getHeader(HOST_HEADER), "ru.wikipedia.org");
         assertEquals(request.getHeader(USER_AGENT),
                 "Mozilla/5.0 (X11; U; Linux i686; ru; rv:1.9b5) Gecko/2008050509 Firefox/3.0b5");
         assertEquals(request.getHeader(ACCEPT), "text/html");
@@ -63,16 +65,16 @@ public class HttpRequestTest {
     @Test
     public void getRequest3() {
         str = METHOD_GET + "/someservlet.jsp?param1=foo&param2=bar " + HTTP_VERSION + ENDL +
-                HOST + ": foo.com" + ENDL +
+                HOST_HEADER + ": foo.com" + ENDL +
                 USER_AGENT + ": Google Chrome/5.0 (X11; U; Linux i686; ru; rv:1.9b5) " +
                 "Gecko/2008050509 Google Chrome/3.0b5" +  ENDL +
                 ACCEPT + ": text/jsp" + ENDL +
                 CONNECTION_CLOSE;
-        request = new HttpRequest(str);
+        request = new HttpRequest(str, IP_ADDRESS, HOST);
 
         assertEquals(request.getMethod(), HttpMethod.GET);
         assertEquals(request.getUrn(), "/someservlet.jsp");
-        assertEquals(request.getHeader(HOST), "foo.com");
+        assertEquals(request.getHeader(HOST_HEADER), "foo.com");
         assertEquals(request.getHeader(USER_AGENT),
                 "Google Chrome/5.0 (X11; U; Linux i686; ru; rv:1.9b5) Gecko/2008050509 Google Chrome/3.0b5");
         assertEquals(request.getHeader(ACCEPT), "text/jsp");
@@ -82,6 +84,8 @@ public class HttpRequestTest {
         assertEquals(request.getParameter("param1"), "foo");
         assertEquals(request.getParameter("param2"), "bar");
         assertEquals(request.getParameter(NONEXISTENT_VAR), "");
+        assertEquals(request.getHost(), HOST);
+        assertEquals(request.getIpAddress(), IP_ADDRESS);
     }
 
     // Check valid http get request #3: with absolute URI and with parameters
@@ -90,11 +94,11 @@ public class HttpRequestTest {
         str = METHOD_GET + "http://foo.com/someservlet.jsp?param1=foo " + HTTP_VERSION + ENDL +
                 ACCEPT + ": text/jsp" + ENDL +
                 CONNECTION_CLOSE;
-        request = new HttpRequest(str);
+        request = new HttpRequest(str, IP_ADDRESS, HOST);
 
         assertEquals(request.getMethod(), HttpMethod.GET);
         assertEquals(request.getUrn(), "/someservlet.jsp");
-        assertEquals(request.getHeader(HOST), "foo.com");
+        assertEquals(request.getHeader(HOST_HEADER), "foo.com");
         assertEquals(request.getHeader(ACCEPT), "text/jsp");
         assertEquals(request.getHeader(CONNECTION), CLOSE_STR);
         assertEquals(request.getHeader(NONEXISTENT_VAR), "");
@@ -107,17 +111,17 @@ public class HttpRequestTest {
     @Test
     public void postRequest() {
         str = METHOD_POST + URI_SAMPLE + " " + HTTP_VERSION + ENDL +
-                HOST + ": www.site.ru" + ENDL +
+                HOST_HEADER + ": www.site.ru" + ENDL +
                 "Referer: "+ URI_SAMPLE + ENDL +
                 "Cookie: income=1" +  ENDL +
                 "Content-Type: application/x-www-form-urlencoded" + ENDL +
                 "Content-Length: 35" + ENDL +
                 "login=Petya%20Vasechkin&password=qq";
 
-        request = new HttpRequest(str);
+        request = new HttpRequest(str, IP_ADDRESS, HOST);
         assertEquals(request.getMethod(), HttpMethod.POST);
         assertEquals(request.getUrn(), "/news.html");
-        assertEquals(request.getHeader(HOST), "www.site.ru");
+        assertEquals(request.getHeader(HOST_HEADER), "www.site.ru");
         assertEquals(request.getHeader("Referer"), URI_SAMPLE);
         assertEquals(request.getHeader("Cookie"), "income=1");
         assertEquals(request.getHeader("Content-Type"), "application/x-www-form-urlencoded");
@@ -133,10 +137,10 @@ public class HttpRequestTest {
     @Test
     public void optionRequest() {
         str = METHOD_OPTION + URI_SAMPLE + " " + HTTP_VERSION + ENDL;
-        request = new HttpRequest(str);
+        request = new HttpRequest(str, IP_ADDRESS, HOST);
         assertEquals(request.getMethod(), HttpMethod.OPTIONS);
         assertEquals(request.getUrn(), "/news.html");
-        assertEquals(request.getHeader(HOST), "www.site.ru");
+        assertEquals(request.getHeader(HOST_HEADER), "www.site.ru");
         assertEquals(request.getHeader(NONEXISTENT_VAR), "");
         assertEquals(request.getHeader(null), "");
         assertEquals(request.getParameter(NONEXISTENT_VAR), "");
@@ -147,14 +151,14 @@ public class HttpRequestTest {
     @Test
     public void equalsChecking1() {
         str = METHOD_POST + URI_SAMPLE + " " + HTTP_VERSION + ENDL +
-                HOST + ": www.site.ru" + ENDL +
+                HOST_HEADER + ": www.site.ru" + ENDL +
                 "Referer: " + URI_SAMPLE + ENDL +
                 "Cookie: income=1" +  ENDL +
                 "Content-Type: application/x-www-form-urlencoded" + ENDL +
                 "Content-Length: 35" + ENDL +
                 "login=Petya%20Vasechkin&password=qq";
-        HttpRequest request1 = new HttpRequest(str);
-        HttpRequest request2 = new HttpRequest(str);
+        HttpRequest request1 = new HttpRequest(str, IP_ADDRESS, HOST);
+        HttpRequest request2 = new HttpRequest(str, IP_ADDRESS, HOST);
         assertEquals(request1.getHeader("Content-Length"), request2.getHeader("Content-Length"));
         assertEquals(request1.getHeader("Cookie"), request2.getHeader("Cookie"));
         assertEquals(request1.getUrn(), request2.getUrn());
@@ -167,7 +171,7 @@ public class HttpRequestTest {
     @Test
     public void equalsChecking2() {
         str = METHOD_POST + URI_SAMPLE + " " + HTTP_VERSION + ENDL +
-                HOST + ": www.site.ru" + ENDL +
+                HOST_HEADER + ": www.site.ru" + ENDL +
                 "Referer: http://www.site.ru/index.html" + ENDL +
                 "Cookie: income=1" +  ENDL +
                 "Content-Type: application/x-www-form-urlencoded" + ENDL +
@@ -176,9 +180,9 @@ public class HttpRequestTest {
         String str1 = METHOD_GET + "http://foo.com/someservlet.jsp?param1=foo " + HTTP_VERSION + ENDL +
                 ACCEPT + ": text/jsp" + ENDL +
                 CONNECTION_CLOSE;
-        HttpRequest request1 = new HttpRequest(str);
-        HttpRequest request2 = new HttpRequest(str);
-        HttpRequest request3 = new HttpRequest(str1);
+        HttpRequest request1 = new HttpRequest(str, IP_ADDRESS, HOST);
+        HttpRequest request2 = new HttpRequest(str, IP_ADDRESS, HOST);
+        HttpRequest request3 = new HttpRequest(str1, IP_ADDRESS, HOST);
         assertEquals(request1.equals(request2), true);
         assertEquals(request1.equals(request3), false);
         assertEquals(request1.hashCode(), request2.hashCode());
@@ -189,11 +193,11 @@ public class HttpRequestTest {
     @Test
     public void errorInput() {
         str = "FGgGFSDF " + "https://foo.com" + " " + HTTP_VERSION + ENDL;
-        request = new HttpRequest(str);
+        request = new HttpRequest(str, IP_ADDRESS, HOST);
         assertEquals(request.getMethod(), HttpMethod.UNKNOWN);
         assertEquals(request.getHeader(null), "");
 
         str = "FGgGFSDF " + "http://foo.com " + HTTP_VERSION + ENDL;
-        request = new HttpRequest(str);
+        request = new HttpRequest(str, IP_ADDRESS, HOST);
     }
 }
