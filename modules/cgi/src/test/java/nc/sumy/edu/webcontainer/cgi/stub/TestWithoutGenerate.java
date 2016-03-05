@@ -1,4 +1,6 @@
-package nc.sumy.edu.webcontainer.cgi;
+package nc.sumy.edu.webcontainer.cgi.stub;
+
+import nc.sumy.edu.webcontainer.cgi.Cgi;
 
 @Cgi
 public class TestWithoutGenerate {

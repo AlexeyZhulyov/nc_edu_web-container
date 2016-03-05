@@ -2,13 +2,15 @@ package nc.sumy.edu.webcontainer.cgi;
 
 import org.atteo.classindex.ClassIndex;
 
-import static nc.sumy.edu.webcontainer.cgi.CgiException.*;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.Map;
 import java.util.Properties;
 
-public class CgiJava implements CgiHandler {
+import static nc.sumy.edu.webcontainer.cgi.CgiException.*;
+import static java.lang.String.*;
+
+public class CgiHandlerImpl implements CgiHandler {
 
     private final static Properties PROPERTIES = System.getProperties();
 
@@ -32,7 +34,7 @@ public class CgiJava implements CgiHandler {
                 return klass;
             //klass.getAnnotation(Cgi.class).id();
         }
-        throw new CgiException(String.format(CLASS_NOT_FOUND, className));
+        throw new CgiException(format(CLASS_NOT_FOUND, className));
     }
 
     private String invokeGenerateMethod(Class klass, Map<String, String> parameters) {
@@ -44,7 +46,7 @@ public class CgiJava implements CgiHandler {
             Map<String, String> generateArgs = parameters;
             generateResult = (String) generate.invoke(instance, (Object) generateArgs);
         } catch (NoSuchMethodException | IllegalAccessException e) {
-            throw new CgiException(String.format(CANNOT_INVOKE_METHOD,"generate"), e);
+            throw new CgiException(format(CANNOT_INVOKE_METHOD,"generate"), e);
         } catch (InvocationTargetException | InstantiationException e) {
             throw new CgiException(CANNOT_CREATE_INSTANCE, e);
         }

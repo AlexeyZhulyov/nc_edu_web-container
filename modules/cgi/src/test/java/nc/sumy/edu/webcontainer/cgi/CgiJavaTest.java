@@ -1,6 +1,5 @@
 package nc.sumy.edu.webcontainer.cgi;
 
-import static nc.sumy.edu.webcontainer.cgi.CgiException.*;
 import nc.sumy.edu.webcontainer.http.HttpRequest;
 import nc.sumy.edu.webcontainer.http.Request;
 import org.junit.Test;
@@ -8,11 +7,13 @@ import org.junit.Before;
 
 import java.util.HashMap;
 
+import static java.lang.String.*;
+import static nc.sumy.edu.webcontainer.cgi.CgiException.*;
 import static org.junit.Assert.*;
 
 public class CgiJavaTest {
-    private CgiJava cgiJava = null;
-    private nc.sumy.edu.webcontainer.cgi.Test testClass = null;
+    private CgiHandlerImpl cgiJava = null;
+    private nc.sumy.edu.webcontainer.cgi.stub.Test testClass = null;
     private Request request = null;
     private String processResult = null;
     private final static String CLASS_NAME_TEST = "Test";
@@ -20,8 +21,8 @@ public class CgiJavaTest {
 
     @Before
     public void setUp() {
-        testClass = new nc.sumy.edu.webcontainer.cgi.Test();
-        cgiJava = new CgiJava();
+        testClass = new nc.sumy.edu.webcontainer.cgi.stub.Test();
+        cgiJava = new CgiHandlerImpl();
         cgiJava.setEnvironmentVariable("REQUEST_METHOD", "POST");
         cgiJava.setEnvironmentVariable("SCRIPT_NAME", CLASS_NAME_TEST);
 
@@ -66,7 +67,7 @@ public class CgiJavaTest {
             cgiJava.searchClass("Absent");
             fail(EXPECT_EXCEPTION);
         } catch (CgiException e) {
-            assertEquals(String.format(CLASS_NOT_FOUND, "Absent"), e.getMessage());
+            assertEquals(format(CLASS_NOT_FOUND, "Absent"), e.getMessage());
         }
     }
 
@@ -76,7 +77,7 @@ public class CgiJavaTest {
             cgiJava.process("TestWithoutGenerate", new HashMap<>());
             fail(EXPECT_EXCEPTION);
         } catch (CgiException e) {
-            assertEquals(String.format(CANNOT_INVOKE_METHOD,"generate"), e.getMessage());
+            assertEquals(format(CANNOT_INVOKE_METHOD,"generate"), e.getMessage());
         }
     }
 
@@ -86,7 +87,7 @@ public class CgiJavaTest {
             cgiJava.process("TestWithPrivateConstructor", new HashMap<>());
             fail(EXPECT_EXCEPTION);
         } catch (CgiException e) {
-            assertEquals(String.format(CANNOT_INVOKE_METHOD,"generate"), e.getMessage());
+            assertEquals(format(CANNOT_INVOKE_METHOD,"generate"), e.getMessage());
         }
     }
 
