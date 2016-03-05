@@ -9,10 +9,10 @@ import java.util.Properties;
 
 public class CgiJava implements CgiHandler {
 
-    private final Properties properties = System.getProperties();
+    private final static Properties PROPERTIES = System.getProperties();
 
     public void setEnvironmentVariable(String name, String value) {
-        properties.setProperty(name, value);
+        PROPERTIES.setProperty(name, value);
     }
 
     @Override
@@ -42,9 +42,9 @@ public class CgiJava implements CgiHandler {
             Method generate = klass.getDeclaredMethod("generate", argTypes);
             Map<String, String> generateArgs = parameters;
             generateResult = (String) generate.invoke(instance, (Object) generateArgs);
-        } catch (NoSuchMethodException|IllegalAccessException e) {
+        } catch (NoSuchMethodException | IllegalAccessException e) {
             throw new CgiException("Cannot invoke method \"generate\"", e);
-        } catch (InvocationTargetException|InstantiationException e) {
+        } catch (InvocationTargetException | InstantiationException e) {
             throw new CgiException("Cannot create new instance", e);
         }
         return generateResult;

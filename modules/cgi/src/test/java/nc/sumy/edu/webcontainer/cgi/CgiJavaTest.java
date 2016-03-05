@@ -10,22 +10,22 @@ import java.util.HashMap;
 import static org.junit.Assert.*;
 
 public class CgiJavaTest {
-    CgiJava cgiJava = null;
-    nc.sumy.edu.webcontainer.cgi.Test testClass = null;
-    Request request = null;
-    String processResult = null;
-    final static String CLASS_NAME = "Test";
-    final static String EXPECT_EXCEPTION = "Expected an CgiException to be thrown";
+    private CgiJava cgiJava = null;
+    private nc.sumy.edu.webcontainer.cgi.Test testClass = null;
+    private Request request = null;
+    private String processResult = null;
+    private final static String CLASS_NAME_TEST = "Test";
+    private final static String EXPECT_EXCEPTION = "Expected an CgiException to be thrown";
 
     @Before
     public void setUp() {
         testClass = new nc.sumy.edu.webcontainer.cgi.Test();
         cgiJava = new CgiJava();
         cgiJava.setEnvironmentVariable("REQUEST_METHOD", "POST");
-        cgiJava.setEnvironmentVariable("SCRIPT_NAME", CLASS_NAME);
+        cgiJava.setEnvironmentVariable("SCRIPT_NAME", CLASS_NAME_TEST);
 
         String queryString = "login=Petya%20Vasechkin&password=qq";
-        String requestStr = "GET " + "/" + CLASS_NAME + ".cgi?" + queryString + " HTTP/1.1" + "\r\n" +
+        String requestStr = "GET " + "/" + CLASS_NAME_TEST + ".cgi?" + queryString + " HTTP/1.1" + "\r\n" +
                 "Host" + ": foo.com" + "\r\n" +
                 "Accept" + ": text/html" + "\r\n" +
                 "Range-Unit: 3388 | 1024";
@@ -39,28 +39,28 @@ public class CgiJavaTest {
     }
 
     @Test
-    public void testSetEnvironmentVariable() {
+    public void setEnvironmentVariable() {
         assertEquals("POST", System.getProperty("REQUEST_METHOD"));
-        assertEquals(CLASS_NAME, System.getProperty("SCRIPT_NAME"));
+        assertEquals(CLASS_NAME_TEST, System.getProperty("SCRIPT_NAME"));
     }
 
     @Test
-    public void testProcess() {
-        assertEquals(processResult, cgiJava.process(CLASS_NAME, request.getParameters()));
+    public void process() {
+        assertEquals(processResult, cgiJava.process(CLASS_NAME_TEST, request.getParameters()));
     }
 
     @Test
-    public void testSearchClass() {
+    public void searchClass() {
         assertEquals(testClass.getClass(), cgiJava.searchClass("Test"));
     }
 
     @Test(expected = CgiException.class)
-    public void testSearchClassException() {
+    public void searchClassException() {
         cgiJava.searchClass("Absent");
     }
 
     @Test
-    public void testSearchClassExceptionMessage() {
+    public void searchClassExceptionMessage() {
         try {
             cgiJava.searchClass("Absent");
             fail(EXPECT_EXCEPTION);
@@ -70,7 +70,7 @@ public class CgiJavaTest {
     }
 
     @Test
-    public void testInvokeGenerateMethodExceptionMessage1() {
+    public void invokeGenerateMethodExceptionMessage1() {
         try {
             cgiJava.process("TestWithoutGenerate", new HashMap<>());
             fail(EXPECT_EXCEPTION);
@@ -80,7 +80,7 @@ public class CgiJavaTest {
     }
 
     @Test
-    public void testInvokeGenerateMethodExceptionMessage2() {
+    public void invokeGenerateMethodExceptionMessage2() {
         try {
             cgiJava.process("TestWithPrivateConstructor", new HashMap<>());
             fail(EXPECT_EXCEPTION);
@@ -90,7 +90,7 @@ public class CgiJavaTest {
     }
 
     @Test
-    public void testInvokeGenerateMethodExceptionMessage3() {
+    public void invokeGenerateMethodExceptionMessage3() {
         try {
             cgiJava.process("AbstractTest", new HashMap<>());
             fail(EXPECT_EXCEPTION);
