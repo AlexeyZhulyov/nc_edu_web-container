@@ -7,7 +7,7 @@ import java.util.Map;
 
 @Cgi
 public class Test implements CgiAction {
-    public String generate(Map<String,String> parameters) {
+    public String run(Map<String, String> parameters) {
         String result;
 
         result = ("Content-type: text/html\n\n");

@@ -7,7 +7,7 @@ import java.util.Map;
 
 @Cgi
 public abstract class AbstractTest implements CgiAction {
-    public String generate(Map<String, String> parameters) {
+    public String run(Map<String, String> parameters) {
         return "This class calling InstantiationException";
     }
 
