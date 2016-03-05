@@ -1,5 +1,6 @@
 package nc.sumy.edu.webcontainer.cgi;
 
+import static nc.sumy.edu.webcontainer.cgi.CgiException.*;
 import nc.sumy.edu.webcontainer.http.HttpRequest;
 import nc.sumy.edu.webcontainer.http.Request;
 import org.junit.Test;
@@ -65,7 +66,7 @@ public class CgiJavaTest {
             cgiJava.searchClass("Absent");
             fail(EXPECT_EXCEPTION);
         } catch (CgiException e) {
-            assertEquals(String.format(CgiException.MESSAGE_CLASS_NOT_FOUND, "Absent"), e.getMessage());
+            assertEquals(String.format(CLASS_NOT_FOUND, "Absent"), e.getMessage());
         }
     }
 
@@ -75,7 +76,7 @@ public class CgiJavaTest {
             cgiJava.process("TestWithoutGenerate", new HashMap<>());
             fail(EXPECT_EXCEPTION);
         } catch (CgiException e) {
-            assertEquals(String.format(CgiException.MESSAGE_CANNOT_INVOKE_METHOD,"generate"), e.getMessage());
+            assertEquals(String.format(CANNOT_INVOKE_METHOD,"generate"), e.getMessage());
         }
     }
 
@@ -85,7 +86,7 @@ public class CgiJavaTest {
             cgiJava.process("TestWithPrivateConstructor", new HashMap<>());
             fail(EXPECT_EXCEPTION);
         } catch (CgiException e) {
-            assertEquals(String.format(CgiException.MESSAGE_CANNOT_INVOKE_METHOD,"generate"), e.getMessage());
+            assertEquals(String.format(CANNOT_INVOKE_METHOD,"generate"), e.getMessage());
         }
     }
 
@@ -95,7 +96,7 @@ public class CgiJavaTest {
             cgiJava.process("AbstractTest", new HashMap<>());
             fail(EXPECT_EXCEPTION);
         } catch (CgiException e) {
-            assertEquals(CgiException.MESSAGE_CANNOT_CREATE_INSTANCE, e.getMessage());
+            assertEquals(CANNOT_CREATE_INSTANCE, e.getMessage());
         }
     }
 }
