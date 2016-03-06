@@ -9,7 +9,7 @@ import java.util.Set;
  */
 public class AccessRules implements RulesContainer, Rules{
     private String order;
-    private Set<AccessFile> files;
+    private Set<ServerAccessFile> files;
     private Set<String> allow;
     private Set<String> deny;
 
@@ -17,7 +17,7 @@ public class AccessRules implements RulesContainer, Rules{
         super();
     }
 
-    public AccessRules(Set<AccessFile> files, String order, Set<String> allow, Set<String> deny) {
+    public AccessRules(Set<ServerAccessFile> files, String order, Set<String> allow, Set<String> deny) {
         this.order = order;
         this.files = files;
         this.allow = allow;
@@ -40,7 +40,7 @@ public class AccessRules implements RulesContainer, Rules{
     }
 
     @Override
-    public Set<AccessFile> getFiles() {
+    public Set<ServerAccessFile> getFiles() {
         return files;
     }
 

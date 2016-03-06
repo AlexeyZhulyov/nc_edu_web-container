@@ -25,7 +25,7 @@ public class AccessContainersTest {
 
     @Test
     public void accessRules() {
-        Set<AccessFile> accessFiles = new HashSet<>();
+        Set<ServerAccessFile> accessFiles = new HashSet<>();
         AccessRules rules = new AccessRules(accessFiles, ORDER, ALLOW, DENY);
         assertEquals(rules.getFiles(), accessFiles);
         assertEquals(rules.getAllow(), ALLOW);

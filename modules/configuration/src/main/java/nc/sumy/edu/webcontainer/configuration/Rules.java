@@ -4,6 +4,6 @@ import java.util.Set;
 
 public interface Rules {
     
-    Set<AccessFile> getFiles();
+    Set<ServerAccessFile> getFiles();
 
 }

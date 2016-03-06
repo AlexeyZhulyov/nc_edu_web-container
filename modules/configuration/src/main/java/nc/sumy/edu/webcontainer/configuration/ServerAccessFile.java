@@ -17,7 +17,7 @@ public class ServerAccessFile implements RulesContainer, AccessFile {
     private Set<String> deny;
 
     public ServerAccessFile() {
-        super();
+
     }
 
     public ServerAccessFile(String name, String order, Set<String> allow, Set<String> deny) {

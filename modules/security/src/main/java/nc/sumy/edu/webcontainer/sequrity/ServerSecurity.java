@@ -1,10 +1,7 @@
 package nc.sumy.edu.webcontainer.sequrity;
 
-import nc.sumy.edu.webcontainer.configuration.AccessRules;
-import nc.sumy.edu.webcontainer.configuration.JSONAccessRulesConfiguration;
+import nc.sumy.edu.webcontainer.configuration.*;
 import nc.sumy.edu.webcontainer.http.HttpRequest;
-import nc.sumy.edu.webcontainer.configuration.AccessFile;
-import nc.sumy.edu.webcontainer.configuration.RulesContainer;
 import nc.sumy.edu.webcontainer.sequrity.interfaces.Security;
 import org.apache.maven.shared.utils.StringUtils;
 
@@ -49,8 +46,8 @@ public class ServerSecurity implements Security {
     }
 
     private AccessFile findAccessFile() {
-        Set<AccessFile> files = RULES.getFiles();
-        for (AccessFile file : files) {
+        Set<ServerAccessFile> files = RULES.getFiles();
+        for (ServerAccessFile file : files) {
             if (StringUtils.equals(file.getName(), FILE) || file.getName().matches(FILE)) {
                 return file;
             }
