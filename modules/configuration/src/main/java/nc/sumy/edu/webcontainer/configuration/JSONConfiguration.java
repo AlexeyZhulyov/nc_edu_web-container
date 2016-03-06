@@ -1,6 +1,9 @@
 package nc.sumy.edu.webcontainer.configuration;
 
 import java.io.*;
+import java.nio.charset.Charset;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 
 import com.google.gson.*;
 
@@ -21,14 +24,10 @@ public class JSONConfiguration implements Configuration {
     }
 
     public JSONConfiguration(File configurationFile) {
-        try {
-            BufferedReader bufferedReader = new BufferedReader(new FileReader(configurationFile));
-            StringBuilder builder = new StringBuilder();
-            String appended;
-            while((appended = bufferedReader.readLine()) != null) {
-                builder.append(appended);
-            }
-            setPropertiesFromString(new String(builder));
+        try{
+            byte[] bytesOfFile = Files.readAllBytes(Paths.get(configurationFile.getPath()));
+            String stringFile = new String(bytesOfFile, Charset.defaultCharset());
+            setPropertiesFromString(stringFile);
         } catch (IOException e) {
             throw new JSONConfigurationReadingException("File was not read", e);
         }
