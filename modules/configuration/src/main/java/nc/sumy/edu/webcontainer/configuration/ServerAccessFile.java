@@ -11,10 +11,14 @@ import java.util.Set;
  * @author Vinogradov Maxim
  */
 public class ServerAccessFile implements RulesContainer, AccessFile {
-    private final String name;
-    private final String order;
-    private final Set<String> allow;
-    private final Set<String> deny;
+    private String name;
+    private String order;
+    private Set<String> allow;
+    private Set<String> deny;
+
+    public ServerAccessFile() {
+        super();
+    }
 
     public ServerAccessFile(String name, String order, Set<String> allow, Set<String> deny) {
         this.name = name;
