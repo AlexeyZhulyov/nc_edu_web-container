@@ -46,7 +46,7 @@ public class JSONConfigurationTest {
     }
 
     @Test(expected = JSONConfigurationReadingException.class)
-    public void invalidFileFornatConfigurationTest() throws IOException {
+    public void invalidFileFormatConfigurationTest() throws IOException {
         new JSONConfiguration(new File("src/test/resources/invalidFormatConfigurationFile.json"));
     }
 
