@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileReader;
 
 public class JSONAccessRulesConfiguration implements AccessRulesConfiguration {
@@ -17,9 +18,9 @@ public class JSONAccessRulesConfiguration implements AccessRulesConfiguration {
     @Override
     public AccessRules getAccessRules(File accessRulesFile) {
         try {
-            BufferedReader br = new BufferedReader(new FileReader(accessRulesFile));
-            return new Gson().fromJson(br, AccessRules.class);
-        } catch (Exception e) {
+            BufferedReader bufferedReaderFromFile = new BufferedReader(new FileReader(accessRulesFile));
+            return new Gson().fromJson(bufferedReaderFromFile, AccessRules.class);
+        } catch (FileNotFoundException e) {
             return null;
         }
     }
