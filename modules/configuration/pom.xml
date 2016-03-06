@@ -10,6 +10,14 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
+    <dependencies>
+        <dependency>
+            <groupId>nc.edu.webcontainer</groupId>
+            <artifactId>security</artifactId>
+            <version>0.1</version>
+        </dependency>
+    </dependencies>
+
     <artifactId>configuration</artifactId>
 
 </project>
