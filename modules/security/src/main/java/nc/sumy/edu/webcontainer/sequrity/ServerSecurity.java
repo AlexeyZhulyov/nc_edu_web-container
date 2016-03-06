@@ -20,16 +20,16 @@ public class ServerSecurity implements Security {
     private final String HOST;
     private final String IP_ADDRESS;
     private final String FILE;
-    private final String ALLOW = "getAllow";
+    private final String ALLOW = "allow";
     private final String CONFIG_FILE = "http-access.json";
     private final AccessRules RULES;
-    private boolean access;
+    private boolean access = false;
 
     // file is not a directory, it will be checked in dispatcher
     public ServerSecurity(HttpRequest request) {
         HOST = request.getHost();
         IP_ADDRESS = request.getIpAddress();
-        FILE = substring(request.getUrn(), indexOf(request.getUrn(), File.separator), length(request.getUrn()));
+        FILE = substring(request.getUrn(), lastIndexOf(request.getUrn(), "/") + 1, length(request.getUrn()));
         File file = new File(request.getUrn());
         JSONAccessRulesConfiguration configuration = new JSONAccessRulesConfiguration();
         RULES = configuration.getAccessRules(file.getParentFile().getAbsolutePath() + File.separator + CONFIG_FILE);
@@ -47,30 +47,41 @@ public class ServerSecurity implements Security {
 
     private AccessFile findAccessFile() {
         Set<ServerAccessFile> files = RULES.getFiles();
-        for (ServerAccessFile file : files) {
-            if (StringUtils.equals(file.getName(), FILE) || file.getName().matches(FILE)) {
-                return file;
+        if (Objects.nonNull(files)) {
+            for (AccessFile file : files) {
+                if (StringUtils.equals(file.getName(), FILE) || file.getName().matches(FILE)) {
+                    return file;
+                }
             }
         }
         return null;
     }
 
     private void analyze(RulesContainer container) {
+        boolean isAllow = false;
+        boolean isDeny  = false;
         Set<String> allow = container.getAllow();
         Set<String> deny = container.getDeny();
         if (Objects.isNull(container.getOrder()) || equalsIgnoreCase(container.getOrder(), ALLOW)) {
             if (Objects.nonNull(allow)) {
-                access = checkRules(allow);
+                isAllow = checkRules(allow);
             }
             if (Objects.nonNull(deny)) {
-                access = !checkRules(deny);
+                isDeny = checkRules(deny);
+            }
+            if (isAllow && !isDeny) {
+                access = true;
             }
         } else {
+            /*
             if (Objects.nonNull(deny)) {
-                access = !checkRules(deny);
-            }
+                isDeny = checkRules(deny);
+            }*/
             if (Objects.nonNull(allow)) {
-                access = checkRules(allow);
+                isAllow = checkRules(allow);
+            }
+            if (isAllow) {
+                access = true;
             }
         }
     }
@@ -82,7 +93,6 @@ public class ServerSecurity implements Security {
         if (set.contains("all") || set.contains("ALL")) {
             return true;
         } else if (set.contains(IP_ADDRESS) || set.contains(HOST)) {
-            access = true;
             return true;
         }
         int counter;
@@ -93,8 +103,8 @@ public class ServerSecurity implements Security {
                 for (int i = 0; i < configIP.length; i++) {
                     if (StringUtils.equals(configIP[i], ipParts[i]) || StringUtils.equals(configIP[i], "*")) {
                         counter++;
-                    } else if (contains(configIP[i], "\\")) {
-                        String ipPartsTokens[] = configIP[i].split("\\\\");
+                    } else if (contains(configIP[i], "/")) {
+                        String ipPartsTokens[] = configIP[i].split("/");
                         if (Integer.parseInt(ipPartsTokens[0]) <= Integer.parseInt(ipParts[i]) &&
                                 Integer.parseInt(ipPartsTokens[1]) >= Integer.parseInt(ipParts[i])) {
                             counter++;
