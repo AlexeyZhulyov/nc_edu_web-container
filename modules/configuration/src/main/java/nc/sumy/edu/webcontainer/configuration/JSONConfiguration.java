@@ -6,7 +6,19 @@ import com.google.gson.*;
 
 
 public class JSONConfiguration implements Configuration {
-    private int port;
+    private ConfigurationProperties configurationProperties;
+
+    class ConfigurationProperties{
+        private int port = 8090;
+
+        public void setPort(int port) {
+            this.port = port;
+        }
+
+        public int getPort() {
+            return port;
+        }
+    }
 
     public JSONConfiguration(File configurationFile) {
         try {
@@ -27,29 +39,24 @@ public class JSONConfiguration implements Configuration {
     }
 
     public JSONConfiguration() {
-        this.port = 8090;
+        this.configurationProperties = new ConfigurationProperties();
     }
 
 
     private void setPropertiesFromString(String propertiesString) {
         try{
-            JSONConfiguration thus = new Gson().fromJson(propertiesString, JSONConfiguration.class);
-            copyProperties(thus);
+            this.configurationProperties = new Gson().fromJson(propertiesString, ConfigurationProperties.class);
         }
         catch (JsonSyntaxException e) {
             throw new JSONConfigurationReadingException("String has inappropriate format", e);
         }
     }
 
-    private void copyProperties(JSONConfiguration thus) {
-        this.port = thus.port;
-    }
-
     public int getPort() {
-        return port;
+        return configurationProperties.getPort();
     }
 
     public void setPort(int port) {
-        this.port = port;
+        this.configurationProperties.setPort(port);
     }
 }
