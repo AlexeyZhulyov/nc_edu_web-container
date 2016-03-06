@@ -1,7 +1,5 @@
-package nc.sumy.edu.webcontainer.sequrity;
+package nc.sumy.edu.webcontainer.configuration;
 
-import nc.sumy.edu.webcontainer.sequrity.interfaces.AccessFile;
-import nc.sumy.edu.webcontainer.sequrity.interfaces.RulesContainer;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 
@@ -13,10 +11,14 @@ import java.util.Set;
  * @author Vinogradov Maxim
  */
 public class ServerAccessFile implements RulesContainer, AccessFile {
-    private final String name;
-    private final String order;
-    private final Set<String> allow;
-    private final Set<String> deny;
+    private String name;
+    private String order;
+    private Set<String> allow;
+    private Set<String> deny;
+
+    public ServerAccessFile() {
+        super();
+    }
 
     public ServerAccessFile(String name, String order, Set<String> allow, Set<String> deny) {
         this.name = name;
@@ -26,7 +28,7 @@ public class ServerAccessFile implements RulesContainer, AccessFile {
     }
 
     @Override
-    public String order() {
+    public String getOrder() {
         return order;
     }
 
@@ -36,12 +38,12 @@ public class ServerAccessFile implements RulesContainer, AccessFile {
     }
 
     @Override
-    public Set<String> allow() {
+    public Set<String> getAllow() {
         return allow;
     }
 
     @Override
-    public Set<String> deny() {
+    public Set<String> getDeny() {
         return deny;
     }
 

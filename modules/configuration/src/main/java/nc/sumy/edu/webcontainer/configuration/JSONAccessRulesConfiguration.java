@@ -1,14 +1,22 @@
 package nc.sumy.edu.webcontainer.configuration;
 
-import com.google.gson.Gson;
-import nc.sumy.edu.webcontainer.sequrity.AccessRules;
+import com.google.gson.GsonBuilder;
+import com.google.gson.InstanceCreator;
 
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.lang.reflect.Type;
 
 public class JSONAccessRulesConfiguration implements AccessRulesConfiguration {
+
+    class ServerAccessFileInstanceCreator implements InstanceCreator<AccessFile> {
+        @Override
+        public AccessFile createInstance(Type type) {
+            return new ServerAccessFile();
+        }
+    }
 
 
     @Override
@@ -19,9 +27,11 @@ public class JSONAccessRulesConfiguration implements AccessRulesConfiguration {
     @Override
     public AccessRules getAccessRules(File accessRulesFile) {
         try {
-            BufferedReader br = new BufferedReader(new FileReader(accessRulesFile));
-            return new Gson().fromJson(br, AccessRules.class);
-        } catch (Exception e) {
+            BufferedReader bufferedReaderFromFile = new BufferedReader(new FileReader(accessRulesFile));
+            return new GsonBuilder().registerTypeAdapter(AccessFile.class, new ServerAccessFileInstanceCreator())
+                    .create()
+                    .fromJson(bufferedReaderFromFile, AccessRules.class);
+        } catch (FileNotFoundException e) {
             return null;
         }
     }
