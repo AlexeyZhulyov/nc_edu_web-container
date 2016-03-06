@@ -12,7 +12,6 @@ public class AccessContainersTest {
     private final static Set<String> ALLOW = new HashSet<>();
     private final static Set<String> DENY = new HashSet<>();
 
-
     @Test
     public void serverAccessFile() {
         String fileName = "file.json";

@@ -44,7 +44,7 @@ public class ServerSecurity implements Security {
                 analyze(RULES);
             }
         } else {
-            access = false;
+            access = true;
         }
     }
 
