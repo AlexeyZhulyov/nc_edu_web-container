@@ -1,6 +1,6 @@
 {
 
-  "order" : "allow",
+  "order" : "deny",
 
   "allow" : [
     "217.20.147.94",
@@ -19,7 +19,7 @@
   "files" : [
     {
       "name" : "index.html",
-      "order" : "allow",
+      "order" : "deny",
       "allow" : [
         "51.81.47.51"
       ],
@@ -29,7 +29,7 @@
     },
     {
       "name" : "files_name2",
-      "order" : "allow",
+      "order" : "deny",
       "allow" : [
         "all"
       ],
