@@ -21,7 +21,7 @@ public class JSONAccessRulesConfiguration implements AccessRulesConfiguration {
         try {
             BufferedReader br = new BufferedReader(new FileReader(accessRulesFile));
             return new Gson().fromJson(br, AccessRules.class);
-        } catch (FileNotFoundException e) {
+        } catch (Exception e) {
             return null;
         }
     }
