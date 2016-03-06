@@ -10,10 +10,10 @@ public class JSONConfigurationTest {
     @Test
     public void noParametersConfigurationTest() {
         Configuration config = new JSONConfiguration();
-        Assert.assertEquals("Port must be 8010", 8010, config.getPort());
+        Assert.assertEquals("Port must be 8090", 8090, config.getPort());
     }
 
-    @Test(expected = IOException.class)
+    @Test(expected = JSONConfigurationReadingException.class)
     public void invalidStringParametersConfigurationTest() throws IOException {
         new JSONConfiguration("port:8090}");
     }
@@ -23,7 +23,7 @@ public class JSONConfigurationTest {
         Configuration config = null;
         try {
             config = new JSONConfiguration("{port:8090}");
-        } catch (IOException e) {
+        } catch (JSONConfigurationReadingException e) {
             Assert.fail("Valid string has to be read");
         }
         Assert.assertEquals("Port must be 8090", 8090, config.getPort());
@@ -35,17 +35,17 @@ public class JSONConfigurationTest {
         try {
             config = new JSONConfiguration(new File("src/test/resources/validTestConfiguration.json"));
             Assert.assertEquals("Port must be 8890", 8890, config.getPort());
-        } catch (IOException e) {
+        } catch (JSONConfigurationReadingException e) {
             Assert.fail("Existing file has to be read: " + e.getMessage());
         }
     }
 
-    @Test(expected = IOException.class)
+    @Test(expected = JSONConfigurationReadingException.class)
     public void invalidFileNameConfigurationTest() throws IOException {
         new JSONConfiguration(new File("notexistingConfigurationFile.json"));
     }
 
-    @Test(expected = IOException.class)
+    @Test(expected = JSONConfigurationReadingException.class)
     public void invalidFileFornatConfigurationTest() throws IOException {
         new JSONConfiguration(new File("src/test/resources/invalidFormatConfigurationFile.json"));
     }
@@ -57,7 +57,7 @@ public class JSONConfigurationTest {
             config = new JSONConfiguration(new File("src/test/resources/validTestConfiguration.json"));
             config.setPort(100);
             Assert.assertEquals("Port must be 100", 100, config.getPort());
-        } catch (IOException e) {
+        } catch (JSONConfigurationReadingException e) {
             Assert.fail("Existing file has to be read: " + e.getMessage());
         }
 

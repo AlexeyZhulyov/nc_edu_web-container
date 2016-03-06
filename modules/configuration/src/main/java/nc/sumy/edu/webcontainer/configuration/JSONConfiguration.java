@@ -27,7 +27,7 @@ public class JSONConfiguration implements Configuration {
     }
 
     public JSONConfiguration() {
-        this(new File ("defaultJSONConfiguration.json"));
+        this.port = 8090;
     }
 
 
