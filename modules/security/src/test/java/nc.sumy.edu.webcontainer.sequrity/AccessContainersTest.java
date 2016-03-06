@@ -10,12 +10,11 @@ import java.util.Set;
 import static org.junit.Assert.assertEquals;
 
 public class AccessContainersTest {
-    private static final String FILE_NAME = "file.json";
-    private static final String ORDER = "allow";
-    private static final Set<String> ALLOW = new HashSet<>();
-    private static final Set<String> DENY = new HashSet<>();
+    private final String ORDER = "allow";
+    private final Set<String> ALLOW = new HashSet<>();
+    private final Set<String> DENY = new HashSet<>();
 
-    static {
+    {
         ALLOW.add("93.48.37.56");
         ALLOW.add("93.44.37.53");
         ALLOW.add("13.49.37.18");
@@ -25,8 +24,9 @@ public class AccessContainersTest {
 
     @Test
     public void serverAccessFile() {
-        AccessFile file = new ServerAccessFile(FILE_NAME, ORDER, ALLOW, DENY);
-        assertEquals(file.getName(), FILE_NAME);
+        String fileName = "file.json";
+        AccessFile file = new ServerAccessFile(fileName, ORDER, ALLOW, DENY);
+        assertEquals(file.getName(), fileName);
         assertEquals(file.allow(), ALLOW);
         assertEquals(file.deny(), DENY);
         assertEquals(file.order(), ORDER);
