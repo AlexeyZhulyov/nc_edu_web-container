@@ -1,7 +1,5 @@
-package nc.sumy.edu.webcontainer.sequrity;
+package nc.sumy.edu.webcontainer.configuration;
 
-import nc.sumy.edu.webcontainer.sequrity.interfaces.AccessFile;
-import nc.sumy.edu.webcontainer.sequrity.interfaces.RulesContainer;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 

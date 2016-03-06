@@ -1,7 +1,6 @@
-package nc.sumy.edu.webcontainer.sequrity;
+package nc.sumy.edu.webcontainer.configuration;
 
-import nc.sumy.edu.webcontainer.sequrity.interfaces.AccessFile;
-import nc.sumy.edu.webcontainer.sequrity.interfaces.Rules;
+import nc.sumy.edu.webcontainer.configuration.*;
 import org.junit.Test;
 
 import java.util.HashSet;
@@ -25,7 +24,7 @@ public class AccessContainersTest {
     @Test
     public void serverAccessFile() {
         String fileName = "file.json";
-        AccessFile file = new ServerAccessFile(fileName, ORDER, ALLOW, DENY);
+        ServerAccessFile file = new ServerAccessFile(fileName, ORDER, ALLOW, DENY);
         assertEquals(file.getName(), fileName);
         assertEquals(file.allow(), ALLOW);
         assertEquals(file.deny(), DENY);
@@ -35,7 +34,7 @@ public class AccessContainersTest {
     @Test
     public void accessRules() {
         Set<AccessFile> accessFiles = new HashSet<>();
-        Rules rules = new AccessRules(accessFiles, ORDER, ALLOW, DENY);
+        AccessRules rules = new AccessRules(accessFiles, ORDER, ALLOW, DENY);
         assertEquals(rules.getFiles(), accessFiles);
         assertEquals(rules.allow(), ALLOW);
         assertEquals(rules.deny(), DENY);

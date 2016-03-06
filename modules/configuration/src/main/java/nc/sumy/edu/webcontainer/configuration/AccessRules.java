@@ -1,8 +1,8 @@
-package nc.sumy.edu.webcontainer.sequrity;
+package nc.sumy.edu.webcontainer.configuration;
 
-import nc.sumy.edu.webcontainer.sequrity.interfaces.AccessFile;
-import nc.sumy.edu.webcontainer.sequrity.interfaces.Rules;
-import nc.sumy.edu.webcontainer.sequrity.interfaces.RulesContainer;
+import nc.sumy.edu.webcontainer.configuration.AccessFile;
+import nc.sumy.edu.webcontainer.configuration.Rules;
+import nc.sumy.edu.webcontainer.configuration.RulesContainer;
 
 import java.util.Set;
 
