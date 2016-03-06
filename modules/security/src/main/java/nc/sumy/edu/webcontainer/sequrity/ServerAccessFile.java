@@ -1,6 +1,7 @@
 package nc.sumy.edu.webcontainer.sequrity;
 
 import nc.sumy.edu.webcontainer.sequrity.interfaces.AccessFile;
+import nc.sumy.edu.webcontainer.sequrity.interfaces.RulesContainer;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 
@@ -11,7 +12,7 @@ import java.util.Set;
  * Class-containers that include http-access info about separated files.
  * @author Vinogradov Maxim
  */
-public class ServerAccessFile implements AccessFile {
+public class ServerAccessFile implements RulesContainer, AccessFile {
     private final String name;
     private final String order;
     private final Set<String> allow;

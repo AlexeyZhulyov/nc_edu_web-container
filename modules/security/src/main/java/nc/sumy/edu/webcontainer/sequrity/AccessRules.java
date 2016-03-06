@@ -2,6 +2,7 @@ package nc.sumy.edu.webcontainer.sequrity;
 
 import nc.sumy.edu.webcontainer.sequrity.interfaces.AccessFile;
 import nc.sumy.edu.webcontainer.sequrity.interfaces.Rules;
+import nc.sumy.edu.webcontainer.sequrity.interfaces.RulesContainer;
 
 import java.util.Set;
 
@@ -9,7 +10,7 @@ import java.util.Set;
  * Class-containers that include http-access info about all folder.
  * @author Vinogradov Maxim
  */
-public class AccessRules implements Rules{
+public class AccessRules implements RulesContainer, Rules{
     private final String order;
     private final Set<AccessFile> files;
     private final Set<String> allow;
