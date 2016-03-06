@@ -1,6 +1,5 @@
 package nc.sumy.edu.webcontainer.configuration;
 
-import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.InstanceCreator;
 

@@ -15,7 +15,7 @@ public class JSONAccessRulesConfigurationTest {
     public void validFileParametersConfigurationStartAndGetTest() {
         AccessRules testAccessRules = testInstance.getAccessRules(new File("src/test/resources/" +
                 "validAccessRulesConfiguration.json"));
-        //Assert.assertEquals("Port must be 8890", 8890, config.getPort());
+        Assert.assertEquals("Order must be", "allow", testAccessRules.getOrder());
     }
 
     @Test
