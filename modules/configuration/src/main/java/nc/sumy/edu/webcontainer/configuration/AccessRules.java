@@ -1,8 +1,5 @@
 package nc.sumy.edu.webcontainer.configuration;
 
-import nc.sumy.edu.webcontainer.configuration.AccessFile;
-import nc.sumy.edu.webcontainer.configuration.Rules;
-import nc.sumy.edu.webcontainer.configuration.RulesContainer;
 
 import java.util.Set;
 
@@ -24,17 +21,17 @@ public class AccessRules implements RulesContainer, Rules{
     }
 
     @Override
-    public String order() {
+    public String getOrder() {
         return order;
     }
 
     @Override
-    public Set<String> allow() {
+    public Set<String> getAllow() {
         return allow;
     }
 
     @Override
-    public Set<String> deny() {
+    public Set<String> getDeny() {
         return deny;
     }
 

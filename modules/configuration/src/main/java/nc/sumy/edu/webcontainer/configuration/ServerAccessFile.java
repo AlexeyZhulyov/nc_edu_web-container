@@ -24,7 +24,7 @@ public class ServerAccessFile implements RulesContainer, AccessFile {
     }
 
     @Override
-    public String order() {
+    public String getOrder() {
         return order;
     }
 
@@ -34,12 +34,12 @@ public class ServerAccessFile implements RulesContainer, AccessFile {
     }
 
     @Override
-    public Set<String> allow() {
+    public Set<String> getAllow() {
         return allow;
     }
 
     @Override
-    public Set<String> deny() {
+    public Set<String> getDeny() {
         return deny;
     }
 

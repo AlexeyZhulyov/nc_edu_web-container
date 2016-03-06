@@ -5,11 +5,11 @@ import java.util.Set;
 
 public interface RulesContainer {
 
-    String order();
+    String getOrder();
 
-    Set<String> allow();
+    Set<String> getAllow();
 
-    Set<String> deny();
+    Set<String> getDeny();
 
 
 }
