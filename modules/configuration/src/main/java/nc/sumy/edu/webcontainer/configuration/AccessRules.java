@@ -8,10 +8,14 @@ import java.util.Set;
  * @author Vinogradov Maxim
  */
 public class AccessRules implements RulesContainer, Rules{
-    private final String order;
-    private final Set<AccessFile> files;
-    private final Set<String> allow;
-    private final Set<String> deny;
+    private String order;
+    private Set<AccessFile> files;
+    private Set<String> allow;
+    private Set<String> deny;
+
+    public AccessRules() {
+        super();
+    }
 
     public AccessRules(Set<AccessFile> files, String order, Set<String> allow, Set<String> deny) {
         this.order = order;
