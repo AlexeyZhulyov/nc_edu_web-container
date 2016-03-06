@@ -20,8 +20,8 @@ public class ServerSecurity implements Security {
     private final String HOST;
     private final String IP_ADDRESS;
     private final String FILE;
-    private final String ALLOW = "allow";
-    private final String CONFIG_FILE = "http-access.json";
+    private static final String ALLOW = "allow";
+    private static final String CONFIG_FILE = "http-access.json";
     private final AccessRules RULES;
     private boolean access = false;
 
@@ -90,28 +90,11 @@ public class ServerSecurity implements Security {
         String hostPattern = "^(([a-zA-Z0-9]|[a-zA-Z0-9][a-zA-Z0-9\\-]*[a-zA-Z0-9])\\.)" +
                 "*([A-Za-z0-9]|[A-Za-z0-9][A-Za-z0-9\\-]*[A-Za-z0-9])$";
         String ipParts[] = IP_ADDRESS.split("\\.");
-        if (set.contains("all") || set.contains("ALL")) {
-            return true;
-        } else if (set.contains(IP_ADDRESS) || set.contains(HOST)) {
-            return true;
-        }
-        int counter;
+        if (checkFullEquals(set)) return true;
         for (String item : set) {
             if (contains(item, ".")) {
                 String configIP[] = item.split("\\.");
-                counter = 0;
-                for (int i = 0; i < configIP.length; i++) {
-                    if (StringUtils.equals(configIP[i], ipParts[i]) || StringUtils.equals(configIP[i], "*")) {
-                        counter++;
-                    } else if (contains(configIP[i], "/")) {
-                        String ipPartsTokens[] = configIP[i].split("/");
-                        if (Integer.parseInt(ipPartsTokens[0]) <= Integer.parseInt(ipParts[i]) &&
-                                Integer.parseInt(ipPartsTokens[1]) >= Integer.parseInt(ipParts[i])) {
-                            counter++;
-                        }
-                    }
-                }
-                if (counter == configIP.length) {
+                if (checkItemEquals(ipParts, configIP) == configIP.length) {
                     return true;
                 }
             }
@@ -120,6 +103,31 @@ public class ServerSecurity implements Security {
             }
         }
         return false;
+    }
+
+    private boolean checkFullEquals(Set<String> set) {
+        if (set.contains("all") || set.contains("ALL")) {
+            return true;
+        } else if (set.contains(IP_ADDRESS) || set.contains(HOST)) {
+            return true;
+        }
+        return false;
+    }
+
+    private int checkItemEquals(String ipParts[], String configIP[]) {
+        int counter = 0;
+        for (int i = 0; i < configIP.length; i++) {
+            if (StringUtils.equals(configIP[i], ipParts[i]) || StringUtils.equals(configIP[i], "*")) {
+                counter++;
+            } else if (contains(configIP[i], "/")) {
+                String ipPartsTokens[] = configIP[i].split("/");
+                if (Integer.parseInt(ipPartsTokens[0]) <= Integer.parseInt(ipParts[i]) &&
+                        Integer.parseInt(ipPartsTokens[1]) >= Integer.parseInt(ipParts[i])) {
+                    counter++;
+                }
+            }
+        }
+        return counter;
     }
 
     @Override
