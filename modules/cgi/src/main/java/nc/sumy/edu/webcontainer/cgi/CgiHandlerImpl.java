@@ -28,7 +28,7 @@ public class CgiHandlerImpl implements CgiHandler {
             CgiAction instance = (CgiAction) klass.newInstance();
             return instance.run(args);
         } catch (IllegalAccessException e) {
-            throw new CgiException(format(CANNOT_INVOKE_METHOD, "generate"), e);
+            throw new CgiException(format(CANNOT_INVOKE_METHOD, "run"), e);
         } catch (InstantiationException e) {
             throw new CgiException(CANNOT_CREATE_INSTANCE, e);
         }

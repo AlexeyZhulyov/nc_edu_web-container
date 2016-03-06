@@ -16,6 +16,8 @@ public class CgiHandlerImplTest {
     private CgiAction testClass = null;
     private Request request = null;
     private String processResult = null;
+    private static final String HOST = "nc.pc";
+    private static final String IP_ADDRESS = "";
     private final static String CLASS_NAME_TEST = "Test";
     private final static String EXPECT_EXCEPTION = "Expected an CgiException to be thrown";
 
@@ -30,7 +32,7 @@ public class CgiHandlerImplTest {
                 "Accept" + ": text/html" + "\r\n" +
                 "Range-Unit: 3388 | 1024";
 
-        request = new HttpRequest(requestStr);
+        request = new HttpRequest(requestStr, IP_ADDRESS, HOST);
 
         processResult = "Content-type: text/html\n\n" +
                 "<html>\n" + "<head>\n" + "<title>\n" + "Hello There " + "Petya Vasechkin" + "!" +
@@ -79,7 +81,7 @@ public class CgiHandlerImplTest {
             cgiHandlerImpl.process("TestWithPrivateConstructor", new HashMap<>());
             fail(EXPECT_EXCEPTION);
         } catch (CgiException e) {
-            assertEquals(format(CANNOT_INVOKE_METHOD, "generate"), e.getMessage());
+            assertEquals(format(CANNOT_INVOKE_METHOD, "run"), e.getMessage());
         }
     }
 
