@@ -1,7 +1,10 @@
 package nc.sumy.edu.webcontainer.sequrity;
 
 import nc.sumy.edu.webcontainer.sequrity.interfaces.AccessFile;
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 
+import java.util.Objects;
 import java.util.Set;
 
 /**
@@ -41,4 +44,29 @@ public class ServerAccessFile implements AccessFile {
         return deny;
     }
 
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) return true;
+
+        if (Objects.isNull(obj) || getClass() != obj.getClass()) return false;
+
+        ServerAccessFile that = (ServerAccessFile) obj;
+
+        return new EqualsBuilder()
+                .append(name, that.name)
+                .append(order, that.order)
+                .append(allow, that.allow)
+                .append(deny, that.deny)
+                .isEquals();
+    }
+
+    @Override
+    public int hashCode() {
+        return new HashCodeBuilder(17, 37)
+                .append(name)
+                .append(order)
+                .append(allow)
+                .append(deny)
+                .toHashCode();
+    }
 }
