@@ -17,16 +17,9 @@
 
     <properties>
         <structurizr.version>0.6.0</structurizr.version>
-        <qatools.properties.version>2.0.RC5</qatools.properties.version>
     </properties>
 
     <dependencies>
-        <!-- For working with *.properties -->
-        <dependency>
-            <groupId>ru.qatools.commons</groupId>
-            <artifactId>properties</artifactId>
-            <version>${qatools.properties.version}</version>
-        </dependency>
         <!-- Allows to build C4 model -->
         <dependency>
             <groupId>com.structurizr</groupId>
