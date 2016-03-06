@@ -15,6 +15,7 @@
         <module>modules/dispatcher</module>
         <module>modules/http</module>
         <module>modules/security</module>
+        <module>modules/web</module>
     </modules>
 
     <properties>
