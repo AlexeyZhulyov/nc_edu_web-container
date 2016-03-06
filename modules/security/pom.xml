@@ -9,10 +9,6 @@
             <artifactId>http</artifactId>
             <version>0.1</version>
         </dependency>
-        <dependency>
-            <groupId>org.jetbrains</groupId>
-            <artifactId>annotations</artifactId>
-        </dependency>
     </dependencies>
 
     <parent>
