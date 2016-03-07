@@ -1,6 +1,6 @@
 build:
   commands:
-    - mvn clean pmd:pmd jacoco:prepare-agent package jacoco:report coveralls:report
+    mvn clean pmd:pmd jacoco:prepare-agent package jacoco:report coveralls:report
 
 notify:
   slack:
