@@ -3,5 +3,3 @@ notify:
     webhook_url: https://hooks.slack.com/services/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
     channel: nc_edu_web_container
     username: CI
-    template: >
-      build {{ build.number }} finished with a {{ build.status }} status
