@@ -17,28 +17,28 @@ import static org.apache.commons.lang3.StringUtils.*;
  * @author Vinogradov Maxim
  */
 public class ServerSecurity implements Security {
-    private final String HOST;
-    private final String IP_ADDRESS;
-    private final String FILE;
+    private final String host;
+    private final String ipAddress;
+    private final String file;
     private static final String ALLOW = "allow";
     private static final String CONFIG_FILE = "http-access.json";
-    private final AccessRules RULES;
+    private final AccessRules rules;
     private boolean access = false;
 
     // file is not a directory, it will be checked in dispatcher
     public ServerSecurity(HttpRequest request) {
-        HOST = request.getHost();
-        IP_ADDRESS = request.getIpAddress();
-        FILE = substring(request.getUrn(), lastIndexOf(request.getUrn(), "/") + 1, length(request.getUrn()));
+        host = request.getHost();
+        ipAddress = request.getIpAddress();
+        file = substring(request.getUrn(), lastIndexOf(request.getUrn(), "/") + 1, length(request.getUrn()));
         File file = new File(request.getUrn());
         JSONAccessRulesConfiguration configuration = new JSONAccessRulesConfiguration();
-        RULES = configuration.getAccessRules(file.getParentFile().getAbsolutePath() + File.separator + CONFIG_FILE);
-        if (Objects.nonNull(RULES)) {
+        rules = configuration.getAccessRules(file.getParentFile().getAbsolutePath() + File.separator + CONFIG_FILE);
+        if (Objects.nonNull(rules)) {
             AccessFile accessFile = findAccessFile();
             if (Objects.nonNull(accessFile)) {
                 analyze((RulesContainer) accessFile);
             } else {
-                analyze(RULES);
+                analyze(rules);
             }
         } else {
             access = true;
@@ -46,10 +46,10 @@ public class ServerSecurity implements Security {
     }
 
     private AccessFile findAccessFile() {
-        Set<ServerAccessFile> files = RULES.getFiles();
+        Set<ServerAccessFile> files = rules.getFiles();
         if (Objects.nonNull(files)) {
             for (AccessFile file : files) {
-                if (StringUtils.equals(file.getName(), FILE) || file.getName().matches(FILE)) {
+                if (StringUtils.equals(file.getName(), this.file) || file.getName().matches(this.file)) {
                     return file;
                 }
             }
@@ -89,7 +89,7 @@ public class ServerSecurity implements Security {
     private boolean checkRules(Set<String> set) {
         String hostPattern = "^(([a-zA-Z0-9]|[a-zA-Z0-9][a-zA-Z0-9\\-]*[a-zA-Z0-9])\\.)" +
                 "*([A-Za-z0-9]|[A-Za-z0-9][A-Za-z0-9\\-]*[A-Za-z0-9])$";
-        String ipParts[] = IP_ADDRESS.split("\\.");
+        String ipParts[] = ipAddress.split("\\.");
         if (checkFullEquals(set)) return true;
         for (String item : set) {
             if (contains(item, ".")) {
@@ -98,7 +98,7 @@ public class ServerSecurity implements Security {
                     return true;
                 }
             }
-            if (item.matches(hostPattern) && StringUtils.equals(item, HOST)) {
+            if (item.matches(hostPattern) && StringUtils.equals(item, host)) {
                 return true;
             }
         }
@@ -108,7 +108,7 @@ public class ServerSecurity implements Security {
     private boolean checkFullEquals(Set<String> set) {
         if (set.contains("all") || set.contains("ALL")) {
             return true;
-        } else if (set.contains(IP_ADDRESS) || set.contains(HOST)) {
+        } else if (set.contains(ipAddress) || set.contains(host)) {
             return true;
         }
         return false;
