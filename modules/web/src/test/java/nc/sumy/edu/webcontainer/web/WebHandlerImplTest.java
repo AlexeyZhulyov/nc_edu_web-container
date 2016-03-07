@@ -2,11 +2,8 @@ package nc.sumy.edu.webcontainer.web;
 
 import org.junit.Before;
 import org.junit.Test;
-import sun.nio.ch.FileLockImpl;
 
 import java.io.*;
-import java.nio.channels.FileChannel;
-import java.nio.channels.FileLock;
 
 import static nc.sumy.edu.webcontainer.web.WebException.*;
 import static java.lang.String.format;
