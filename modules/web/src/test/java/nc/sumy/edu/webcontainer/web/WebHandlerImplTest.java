@@ -2,15 +2,23 @@ package nc.sumy.edu.webcontainer.web;
 
 import org.junit.Before;
 import org.junit.Test;
+import sun.nio.ch.FileLockImpl;
 
-import java.io.File;
+import java.io.*;
+import java.nio.channels.FileChannel;
+import java.nio.channels.FileLock;
 
+import static nc.sumy.edu.webcontainer.web.WebException.*;
+import static java.lang.String.format;
 import static org.junit.Assert.*;
 
 public class WebHandlerImplTest {
     private WebHandler webHandler = null;
     private String processResult = null;
     private File testPage = null;
+    private File absentPage = null;
+
+    private final static String EXPECT_EXCEPTION = "Expected an WebException to be thrown";
 
     @Before
     public void setUp() {
@@ -26,10 +34,26 @@ public class WebHandlerImplTest {
                 "</body>\n" +
                 "</html>\n";
         testPage = new File("src\\test\\resources\\TestHtml.html");
+        absentPage = new File("src\\test\\resources\\AbsentHtml.html");
     }
 
     @Test
     public void process() {
         assertEquals(processResult, webHandler.process(testPage));
+    }
+
+    @Test(expected = WebException.class)
+    public void processException() {
+        webHandler.process(absentPage);
+    }
+
+    @Test
+    public void runExceptionMessage() {
+        try {
+            webHandler.process(absentPage);
+            fail(EXPECT_EXCEPTION);
+        } catch (WebException e) {
+            assertEquals(format(CANNOT_FIND_READ_FILE, "AbsentHtml.html"), e.getMessage());
+        }
     }
 }
