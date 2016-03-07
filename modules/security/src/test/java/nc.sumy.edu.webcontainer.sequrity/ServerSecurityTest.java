@@ -9,7 +9,6 @@ public class ServerSecurityTest {
     private HttpRequest request;
     private static final String NONEXISTENT_IP = "qqq.pc";
     private static final String NC_COM = "nc.com";
-
     @SuppressWarnings("PMD")
     private static final String IP_VAR1 = "51.81.47.51";
     @SuppressWarnings("PMD")
@@ -18,7 +17,7 @@ public class ServerSecurityTest {
     @SuppressWarnings("PMD")
     private HttpRequest makeRequest(int number, String ipString, String hostString) {
         String requestString = "GET src/test/resources/test-site"+ Integer.toString(number) +
-                "/index.html HTTP/1.1\r\nAccept: text/html\r\n";
+                "/index.jsp HTTP/1.1\r\nAccept: text/html\r\n";
         return new HttpRequest(requestString, ipString, hostString);
     }
 
@@ -132,5 +131,14 @@ public class ServerSecurityTest {
         request = makeRequest(4, IP_VAR2, NC_COM);
         serverSecurity = new ServerSecurity(request);
         assertEquals(serverSecurity.isAllow(), true);
+    }
+
+    // test with "all" directive in "allow"-section
+    @SuppressWarnings("PMD")
+    @Test
+    public void securityTest5() {
+        request = makeRequest(5, IP_VAR1, NC_COM);
+        ServerSecurity serverSecurity = new ServerSecurity(request);
+        assertEquals(serverSecurity.isAllow(), false);
     }
 }
