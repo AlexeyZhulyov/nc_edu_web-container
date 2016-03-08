@@ -4,6 +4,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.io.*;
+import java.net.URISyntaxException;
 
 import static nc.sumy.edu.webcontainer.web.WebException.*;
 import static java.lang.String.format;
@@ -30,13 +31,18 @@ public class WebHandlerImplTest {
                 "\n" +
                 "</body>\n" +
                 "</html>\n";
-        testPage = new File("src\\test\\resources\\TestHtml.html");
-        absentPage = new File("src\\test\\resources\\AbsentHtml.html");
+
+        try {
+            testPage = new File(WebHandlerImplTest.class.getResource("/TestHtml.html").toURI());
+        } catch (URISyntaxException e) {
+            throw new WebException(format("Cannot parse URI: %s", testPage.getName()), e);
+        }
+        absentPage = new File("AbsentHtml.html");
     }
 
     @Test
     public void process() {
-        assertEquals(processResult, webHandler.process(testPage));
+        assertEquals(processResult, webHandler.process(testPage).replace("\r",""));
     }
 
     @Test(expected = WebException.class)
