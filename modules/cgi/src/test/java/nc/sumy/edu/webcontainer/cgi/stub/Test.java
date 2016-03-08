@@ -1,10 +1,13 @@
-package nc.sumy.edu.webcontainer.cgi;
+package nc.sumy.edu.webcontainer.cgi.stub;
+
+import nc.sumy.edu.webcontainer.cgi.Cgi;
+import nc.sumy.edu.webcontainer.cgi.CgiAction;
 
 import java.util.Map;
 
 @Cgi
-public class Test {
-    public String generate(Map<String,String> parameters) {
+public class Test implements CgiAction {
+    public String run(Map<String, String> parameters) {
         String result;
 
         result = ("Content-type: text/html\n\n");

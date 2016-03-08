@@ -1,57 +1,61 @@
 package nc.sumy.edu.webcontainer.configuration;
 
 import java.io.*;
+import java.nio.charset.Charset;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 
 import com.google.gson.*;
 
 
 public class JSONConfiguration implements Configuration {
-    private int port;
-    public JSONConfiguration(File configurationFile) throws IOException {
-        BufferedReader bufferedReader = new BufferedReader(new FileReader(configurationFile));
+    private ConfigurationProperties configurationProperties;
 
-        try{
-            JSONConfiguration thus = new Gson().fromJson(bufferedReader, JSONConfiguration.class);
-            this.port = thus.getPort();
-        }
-        catch (JsonSyntaxException e) {
-            throw new IOException("File has inappropriate format", e);
-        }
-        finally {
-            try {
-                bufferedReader.close();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+    class ConfigurationProperties{
+        private int port = 8090;
+
+        public void setPort(int port) {
+            this.port = port;
         }
 
-
-    }
-
-    public JSONConfiguration(String configurationString) throws IOException {
-        try{
-            JSONConfiguration thus = new Gson().fromJson(configurationString, JSONConfiguration.class);
-            this.port = thus.getPort();
-        }
-        catch (JsonSyntaxException e) {
-            throw new IOException("String has inappropriate format", e);
-        }
-    }
-
-    public JSONConfiguration() {
-        super();
-        this.port = 8010;
-    }
-
-    public int getPort() {
-        synchronized(this) {
+        public int getPort() {
             return port;
         }
     }
 
-    public void setPort(int port) {
-        synchronized(this) {
-            this.port = port;
+    public JSONConfiguration(File configurationFile) {
+        try{
+            byte[] bytesOfFile = Files.readAllBytes(Paths.get(configurationFile.getPath()));
+            String stringFile = new String(bytesOfFile, Charset.defaultCharset());
+            setPropertiesFromString(stringFile);
+        } catch (IOException e) {
+            throw new JSONConfigurationReadingException("File was not read", e);
         }
+    }
+
+    public JSONConfiguration(String configurationString) {
+        setPropertiesFromString(configurationString);
+    }
+
+    public JSONConfiguration() {
+        this.configurationProperties = new ConfigurationProperties();
+    }
+
+
+    private void setPropertiesFromString(String propertiesString) {
+        try{
+            this.configurationProperties = new Gson().fromJson(propertiesString, ConfigurationProperties.class);
+        }
+        catch (JsonSyntaxException e) {
+            throw new JSONConfigurationReadingException("String has inappropriate format", e);
+        }
+    }
+
+    public int getPort() {
+        return configurationProperties.getPort();
+    }
+
+    public void setPort(int port) {
+        this.configurationProperties.setPort(port);
     }
 }

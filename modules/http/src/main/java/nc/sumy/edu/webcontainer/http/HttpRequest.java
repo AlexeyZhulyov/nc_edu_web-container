@@ -10,8 +10,9 @@ import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Objects;
 
+import static java.util.Objects.isNull;
+import static java.util.Objects.nonNull;
 import static org.apache.commons.lang3.StringUtils.*;
 
 /**
@@ -21,6 +22,8 @@ import static org.apache.commons.lang3.StringUtils.*;
 public class HttpRequest implements Request {
     private HttpMethod method;
     private String urn;
+    private final String HOST;
+    private final String IP_ADDRESS;
     private final Map<String, String> headers = new HashMap<>();
     private final Map<String, String> parameters = new HashMap<>();
     private static final Logger LOGGER = LoggerFactory.getLogger(HttpRequest.class);
@@ -29,8 +32,10 @@ public class HttpRequest implements Request {
     private final String requestLines[];
     private final String firstLine[];
 
-    public HttpRequest(String request) {
+    public HttpRequest(String request, String ipAddress, String host) {
         this.request = request;
+        this.IP_ADDRESS = ipAddress;
+        this.HOST = host;
         requestLines = split(request, "\r\n");
         firstLine = split(requestLines[0], " ");
         parseMethod();
@@ -96,7 +101,7 @@ public class HttpRequest implements Request {
 
     private void parsePostParam() {
         int lastItem = requestLines.length - 1;
-        if (method == HttpMethod.POST  && Objects.nonNull(requestLines[lastItem])) {
+        if (method == HttpMethod.POST  && nonNull(requestLines[lastItem])) {
             String paramPairs[] = split(trim(requestLines[lastItem]), "&");
             String pairParts[];
             for (String pair : paramPairs) {
@@ -111,7 +116,7 @@ public class HttpRequest implements Request {
             try {
                 param.setValue(URLDecoder.decode(param.getValue(), UTF8));
             } catch (UnsupportedEncodingException e) {
-                LOGGER.error("Cannot decode with UTF-8.", e);
+               LOGGER.error("Cannot decode with UTF-8.", e);
             }
         }
     }
@@ -133,24 +138,34 @@ public class HttpRequest implements Request {
     }
 
     public String getHeader(String key) {
-        return Objects.isNull(headers.get(key)) ? "" : headers.get(key);
+        return isNull(headers.get(key)) ? "" : headers.get(key);
     }
 
     public String getParameter(String key) {
-        return Objects.isNull(parameters.get(key)) ? "" : parameters.get(key);
+        return isNull(parameters.get(key)) ? "" : parameters.get(key);
+    }
+
+    public String getHost() {
+        return HOST;
+    }
+
+    public String getIpAddress() {
+        return IP_ADDRESS;
     }
 
     @Override
     public boolean equals(Object obj) {
         if (this == obj) return true;
 
-        if (Objects.isNull(obj) || getClass() != obj.getClass()) return false;
+        if (isNull(obj) || getClass() != obj.getClass()) return false;
 
         HttpRequest that = (HttpRequest) obj;
 
         return new EqualsBuilder()
                 .append(method, that.method)
                 .append(urn, that.urn)
+                .append(HOST, that.HOST)
+                .append(IP_ADDRESS, that.IP_ADDRESS)
                 .append(headers, that.headers)
                 .append(parameters, that.parameters)
                 .isEquals();
@@ -161,6 +176,8 @@ public class HttpRequest implements Request {
         return new HashCodeBuilder(17, 37)
                 .append(method)
                 .append(urn)
+                .append(HOST)
+                .append(IP_ADDRESS)
                 .append(headers)
                 .append(parameters)
                 .toHashCode();

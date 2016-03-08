@@ -11,9 +11,11 @@
     <modules>
         <module>modules/cgi</module>
         <module>modules/configuration</module>
+        <module>modules/design</module>
         <module>modules/dispatcher</module>
         <module>modules/http</module>
         <module>modules/security</module>
+        <module>modules/web</module>
     </modules>
 
     <properties>
@@ -137,6 +139,7 @@
                         </execution>
                     </executions>
                     <configuration>
+
                         <rules>
                             <rule implementation="org.jacoco.maven.RuleConfiguration">
                                 <element>BUNDLE</element>
@@ -161,5 +164,4 @@
             </plugins>
         </pluginManagement>
     </build>
-
 </project>
