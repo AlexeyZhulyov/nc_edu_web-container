@@ -4,6 +4,9 @@ import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import java.util.*;
 
+import static java.lang.System.arraycopy;
+import static java.util.Objects.isNull;
+
 /**
  * Class that build HTTP response and contain response-data.
  * @author Vinogradov Maxim
@@ -35,7 +38,7 @@ public class HttpResponse implements Response {
         this.code = code;
         this.headers = headers;
         this.body = new byte[body.length];
-        System.arraycopy(body, 0, this.body, 0, body.length);
+        arraycopy(body, 0, this.body, 0, body.length);
     }
 
     public byte[] getResponse() {
@@ -76,13 +79,13 @@ public class HttpResponse implements Response {
 
     public Response setBody(byte[] body) {
         this.body = new byte[body.length];
-        System.arraycopy(body, 0, this.body, 0, body.length);
+        arraycopy(body, 0, this.body, 0, body.length);
         return this;
     }
 
     public byte[] getBody() {
         byte[] newBody = new byte[body.length];
-        System.arraycopy(body, 0, newBody, 0, body.length);
+        arraycopy(body, 0, newBody, 0, body.length);
         return newBody;
     }
 
@@ -101,7 +104,7 @@ public class HttpResponse implements Response {
     @Override
     public boolean equals(Object obj) {
         if (this == obj) return true;
-        if (Objects.isNull(obj) || getClass() != obj.getClass()) return false;
+        if (isNull(obj) || getClass() != obj.getClass()) return false;
         HttpResponse that = (HttpResponse) obj;
         return new EqualsBuilder()
                 .append(code, that.code)

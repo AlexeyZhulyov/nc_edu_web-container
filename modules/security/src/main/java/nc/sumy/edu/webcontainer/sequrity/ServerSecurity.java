@@ -6,9 +6,11 @@ import nc.sumy.edu.webcontainer.sequrity.interfaces.Security;
 import org.apache.maven.shared.utils.StringUtils;
 
 import java.io.File;
-import java.util.Objects;
 import java.util.Set;
 
+import static java.lang.Integer.parseInt;
+import static java.util.Objects.isNull;
+import static java.util.Objects.nonNull;
 import static org.apache.commons.lang3.StringUtils.*;
 
 /**
@@ -33,9 +35,9 @@ public class ServerSecurity implements Security {
         File file = new File(request.getUrn());
         JSONAccessRulesConfiguration configuration = new JSONAccessRulesConfiguration();
         rules = configuration.getAccessRules(file.getParentFile().getAbsolutePath() + File.separator + CONFIG_FILE);
-        if (Objects.nonNull(rules)) {
+        if (nonNull(rules)) {
             AccessFile accessFile = findAccessFile();
-            if (Objects.nonNull(accessFile)) {
+            if (nonNull(accessFile)) {
                 analyze((RulesContainer) accessFile);
             } else {
                 analyze(rules);
@@ -47,7 +49,7 @@ public class ServerSecurity implements Security {
 
     private AccessFile findAccessFile() {
         Set<ServerAccessFile> files = rules.getFiles();
-        if (Objects.nonNull(files)) {
+        if (nonNull(files)) {
             for (AccessFile file : files) {
                 if (StringUtils.equals(file.getName(), this.file) || file.getName().matches(this.file)) {
                     return file;
@@ -62,22 +64,18 @@ public class ServerSecurity implements Security {
         boolean isDeny  = false;
         Set<String> allow = container.getAllow();
         Set<String> deny = container.getDeny();
-        if (Objects.isNull(container.getOrder()) || equalsIgnoreCase(container.getOrder(), ALLOW)) {
-            if (Objects.nonNull(allow)) {
+        if (isNull(container.getOrder()) || equalsIgnoreCase(container.getOrder(), ALLOW)) {
+            if (nonNull(allow)) {
                 isAllow = checkRules(allow);
             }
-            if (Objects.nonNull(deny)) {
+            if (nonNull(deny)) {
                 isDeny = checkRules(deny);
             }
             if (isAllow && !isDeny) {
                 access = true;
             }
         } else {
-            /*
-            if (Objects.nonNull(deny)) {
-                isDeny = checkRules(deny);
-            }*/
-            if (Objects.nonNull(allow)) {
+            if (nonNull(allow)) {
                 isAllow = checkRules(allow);
             }
             if (isAllow) {
@@ -120,9 +118,9 @@ public class ServerSecurity implements Security {
             if (StringUtils.equals(configIP[i], ipParts[i]) || StringUtils.equals(configIP[i], "*")) {
                 counter++;
             } else if (contains(configIP[i], "/")) {
-                String ipPartsTokens[] = configIP[i].split("/");
-                if (Integer.parseInt(ipPartsTokens[0]) <= Integer.parseInt(ipParts[i]) &&
-                        Integer.parseInt(ipPartsTokens[1]) >= Integer.parseInt(ipParts[i])) {
+                String ipPartsTokens[] = split(configIP[i], ("/"));
+                if (parseInt(ipPartsTokens[0]) <= parseInt(ipParts[i]) &&
+                        parseInt(ipPartsTokens[1]) >= parseInt(ipParts[i])) {
                     counter++;
                 }
             }
