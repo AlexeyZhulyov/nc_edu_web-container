@@ -5,14 +5,12 @@
 /databaseSettings.xml
 /other.xml
 /ide.general.xml
-### Java template
-*.class
-*.jar
 
 # Mobile Tools for Java (J2ME)
 .mtj.tmp/
 
-# Package Files #
+# Java Files #
+*.class
 *.jar
 *.war
 *.ear
