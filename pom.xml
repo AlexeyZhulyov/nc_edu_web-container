@@ -11,7 +11,7 @@
     <modules>
         <module>modules/cgi</module>
         <module>modules/configuration</module>
-        <module>modules/design</module>
+        <!-- <module>modules/design</module> -->
         <module>modules/dispatcher</module>
         <module>modules/http</module>
         <module>modules/security</module>
@@ -36,7 +36,7 @@
         <pmd.version>3.6</pmd.version>
         <jacoco.version>0.7.6.201602180812</jacoco.version>
         <cobertura.version>2.7</cobertura.version>
-        <coveralls.version>4.2.0</coveralls.version>
+        <coveralls.version>4.1.0</coveralls.version>
         <!-- Other -->
         <surefire.plugin.version>2.14.1</surefire.plugin.version>
     </properties>
