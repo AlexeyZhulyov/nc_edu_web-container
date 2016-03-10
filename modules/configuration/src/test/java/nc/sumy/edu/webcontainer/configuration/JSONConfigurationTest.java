@@ -27,7 +27,7 @@ public class JSONConfigurationTest {
 
     @Test
     public void validFileParametersConfigurationStartAndGetTest() {
-        Configuration config = new JSONConfiguration(new File("src/test/resources/validTestConfiguration.json"));
+        Configuration config = new JSONConfiguration(new File("validTestConfiguration.json"));
         assertEquals("Port must be 8890", 8890, config.getPort());
     }
 
@@ -38,15 +38,13 @@ public class JSONConfigurationTest {
 
     @Test(expected = JSONConfigurationReadingException.class)
     public void invalidFileFormatConfigurationTest() throws IOException {
-        new JSONConfiguration(new File("src/test/resources/invalidFormatConfigurationFile.json"));
+        new JSONConfiguration(new File("invalidFormatConfigurationFile.json"));
     }
 
     @Test
     public void setConfigurationTest() {
-        Configuration config = new JSONConfiguration(new File("src/test/resources/validTestConfiguration.json"));
+        Configuration config = new JSONConfiguration(new File("validTestConfiguration.json"));
         config.setPort(100);
         assertEquals("Port must be 100", 100, config.getPort());
-
-
     }
 }
