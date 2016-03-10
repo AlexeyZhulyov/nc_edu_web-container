@@ -2,7 +2,6 @@ package nc.sumy.edu.webcontainer.configuration;
 
 import org.junit.Test;
 import java.io.File;
-import java.io.IOException;
 
 import static org.junit.Assert.assertEquals;
 
@@ -15,7 +14,7 @@ public class JSONConfigurationTest {
     }
 
     @Test(expected = JSONConfigurationReadingException.class)
-    public void invalidStringParametersConfigurationTest() throws IOException {
+    public void invalidStringParametersConfigurationTest()  {
         new JSONConfiguration("port:8090}");
     }
 
@@ -32,12 +31,12 @@ public class JSONConfigurationTest {
     }
 
     @Test(expected = JSONConfigurationReadingException.class)
-    public void invalidFileNameConfigurationTest() throws IOException {
+    public void invalidFileNameConfigurationTest()  {
         new JSONConfiguration(new File("notexistingConfigurationFile.json"));
     }
 
     @Test(expected = JSONConfigurationReadingException.class)
-    public void invalidFileFormatConfigurationTest() throws IOException {
+    public void invalidFileFormatConfigurationTest()  {
         new JSONConfiguration(new File("invalidFormatConfigurationFile.json"));
     }
 
