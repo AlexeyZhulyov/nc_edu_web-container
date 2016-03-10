@@ -14,14 +14,6 @@ import java.lang.reflect.Type;
 
 public class JSONAccessRulesConfiguration implements AccessRulesConfiguration {
 
-    class ServerAccessFileInstanceCreator implements InstanceCreator<AccessFile> {
-        @Override
-        public AccessFile createInstance(Type type) {
-            return new ServerAccessFile();
-        }
-    }
-
-
     @Override
     public AccessRules getAccessRules(String filePath) {
         return getAccessRules(new File(filePath));
@@ -31,7 +23,7 @@ public class JSONAccessRulesConfiguration implements AccessRulesConfiguration {
     public AccessRules getAccessRules(File accessRulesFile) {
         try {
             BufferedReader bufferedReaderFromFile = new BufferedReader(new FileReader(accessRulesFile));
-            return new GsonBuilder().registerTypeAdapter(AccessFile.class, new ServerAccessFileInstanceCreator())
+            return new GsonBuilder()
                     .create()
                     .fromJson(bufferedReaderFromFile, AccessRules.class);
         } catch (FileNotFoundException e) {
