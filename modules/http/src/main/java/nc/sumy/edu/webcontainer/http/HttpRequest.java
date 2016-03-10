@@ -10,8 +10,9 @@ import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Objects;
 
+import static java.util.Objects.isNull;
+import static java.util.Objects.nonNull;
 import static org.apache.commons.lang3.StringUtils.*;
 
 /**
@@ -100,7 +101,7 @@ public class HttpRequest implements Request {
 
     private void parsePostParam() {
         int lastItem = requestLines.length - 1;
-        if (method == HttpMethod.POST  && Objects.nonNull(requestLines[lastItem])) {
+        if (method == HttpMethod.POST  && nonNull(requestLines[lastItem])) {
             String paramPairs[] = split(trim(requestLines[lastItem]), "&");
             String pairParts[];
             for (String pair : paramPairs) {
@@ -137,11 +138,11 @@ public class HttpRequest implements Request {
     }
 
     public String getHeader(String key) {
-        return Objects.isNull(headers.get(key)) ? "" : headers.get(key);
+        return isNull(headers.get(key)) ? "" : headers.get(key);
     }
 
     public String getParameter(String key) {
-        return Objects.isNull(parameters.get(key)) ? "" : parameters.get(key);
+        return isNull(parameters.get(key)) ? "" : parameters.get(key);
     }
 
     public String getHost() {
@@ -156,7 +157,7 @@ public class HttpRequest implements Request {
     public boolean equals(Object obj) {
         if (this == obj) return true;
 
-        if (Objects.isNull(obj) || getClass() != obj.getClass()) return false;
+        if (isNull(obj) || getClass() != obj.getClass()) return false;
 
         HttpRequest that = (HttpRequest) obj;
 

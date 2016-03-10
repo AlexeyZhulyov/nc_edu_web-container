@@ -1,9 +1,9 @@
 {
 
-  "order" : "allow",
+  "order" : "deny",
 
   "allow" : [
-    "93.49.37.58",
+    "217.20.147.94",
     "91.71.47.51",
     "91.81.47.51",
     "91.81.47.51"
@@ -18,18 +18,19 @@
 
   "files" : [
     {
-      "name" : "files_name1",
-      "order" : "allow",
+      "name" : "index.html",
+      "order" : "deny",
       "allow" : [
         "51.81.47.51"
       ],
       "deny" : [
-        "93.49.37.56"
+        "93.49.37.56",
+        "51.81.47.51"
       ]
     },
     {
       "name" : "files_name2",
-      "order" : "allow",
+      "order" : "deny",
       "allow" : [
         "all"
       ],
