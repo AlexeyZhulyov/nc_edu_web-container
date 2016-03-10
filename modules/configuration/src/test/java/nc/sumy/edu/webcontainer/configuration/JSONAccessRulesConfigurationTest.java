@@ -1,6 +1,7 @@
 package nc.sumy.edu.webcontainer.configuration;
 
 import com.google.gson.JsonSyntaxException;
+import nc.sumy.edu.webcontainer.configuration.security.AccessRules;
 import org.junit.Test;
 import java.io.File;
 import java.io.IOException;

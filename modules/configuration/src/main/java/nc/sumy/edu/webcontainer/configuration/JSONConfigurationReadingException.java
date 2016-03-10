@@ -4,4 +4,8 @@ public class JSONConfigurationReadingException extends RuntimeException {
     public JSONConfigurationReadingException(String message, Exception initException) {
         super(message, initException);
     }
+
+    public JSONConfigurationReadingException(String message) {
+        super(message);
+    }
 }
