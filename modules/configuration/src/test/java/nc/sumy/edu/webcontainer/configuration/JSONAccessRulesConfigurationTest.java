@@ -1,11 +1,12 @@
 package nc.sumy.edu.webcontainer.configuration;
 
 import com.google.gson.JsonSyntaxException;
-import org.junit.Assert;
 import org.junit.Test;
-
 import java.io.File;
 import java.io.IOException;
+
+import static org.junit.Assert.assertEquals;
+
 
 public class JSONAccessRulesConfigurationTest {
     JSONAccessRulesConfiguration testInstance = new JSONAccessRulesConfiguration();
@@ -15,13 +16,13 @@ public class JSONAccessRulesConfigurationTest {
     public void validFileParametersConfigurationStartAndGetTest() {
         AccessRules testAccessRules = testInstance.getAccessRules(new File("src/test/resources/" +
                 "validAccessRulesConfiguration.json"));
-        Assert.assertEquals("Order must be", "allow", testAccessRules.getOrder());
+        assertEquals("Order must be", "allow", testAccessRules.getOrder());
     }
 
     @Test
     public void invalidFileNameConfigurationTest()  {
         AccessRules testAccessRules = testInstance.getAccessRules("notexistingConfigurationFile.json");
-        Assert.assertEquals("Not existing file must return null AccessRules", null, testAccessRules);
+        assertEquals("Not existing file must return null AccessRules", null, testAccessRules);
     }
 
     @Test(expected = JsonSyntaxException.class)
