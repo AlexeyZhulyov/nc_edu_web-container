@@ -1,7 +1,5 @@
 package nc.sumy.edu.webcontainer.configuration.security;
 
-import nc.sumy.edu.webcontainer.configuration.security.AccessRules;
-import nc.sumy.edu.webcontainer.configuration.security.ServerAccessFile;
 import org.junit.Test;
 
 import java.util.HashSet;
