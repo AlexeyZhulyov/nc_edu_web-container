@@ -6,10 +6,7 @@ import nc.sumy.edu.webcontainer.configuration.security.AccessFile;
 import nc.sumy.edu.webcontainer.configuration.security.AccessRules;
 import nc.sumy.edu.webcontainer.configuration.security.ServerAccessFile;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
+import java.io.*;
 import java.lang.reflect.Type;
 
 public class JSONAccessRulesConfiguration implements AccessRulesConfiguration {
@@ -21,13 +18,14 @@ public class JSONAccessRulesConfiguration implements AccessRulesConfiguration {
 
     @Override
     public AccessRules getAccessRules(File accessRulesFile) {
-        try {
-            BufferedReader bufferedReaderFromFile = new BufferedReader(new FileReader(accessRulesFile));
-            return new GsonBuilder()
-                    .create()
-                    .fromJson(bufferedReaderFromFile, AccessRules.class);
-        } catch (FileNotFoundException e) {
+        InputStream fileReadStream = JSONAccessRulesConfiguration.class
+                .getResourceAsStream("/" + accessRulesFile.getName());
+        if(fileReadStream == null) {
             return null;
         }
+        BufferedReader bufferedReaderFromFile = new BufferedReader(new InputStreamReader(fileReadStream));
+        return new GsonBuilder()
+                .create()
+                .fromJson(bufferedReaderFromFile, AccessRules.class);
     }
 }

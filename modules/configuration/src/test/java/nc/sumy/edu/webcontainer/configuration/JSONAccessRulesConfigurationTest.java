@@ -27,7 +27,7 @@ public class JSONAccessRulesConfigurationTest {
     }
 
     @Test(expected = JsonSyntaxException.class)
-    public void invalidFileFormatConfigurationTest() throws IOException {
+    public void invalidFileFormatConfigurationTest() {
         testInstance.getAccessRules(new File("src/test/resources/invalidFormatConfigurationFile.json"));
     }
 }
