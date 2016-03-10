@@ -5,7 +5,7 @@ import java.io.File;
 
 public interface AccessRulesConfiguration {
 
-    public AccessRules getAccessRules(String filepath);
+    AccessRules getAccessRules(String filepath);
 
-    public AccessRules getAccessRules(File accessRulesFile);
+    AccessRules getAccessRules(File accessRulesFile);
 }

@@ -25,11 +25,18 @@ public class JSONConfiguration implements Configuration {
 
     public JSONConfiguration(File configurationFile) {
         try{
-            byte[] bytesOfFile = Files.readAllBytes(Paths.get(configurationFile.getPath()));
-            String stringFile = new String(bytesOfFile, Charset.defaultCharset());
+            InputStream inputStream = JSONConfiguration.class.getResourceAsStream("/" + configurationFile.getName());
+            if (inputStream == null) {
+                throw new JSONConfigurationReadingException("File was not found");
+            }
+            byte[] bytes = new byte[inputStream.available()];
+            if(inputStream.read(bytes) == -1) {
+                throw new JSONConfigurationReadingException("File was not found");
+            }
+            String stringFile = new String(bytes, Charset.defaultCharset());
             setPropertiesFromString(stringFile);
         } catch (IOException e) {
-            throw new JSONConfigurationReadingException("File was not read", e);
+            throw new JSONConfigurationReadingException("File was not read properly", e);
         }
     }
 
