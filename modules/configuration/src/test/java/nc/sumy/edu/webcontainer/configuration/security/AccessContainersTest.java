@@ -23,6 +23,18 @@ public class AccessContainersTest {
     }
 
     @Test
+    public void serverAccessFileEqualsTest() {
+        String fileName = "file.json";
+        ServerAccessFile file = new ServerAccessFile(fileName, ORDER, ALLOW, DENY);
+        ServerAccessFile comparedSame = new ServerAccessFile(fileName, ORDER, ALLOW, DENY);
+        ServerAccessFile comparedOther = new ServerAccessFile("otherPath.json", ORDER, ALLOW, DENY);
+        assertEquals("file.equals(file) must return true", true, file.equals(file));
+        assertEquals("file.equals(null) must return false", false, file.equals(null));
+        assertEquals("Equals used on equal files must return true", true, file.equals(comparedSame));
+        assertEquals("Equals used on nonequal files must return false", false, file.equals(comparedOther));
+    }
+
+    @Test
     public void accessRules() {
         Set<ServerAccessFile> accessFiles = new HashSet<>();
         AccessRules rules = new AccessRules(accessFiles, ORDER, ALLOW, DENY);

@@ -20,13 +20,20 @@ public class JSONAccessRulesConfigurationTest {
     }
 
     @Test
-    public void invalidFileNameConfigurationTest()  {
+    public void invalidFileNameAccessConfigurationTest()  {
         AccessRules testAccessRules = testInstance.getAccessRules("notexistingConfigurationFile.json");
         assertEquals("Not existing file must return null AccessRules", null, testAccessRules);
     }
 
     @Test(expected = JsonSyntaxException.class)
-    public void invalidFileFormatConfigurationTest() {
+    public void invalidFileFormatAccessConfigurationTest() {
         testInstance.getAccessRules(new File("src/test/resources/invalidFormatConfigurationFile.json"));
     }
+
+    @Test
+    public void invalidFileNameAsStringParameterAccessConfigurationTest() {
+        AccessRules testAccessRules = testInstance.getAccessRules(new File("src/test/resources/fileDoesNotExist.json"));
+        assertEquals("Not existing file must return null AccessRules", null, testAccessRules);
+    }
+
 }
