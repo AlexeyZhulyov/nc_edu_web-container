@@ -7,7 +7,6 @@ import java.nio.file.Paths;
 
 import com.google.gson.*;
 import org.apache.maven.shared.utils.io.IOUtil;
-import sun.misc.IOUtils;
 
 import static nc.sumy.edu.webcontainer.configuration.ClasspathUtils.getInputStreamByName;
 
