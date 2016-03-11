@@ -4,7 +4,7 @@ import com.google.gson.GsonBuilder;
 import nc.sumy.edu.webcontainer.configuration.security.AccessRules;
 import java.io.*;
 
-public class AcessRulesRepositoryJson implements AccessRulesRepository {
+public class AccessRulesRepositoryJson implements AccessRulesRepository {
 
     @Override
     public AccessRules getAccessRules(String filePath) {
