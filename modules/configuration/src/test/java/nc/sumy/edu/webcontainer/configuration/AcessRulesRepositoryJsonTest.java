@@ -8,8 +8,8 @@ import java.io.File;
 import static org.junit.Assert.assertEquals;
 
 
-public class JSONAccessRulesConfigurationTest {
-    JSONAccessRulesConfiguration testInstance = new JSONAccessRulesConfiguration();
+public class AcessRulesRepositoryJsonTest {
+    AcessRulesRepositoryJson testInstance = new AcessRulesRepositoryJson();
 
 
     @Test
