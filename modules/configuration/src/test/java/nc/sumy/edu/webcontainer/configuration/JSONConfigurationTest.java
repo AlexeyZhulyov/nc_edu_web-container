@@ -14,19 +14,19 @@ public class JSONConfigurationTest {
     }
 
     @Test(expected = JSONConfigurationReadingException.class)
-    public void invalidStringParametersConfigurationTest()  {
-        new JSONConfiguration("port:8090}");
+    public void invalidStringFileNameParameterConfigurationTest()  {
+        new JSONConfiguration("notexistingConfigurationFile.json");
     }
 
     @Test
     public void validStringParametersConfigurationTest() {
-        Configuration config = new JSONConfiguration("{port:8090}");
-        assertEquals("Port must be 8090", 8090, config.getPort());
+        Configuration config = new JSONConfiguration("validTestConfiguration.json");
+        assertEquals("Port must be 8890", 8890, config.getPort());
     }
 
     @Test
     public void validFileParametersConfigurationStartAndGetTest() {
-        Configuration config = new JSONConfiguration(new File("validTestConfiguration.json"));
+        Configuration config = new JSONConfiguration(new File("src/test/resources/validTestConfiguration.json"));
         assertEquals("Port must be 8890", 8890, config.getPort());
     }
 
@@ -37,12 +37,12 @@ public class JSONConfigurationTest {
 
     @Test(expected = JSONConfigurationReadingException.class)
     public void invalidFileFormatConfigurationTest()  {
-        new JSONConfiguration(new File("invalidFormatConfigurationFile.json"));
+        new JSONConfiguration(new File("src/test/resources/invalidFormatConfigurationFile.json"));
     }
 
     @Test
     public void setConfigurationTest() {
-        Configuration config = new JSONConfiguration(new File("validTestConfiguration.json"));
+        Configuration config = new JSONConfiguration(new File("src/test/resources/validTestConfiguration.json"));
         config.setPort(100);
         assertEquals("Port must be 100", 100, config.getPort());
     }

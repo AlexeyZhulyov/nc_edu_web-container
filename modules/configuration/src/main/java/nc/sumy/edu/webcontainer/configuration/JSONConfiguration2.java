@@ -2,13 +2,11 @@ package nc.sumy.edu.webcontainer.configuration;
 
 import java.io.*;
 import java.nio.charset.Charset;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 
 import com.google.gson.*;
 
 
-public class JSONConfiguration implements Configuration {
+public class JSONConfiguration2 implements Configuration {
     private ConfigurationProperties configurationProperties;
 
     class ConfigurationProperties{
@@ -23,37 +21,41 @@ public class JSONConfiguration implements Configuration {
         }
     }
 
-    public JSONConfiguration(File configurationFile) {
+    public JSONConfiguration2(File configurationFile) {
         try{
-            byte[] bytesOfFile = Files.readAllBytes(Paths.get(configurationFile.getPath()));
-            String stringFile = new String(bytesOfFile, Charset.defaultCharset());
+            InputStream inputFromFile = new FileInputStream(configurationFile);
+            String stringFile = readConfigurationString(inputFromFile);
             setPropertiesFromString(stringFile);
         } catch (IOException e) {
             throw new JSONConfigurationReadingException("File was not read", e);
         }
     }
 
-    public JSONConfiguration(String configurationFileName) {
-        try{
-            InputStream inputStream = JSONConfiguration.class.getResourceAsStream("/" + configurationFileName);
-            if (inputStream == null) {
-                throw new JSONConfigurationReadingException("File was not found");
-            }
-            byte[] bytes = new byte[inputStream.available()];
-            if(inputStream.read(bytes) == -1) {
-                throw new JSONConfigurationReadingException("File was not found");
-            }
-            String stringFile = new String(bytes, Charset.defaultCharset());
-            setPropertiesFromString(stringFile);
-        } catch (IOException e) {
-            throw new JSONConfigurationReadingException("File was not read properly", e);
-        }
+
+    public JSONConfiguration2(String configurationFileName) {
+        InputStream inputStream = JSONConfiguration.class.getResourceAsStream("/" + configurationFileName);
+        String stringFile = readConfigurationString(inputStream);
+        setPropertiesFromString(stringFile);
     }
 
-    public JSONConfiguration() {
+    public JSONConfiguration2() {
         this.configurationProperties = new ConfigurationProperties();
     }
 
+    private String readConfigurationString(InputStream inputFromFile) {
+        try{
+            if (inputFromFile == null) {
+                throw new JSONConfigurationReadingException("File was not found");
+            }
+            byte[] bytes = new byte[inputFromFile.available()];
+            if(inputFromFile.read(bytes) == -1) {
+                throw new JSONConfigurationReadingException("File was not found");
+            }
+            return new String(bytes, Charset.defaultCharset());
+        } catch (IOException e) {
+            throw new JSONConfigurationReadingException("File was not found");
+        }
+    }
 
     private void setPropertiesFromString(String propertiesString) {
         try{
@@ -72,3 +74,4 @@ public class JSONConfiguration implements Configuration {
         this.configurationProperties.setPort(port);
     }
 }
+
