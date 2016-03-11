@@ -13,14 +13,15 @@ public class AcessRulesRepositoryJson implements AccessRulesRepository {
 
     @Override
     public AccessRules getAccessRules(File accessRulesFile) {
-        InputStream fileReadStream = AcessRulesRepositoryJson.class
-                .getResourceAsStream("/" + accessRulesFile.getName());
-        if(fileReadStream == null) {
+        try(BufferedReader bufferedReaderFromFile =
+                    new BufferedReader(new InputStreamReader(new FileInputStream(accessRulesFile))))
+        {
+            return new GsonBuilder()
+                    .create()
+                    .fromJson(bufferedReaderFromFile, AccessRules.class);
+        } catch (IOException e) {
             return null;
         }
-        BufferedReader bufferedReaderFromFile = new BufferedReader(new InputStreamReader(fileReadStream));
-        return new GsonBuilder()
-                .create()
-                .fromJson(bufferedReaderFromFile, AccessRules.class);
+
     }
 }
