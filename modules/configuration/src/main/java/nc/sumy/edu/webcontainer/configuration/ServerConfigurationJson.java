@@ -29,22 +29,18 @@ public class ServerConfigurationJson implements ServerConfiguration {
     public ServerConfigurationJson(File configurationFile) {
         try{
             byte[] bytesOfFile = Files.readAllBytes(Paths.get(configurationFile.getPath()));
-            String stringFile = new String(bytesOfFile, Charset.defaultCharset());
-            setConfigFromJson(stringFile);
+            setConfigFromJson( new String(bytesOfFile, Charset.defaultCharset()));
         } catch (IOException e) {
-            throw new ServerConfigurationJsonReadingException("File was not read", e);
+            throw new JsonReadingException("File was not read", e);
         }
     }
 
     public ServerConfigurationJson(String configurationFileName) {
         try{
             InputStream inputStream = getInputStreamByName(ServerConfigurationJson.class, configurationFileName);
-            if (inputStream == null) {
-                throw new ServerConfigurationJsonReadingException("Unable to find the file " + configurationFileName);
-            }
             setConfigFromJson(IOUtil.toString(inputStream, String.valueOf(Charset.defaultCharset())));
         } catch (IOException e) {
-            throw new ServerConfigurationJsonReadingException("File " + configurationFileName +
+            throw new JsonReadingException("File " + configurationFileName +
                      " was not read properly", e);
         }
     }
@@ -59,7 +55,7 @@ public class ServerConfigurationJson implements ServerConfiguration {
             this.configurationProperties = new Gson().fromJson(propertiesString, ConfigurationProperties.class);
         }
         catch (JsonSyntaxException e) {
-            throw new ServerConfigurationJsonReadingException("ServerConfiguration string has inappropriate format", e);
+            throw new JsonReadingException("ServerConfiguration string has inappropriate format", e);
         }
     }
 

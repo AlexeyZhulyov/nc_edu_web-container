@@ -13,7 +13,7 @@ public class ServerConfigurationJsonTest {
         assertEquals("Port must be 8090", 8090, config.getPort());
     }
 
-    @Test(expected = ServerConfigurationJsonReadingException.class)
+    @Test(expected = JsonReadingException.class)
     public void invalidStringFileNameParameterConfigurationTest()  {
         new ServerConfigurationJson("notexistingConfigurationFile.json");
     }
@@ -30,12 +30,12 @@ public class ServerConfigurationJsonTest {
         assertEquals("Port must be 8890", 8890, config.getPort());
     }
 
-    @Test(expected = ServerConfigurationJsonReadingException.class)
+    @Test(expected = JsonReadingException.class)
     public void invalidFileNameConfigurationTest()  {
         new ServerConfigurationJson(new File("notexistingConfigurationFile.json"));
     }
 
-    @Test(expected = ServerConfigurationJsonReadingException.class)
+    @Test(expected = JsonReadingException.class)
     public void invalidFileFormatConfigurationTest()  {
         new ServerConfigurationJson(new File("src/test/resources/invalidFormatConfigurationFile.json"));
     }
