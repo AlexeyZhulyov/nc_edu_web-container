@@ -74,12 +74,30 @@ public class WebcontainerDesign {
         webServer.uses(codacy, "Static analysis, code coverage and metrics for Ruby, JavaScript, PHP, Scala, Java.");
 
 
-        // now create the system context view based upon the model
+        /**
+         * Now create the system context view based upon the model.
+         *
+         * System context view helps us to answer on questions below:
+         * 1. What is the software system that we are building (or have built)?
+         * 2. Who is using it?
+         * 3. How does it fit in with the existing environment?
+         **/
         ViewSet viewSet = workspace.getViews();
         SystemContextView contextView = viewSet.createContextView(webServer);
         contextView.addAllSoftwareSystems();
         contextView.addAllPeople();
 
+        /**
+         * Now create the container view based upon the model.
+         *
+         * A container diagram helps to answer the following questions:
+         * 1. What is the overall shape of the software system?
+         * 2. What are the high-level technology decisions?
+         * 3. How are responsibilities distributed across the system?
+         * 4. How do containers communicate with one another?
+         * 5. As a developer, where do I need to write code in order to implement features?
+         **/
+        // TODO container view
 
         // tag and style some elements
         webServer.addTags("Name");
