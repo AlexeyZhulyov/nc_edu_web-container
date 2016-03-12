@@ -6,9 +6,12 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 
 import com.google.gson.*;
+import org.apache.maven.shared.utils.io.IOUtil;
+
+import static nc.sumy.edu.webcontainer.configuration.ClasspathUtils.getInputStreamByName;
 
 
-public class JSONConfiguration implements Configuration {
+public class ServerConfigurationJson implements ServerConfiguration {
     private ConfigurationProperties configurationProperties;
 
     class ConfigurationProperties{
@@ -23,44 +26,40 @@ public class JSONConfiguration implements Configuration {
         }
     }
 
-    public JSONConfiguration(File configurationFile) {
+    public ServerConfigurationJson(File configurationFile) {
         try{
             byte[] bytesOfFile = Files.readAllBytes(Paths.get(configurationFile.getPath()));
             String stringFile = new String(bytesOfFile, Charset.defaultCharset());
-            setPropertiesFromString(stringFile);
+            setConfigFromJson(stringFile);
         } catch (IOException e) {
-            throw new JSONConfigurationReadingException("File was not read", e);
+            throw new ServerConfigurationJsonReadingException("File was not read", e);
         }
     }
 
-    public JSONConfiguration(String configurationFileName) {
+    public ServerConfigurationJson(String configurationFileName) {
         try{
-            InputStream inputStream = JSONConfiguration.class.getResourceAsStream("/" + configurationFileName);
+            InputStream inputStream = getInputStreamByName(ServerConfigurationJson.class, configurationFileName);
             if (inputStream == null) {
-                throw new JSONConfigurationReadingException("File was not found");
+                throw new ServerConfigurationJsonReadingException("Unable to find the file " + configurationFileName);
             }
-            byte[] bytes = new byte[inputStream.available()];
-            if(inputStream.read(bytes) == -1) {
-                throw new JSONConfigurationReadingException("File was not found");
-            }
-            String stringFile = new String(bytes, Charset.defaultCharset());
-            setPropertiesFromString(stringFile);
+            setConfigFromJson(IOUtil.toString(inputStream, String.valueOf(Charset.defaultCharset())));
         } catch (IOException e) {
-            throw new JSONConfigurationReadingException("File was not read properly", e);
+            throw new ServerConfigurationJsonReadingException("File " + configurationFileName +
+                     " was not read properly", e);
         }
     }
 
-    public JSONConfiguration() {
+    public ServerConfigurationJson() {
         this.configurationProperties = new ConfigurationProperties();
     }
 
 
-    private void setPropertiesFromString(String propertiesString) {
+    private void setConfigFromJson(String propertiesString) {
         try{
             this.configurationProperties = new Gson().fromJson(propertiesString, ConfigurationProperties.class);
         }
         catch (JsonSyntaxException e) {
-            throw new JSONConfigurationReadingException("Configuration string has inappropriate format", e);
+            throw new ServerConfigurationJsonReadingException("ServerConfiguration string has inappropriate format", e);
         }
     }
 
