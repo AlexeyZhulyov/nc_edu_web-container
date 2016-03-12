@@ -142,4 +142,12 @@ public class ServerSecurityTest {
         ServerSecurity serverSecurity = new ServerSecurity(request);
         assertEquals(serverSecurity.isAllow(), false);
     }
+
+    @SuppressWarnings("PMD")
+    @Test
+    public void securityTest6() {
+        request = makeRequest(6, IP_VAR1, NC_COM);
+        ServerSecurity serverSecurity = new ServerSecurity(request);
+        assertEquals(serverSecurity.isAllow(), true);
+    }
 }

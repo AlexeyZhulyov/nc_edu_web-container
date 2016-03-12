@@ -1,6 +1,6 @@
 package nc.sumy.edu.webcontainer.sequrity;
 
-import nc.sumy.edu.webcontainer.configuration.*;
+import nc.sumy.edu.webcontainer.configuration.AccessRulesRepositoryJson;
 import nc.sumy.edu.webcontainer.configuration.security.AccessFile;
 import nc.sumy.edu.webcontainer.configuration.security.AccessRules;
 import nc.sumy.edu.webcontainer.configuration.security.RulesContainer;
@@ -37,7 +37,7 @@ public class ServerSecurity implements Security {
         ipAddress = request.getIpAddress();
         file = substring(request.getUrn(), lastIndexOf(request.getUrn(), "/") + 1, length(request.getUrn()));
         File file = new File(request.getUrn());
-        AccessRulesRepository configuration = new AccessRulesRepositoryJson();
+        AccessRulesRepositoryJson configuration = new AccessRulesRepositoryJson();
         rules = configuration.getAccessRules(file.getParentFile().getAbsolutePath() + File.separator + CONFIG_FILE);
         if (nonNull(rules)) {
             AccessFile accessFile = findAccessFile();
@@ -89,8 +89,6 @@ public class ServerSecurity implements Security {
     }
 
     private boolean checkRules(Set<String> set) {
-        String hostPattern = "^(([a-zA-Z0-9]|[a-zA-Z0-9][a-zA-Z0-9\\-]*[a-zA-Z0-9])\\.)" +
-                "*([A-Za-z0-9]|[A-Za-z0-9][A-Za-z0-9\\-]*[A-Za-z0-9])$";
         String ipParts[] = ipAddress.split("\\.");
         if (checkFullEquals(set)) return true;
         for (String item : set) {
@@ -99,9 +97,6 @@ public class ServerSecurity implements Security {
                 if (checkItemEquals(ipParts, configIP) == configIP.length) {
                     return true;
                 }
-            }
-            if (item.matches(hostPattern) && StringUtils.equals(item, host)) {
-                return true;
             }
         }
         return false;
