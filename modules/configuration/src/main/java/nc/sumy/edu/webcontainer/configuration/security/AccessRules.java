@@ -1,4 +1,4 @@
-package nc.sumy.edu.webcontainer.configuration;
+package nc.sumy.edu.webcontainer.configuration.security;
 
 
 import java.util.Set;

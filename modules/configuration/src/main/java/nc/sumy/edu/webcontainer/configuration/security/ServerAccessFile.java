@@ -1,4 +1,4 @@
-package nc.sumy.edu.webcontainer.configuration;
+package nc.sumy.edu.webcontainer.configuration.security;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;

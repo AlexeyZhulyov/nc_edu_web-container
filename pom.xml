@@ -16,6 +16,7 @@
         <module>modules/http</module>
         <module>modules/security</module>
         <module>modules/web</module>
+        <module>modules/listener</module>
     </modules>
 
     <properties>
