@@ -13,9 +13,6 @@ import static org.junit.Assert.*;
 
 public class CgiHandlerImplTest {
     private CgiHandlerImpl cgiHandlerImpl = null;
-    private CgiAction testClass = null;
-    private Request request = null;
-    private String processResult = null;
     private static final String HOST = "nc.pc";
     private static final String IP_ADDRESS = "";
     private final static String CLASS_NAME_TEST = "Test";
@@ -23,30 +20,27 @@ public class CgiHandlerImplTest {
 
     @Before
     public void setUp() {
-        testClass = new nc.sumy.edu.webcontainer.cgi.stub.Test();
         cgiHandlerImpl = new CgiHandlerImpl();
+    }
 
+    @Test
+    public void process() {
         String queryString = "login=Petya%20Vasechkin&password=qq";
         String requestStr = "GET " + "/" + CLASS_NAME_TEST + ".cgi?" + queryString + " HTTP/1.1" + "\r\n" +
                 "Host" + ": foo.com" + "\r\n" +
                 "Accept" + ": text/html" + "\r\n" +
                 "Range-Unit: 3388 | 1024";
-
-        request = new HttpRequest(requestStr, IP_ADDRESS, HOST);
-
-        processResult = "Content-type: text/html\n\n" +
+        Request request = new HttpRequest(requestStr, IP_ADDRESS, HOST);
+        String processResult = "Content-type: text/html\n\n" +
                 "<html>\n" + "<head>\n" + "<title>\n" + "Hello There " + "Petya Vasechkin" + "!" +
                 "\n" + "</title>\n" + "</head>\n" + "<body>\n" + "<h1 align=center>Hello There " + "Petya Vasechkin" +
                 "!</h1>" + "</body>\n</html>\n";
-    }
-
-    @Test
-    public void process() {
         assertEquals(processResult, cgiHandlerImpl.process(CLASS_NAME_TEST, request.getParameters()));
     }
 
     @Test
     public void find() {
+        CgiAction testClass = new nc.sumy.edu.webcontainer.cgi.stub.Test();
         assertEquals(testClass.getClass(), cgiHandlerImpl.find("Test"));
     }
 
@@ -60,7 +54,7 @@ public class CgiHandlerImplTest {
         try {
             cgiHandlerImpl.find("Absent");
             fail(EXPECT_EXCEPTION);
-        } catch (CgiException e) {
+        } catch (CgiClassNotFoundException e) {
             assertEquals(format(CLASS_NOT_FOUND, "Absent"), e.getMessage());
         }
     }
@@ -70,7 +64,7 @@ public class CgiHandlerImplTest {
         try {
             cgiHandlerImpl.process("TestWithoutRun", new HashMap<>());
             fail(EXPECT_EXCEPTION);
-        } catch (CgiException e) {
+        } catch (CgiInvalidClassException e) {
             assertEquals(format(INVALID_CLASS, "TestWithoutRun"), e.getMessage());
         }
     }
@@ -80,7 +74,7 @@ public class CgiHandlerImplTest {
         try {
             cgiHandlerImpl.process("TestWithPrivateConstructor", new HashMap<>());
             fail(EXPECT_EXCEPTION);
-        } catch (CgiException e) {
+        } catch (CgiCannotInvokeMethodException e) {
             assertEquals(format(CANNOT_INVOKE_METHOD, "run"), e.getMessage());
         }
     }

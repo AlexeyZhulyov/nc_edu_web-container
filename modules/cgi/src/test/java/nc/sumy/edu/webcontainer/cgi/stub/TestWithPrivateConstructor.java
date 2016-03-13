@@ -9,7 +9,6 @@ import java.util.Map;
 public class TestWithPrivateConstructor implements CgiAction {
 
     private TestWithPrivateConstructor() {
-        System.out.println("This class calling NoAccessException");
     }
 
     public TestWithPrivateConstructor(String message) {

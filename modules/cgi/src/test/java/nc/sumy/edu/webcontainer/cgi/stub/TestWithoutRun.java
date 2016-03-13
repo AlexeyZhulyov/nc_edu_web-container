@@ -5,6 +5,6 @@ import nc.sumy.edu.webcontainer.cgi.Cgi;
 @Cgi
 public class TestWithoutRun {
     public void someMethod() {
-        System.out.println("Class for test");
+        //System.out.println("Class for test");
     }
 }
