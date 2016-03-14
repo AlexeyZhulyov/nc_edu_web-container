@@ -17,6 +17,8 @@ import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URL;
 import java.net.URLClassLoader;
+import java.util.HashMap;
+import java.util.Map;
 
 import static java.io.File.separator;
 
@@ -30,12 +32,13 @@ class WebXMLAnalyzer {
     private final File webXml;
     private boolean isValid;
     private Document document;
-    private String urlPattern;
-    private Class servletClass;
+    private Map<String, String>  sa = new HashMap<>();
+    private Map<String, String>  sa2 = new HashMap<>();
+    private Map<String, Class> warData = new HashMap<>();
 
     public WebXMLAnalyzer(String webInf) {
-        webXml = new File(webInf + separator + WEB_XML);
         this.webInf = new File(webInf);
+        webXml = new File(webInf + separator + WEB_XML);
         validateXMLbyDTD();
         setData();
     }
@@ -63,10 +66,15 @@ class WebXMLAnalyzer {
 
     private void setData() {
         NodeList nodeList = document.getElementsByTagName(URL_PATTERN);
-        urlPattern = nodeList.item(0).getTextContent();
+    }
+
+    private Class createClass(File servletFile) {
+        NodeList nodeList = document.getElementsByTagName(URL_PATTERN);
+        String urlPattern = nodeList.item(0).getTextContent();
         nodeList = document.getElementsByTagName(SERVLET_PATH);
         String servletFolder = nodeList.item(0).getTextContent();
-        File servletFile = new File(webInf + separator + CLASS_FOLDER + separator);
+        servletFile = new File(webInf + separator + CLASS_FOLDER + separator);
+        Class servletClass;
         URI uri = null;
         try {
             uri = servletFile.toURI();
@@ -78,35 +86,28 @@ class WebXMLAnalyzer {
         } catch (ClassNotFoundException e) {
             LOGGER.warn("Class cannot be found: ", e);
         }
+        return null;
     }
 
     public boolean isValid() {
         return isValid;
     }
 
-    public String getUrlPattern() {
-        return urlPattern;
-    }
-
-    public Class getServletClass() {
-        return servletClass;
-    }
-
     private class ParsingErrorHandler implements ErrorHandler {
         @Override
-        public void warning(SAXParseException exception) throws SAXException {
+        public void warning(SAXParseException exception) {
             LOGGER.warn(webInf.getAbsolutePath() + " is not valid.", exception);
             isValid = false;
         }
 
         @Override
-        public void error(SAXParseException exception) throws SAXException {
+        public void error(SAXParseException exception) {
             LOGGER.warn(webInf.getAbsolutePath() + " is not valid.", exception);
             isValid = false;
         }
 
         @Override
-        public void fatalError(SAXParseException exception) throws SAXException {
+        public void fatalError(SAXParseException exception) {
             LOGGER.warn(webInf.getAbsolutePath() + " is not valid.", exception);
             isValid = false;
         }
