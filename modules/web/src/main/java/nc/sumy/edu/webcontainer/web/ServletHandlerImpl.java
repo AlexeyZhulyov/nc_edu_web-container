@@ -26,11 +26,11 @@ public class ServletHandlerImpl implements ServletHandler {
                 servlet.init();
                 instances.put(className, servlet);
             } catch (InstantiationException e) {
-                throw new WebException("Cannot create instance",e);
+                throw new WebException("Cannot create instance", e);
             } catch (IllegalAccessException e) {
-                throw new WebException("No access",e);
+                throw new WebException("No access", e);
             } catch (ServletException e) {
-                throw new WebException("Cannot do init()",e);
+                throw new WebException("Cannot do init()", e);
             }
         }
 
@@ -39,9 +39,9 @@ public class ServletHandlerImpl implements ServletHandler {
         try {
             servlet.service(request, response);
         } catch (ServletException e) {
-            throw new WebException("Cannot do service()",e);
+            throw new WebException("Cannot do service()", e);
         } catch (IOException e) {
-            throw new WebException("Cannot read servlet?",e);
+            throw new WebException("Cannot read servlet?", e);
         }
         return response;
     }
