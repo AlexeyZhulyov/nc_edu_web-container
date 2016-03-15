@@ -140,7 +140,10 @@
                         </execution>
                     </executions>
                     <configuration>
-
+                        <excludes>
+                            <exclude>**/RequestWrapper.*</exclude>
+                            <exclude>**/ResponseWrapper.*</exclude>
+                        </excludes>
                         <rules>
                             <rule implementation="org.jacoco.maven.RuleConfiguration">
                                 <element>BUNDLE</element>
