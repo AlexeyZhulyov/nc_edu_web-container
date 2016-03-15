@@ -19,24 +19,23 @@ import java.net.URI;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Map;
 
 import static java.io.File.separator;
 
 class WebXMLAnalyzer {
-    private boolean isValid;
+    private boolean isValid = true;
     private final File webInf;
     private final File webXml;
     private Document document;
     private final File classPath;
-    private Map<String, String> servletTagMap = new HashMap<>();
-    private Map<String, String> servletMappingTagMap = new HashMap<>();
-    private Map<String, Class> dataMap = new HashMap<>();
+    private final Map<String, String> servletTagMap = new HashMap<>();
+    private final Map<String, String> servletMappingTagMap = new HashMap<>();
+    private final Map<String, Class> dataMap = new HashMap<>();
     /*Constants*/
     private static final Logger LOGGER = LoggerFactory.getLogger(WebXMLAnalyzer.class);
     private static final String WEB_XML = "web.xml";
-    private static final String CLASS = "class";
+    private static final String CLASS = "classes";
     private static final String SERVLET_TAG = "servlet";
     private static final String SERVLET_MAPPING_TAG = "servlet-mapping";
     private static final String SERVLET_NAME_TAG = "servlet-name";
@@ -48,7 +47,7 @@ class WebXMLAnalyzer {
         webXml = new File(webInf.toString() + separator + WEB_XML);
         classPath = new File(webInf.toString() + separator + CLASS + separator);
         validateXMLbyDTD();
-        if (isValid()) {
+        if (isValid) {
             makeDataMap();
         }
     }
@@ -71,7 +70,6 @@ class WebXMLAnalyzer {
             LOGGER.warn(webXml.getAbsolutePath() + " have wrong configuration.", e);
             isValid = false;
         }
-        isValid = true;
     }
 
     private void makeDataMap() {
@@ -79,8 +77,8 @@ class WebXMLAnalyzer {
         getServletTagMap(SERVLET_MAPPING_TAG, URL_PATTERN_TAG, servletMappingTagMap);
         Class servletClass;
         for (Map.Entry<String, String> item : servletTagMap.entrySet()) {
-            servletClass = createClass(servletMappingTagMap.get(item.getKey()));
-            dataMap.put(item.getValue(), servletClass);
+            servletClass = createClass(item.getValue());
+            dataMap.put(servletMappingTagMap.get(item.getKey()), servletClass);
         }
     }
 
@@ -113,25 +111,23 @@ class WebXMLAnalyzer {
         return servletClass;
     }
 
-
-    public boolean isValid() {
+    public boolean isXmlValid() {
         return isValid;
     }
 
     public Map<String, Class> getDataMap() {
         return dataMap;
     }
+
     private class ParsingErrorHandler implements ErrorHandler {
         @Override
         public void warning(SAXParseException exception) {
             LOGGER.warn(webInf.getAbsolutePath() + " is not valid.", exception);
-            isValid = false;
         }
 
         @Override
         public void error(SAXParseException exception) {
             LOGGER.warn(webInf.getAbsolutePath() + " is not valid.", exception);
-            isValid = false;
         }
 
         @Override
