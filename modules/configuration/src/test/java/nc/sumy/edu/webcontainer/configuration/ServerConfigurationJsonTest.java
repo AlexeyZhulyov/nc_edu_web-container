@@ -11,6 +11,7 @@ public class ServerConfigurationJsonTest {
     public void noParametersConfigurationTest() {
         ServerConfiguration config = new ServerConfigurationJson();
         assertEquals("Port must be 8090", 8090, config.getPort());
+        assertEquals("WwwLocation must be '../www'", "../www", config.getWwwLocation());
     }
 
     @Test(expected = JsonReadingException.class)
@@ -22,12 +23,14 @@ public class ServerConfigurationJsonTest {
     public void validStringParametersConfigurationTest() {
         ServerConfiguration config = new ServerConfigurationJson("validTestConfiguration.json");
         assertEquals("Port must be 8890", 8890, config.getPort());
+        assertEquals("WwwLocation must be 'test/www'", "test/www", config.getWwwLocation());
     }
 
     @Test
     public void validFileParametersConfigurationStartAndGetTest() {
         ServerConfiguration config = new ServerConfigurationJson(new File("src/test/resources/validTestConfiguration.json"));
         assertEquals("Port must be 8890", 8890, config.getPort());
+        assertEquals("WwwLocation must be 'test/www'", "test/www", config.getWwwLocation());
     }
 
     @Test(expected = JsonReadingException.class)

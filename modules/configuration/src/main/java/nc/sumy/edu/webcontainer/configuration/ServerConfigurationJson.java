@@ -16,6 +16,7 @@ public class ServerConfigurationJson implements ServerConfiguration {
 
     class ConfigurationProperties{
         private int port = 8090;
+        private String wwwLocation = "../www";
 
         public void setPort(int port) {
             this.port = port;
@@ -23,6 +24,14 @@ public class ServerConfigurationJson implements ServerConfiguration {
 
         public int getPort() {
             return port;
+        }
+
+        public String getWwwLocation() {
+            return wwwLocation;
+        }
+
+        public void setWwwLocation(String wwwLocation) {
+            this.wwwLocation = wwwLocation;
         }
     }
 
@@ -65,5 +74,15 @@ public class ServerConfigurationJson implements ServerConfiguration {
 
     public void setPort(int port) {
         this.configurationProperties.setPort(port);
+    }
+
+    @Override
+    public String getWwwLocation() {
+        return this.configurationProperties.getWwwLocation();
+    }
+
+    @Override
+    public void setWwwLocation(String wwwLocation) {
+        this.configurationProperties.setWwwLocation(wwwLocation);
     }
 }
