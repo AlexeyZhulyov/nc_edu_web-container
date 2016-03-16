@@ -11,7 +11,7 @@ public class WebXMLAnalyzerTest {
     private WebXMLAnalyzer analyzer;
     private Map<String, Class> dataMap;
     private final static String WEB_INF = "/WEB-INF";
-    private final static String TEST_PATH = "src/test/java/resources/xml_test_files/test";
+    private final static String TEST_PATH = "src/test/resources/xml_test_files/test";
     private final static String SERVLET1 = "/Servlet";
     private final static String SERVLET2 = "/Servlet2";
 
@@ -44,8 +44,8 @@ public class WebXMLAnalyzerTest {
         analyzer = new WebXMLAnalyzer(new File(TEST_PATH + Integer.toString(3) + WEB_INF));
         dataMap = analyzer.getDataMap();
         assertEquals(analyzer.isXmlValid(), true);
-        assertEquals(dataMap.containsKey(SERVLET1), true);
-        assertEquals(dataMap.containsKey(SERVLET2), true);
+        assertEquals(dataMap.containsKey(SERVLET1), false);
+        assertEquals(dataMap.containsKey(SERVLET2), false);
     }
 
     @Test

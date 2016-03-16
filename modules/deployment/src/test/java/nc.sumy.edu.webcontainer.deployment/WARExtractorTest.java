@@ -9,12 +9,12 @@ import static org.junit.Assert.assertEquals;
 import static java.io.File.*;
 
 public class WarExtractorTest {
-    private static final String DOMAIN_PATH = "src/test/java/resources/www_extractor_test/domains";
+    private static final String DOMAIN_PATH = "src/test/resources/www_extractor_test/domains";
     private final File createdFolder1 = new File(DOMAIN_PATH + separator + "sample");
     private final File createdFolder2 = new File(DOMAIN_PATH + separator + "sample2");
     private final File createdFolder3 = new File(DOMAIN_PATH + separator + "sample3");
     private final WarExtractor extractor = new WarExtractor(
-            new File("src/test/java/resources/www_extractor_test/war"),
+            new File("src/test/resources/www_extractor_test/war"),
             new File(DOMAIN_PATH));
 
     @Test
