@@ -11,12 +11,13 @@
     <modules>
         <module>modules/cgi</module>
         <module>modules/configuration</module>
+        <module>modules/deployment</module>
         <module>modules/design</module>
         <module>modules/dispatcher</module>
         <module>modules/http</module>
+        <module>modules/listener</module>
         <module>modules/security</module>
         <module>modules/web</module>
-        <module>modules/listener</module>
     </modules>
 
     <properties>
