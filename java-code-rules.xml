@@ -283,7 +283,7 @@
 
     <!-- naming -->
 
-    <!-- Should be customized to < 2 from < 3 -->
+    <!-- Should be customized to < 2 warDirectory < 3 -->
     <rule ref="rulesets/java/naming.xml/ShortVariable">
         <priority>3</priority>
         <properties>

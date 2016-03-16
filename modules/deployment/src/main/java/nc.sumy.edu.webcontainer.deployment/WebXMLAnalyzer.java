@@ -22,6 +22,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import static java.io.File.separator;
+import static java.util.Objects.nonNull;
 
 class WebXMLAnalyzer {
     private boolean isValid = true;
@@ -33,7 +34,7 @@ class WebXMLAnalyzer {
     private final Map<String, String> servletMappingTagMap = new HashMap<>();
     private final Map<String, Class> dataMap = new HashMap<>();
     /*Constants*/
-    private static final Logger LOGGER = LoggerFactory.getLogger(WebXMLAnalyzer.class);
+    private static final Logger LOG = LoggerFactory.getLogger(WebXMLAnalyzer.class);
     private static final String WEB_XML = "web.xml";
     private static final String CLASS = "classes";
     private static final String SERVLET_TAG = "servlet";
@@ -63,11 +64,11 @@ class WebXMLAnalyzer {
                 document = builder.parse(webXml);
                 document.getDocumentElement().normalize();
             } catch (SAXException | IOException e) {
-                LOGGER.warn(webXml.getAbsolutePath() + " cannot be parsed.", e);
+                LOG.warn(webXml.getAbsolutePath() + " cannot be parsed.", e);
                 isValid = false;
             }
         } catch (ParserConfigurationException e) {
-            LOGGER.warn(webXml.getAbsolutePath() + " have wrong configuration.", e);
+            LOG.warn(webXml.getAbsolutePath() + " have wrong configuration.", e);
             isValid = false;
         }
     }
@@ -78,7 +79,9 @@ class WebXMLAnalyzer {
         Class servletClass;
         for (Map.Entry<String, String> item : servletTagMap.entrySet()) {
             servletClass = createClass(item.getValue());
-            dataMap.put(servletMappingTagMap.get(item.getKey()), servletClass);
+            if (nonNull(servletClass)) {
+                dataMap.put(servletMappingTagMap.get(item.getKey()), servletClass);
+            }
         }
     }
 
@@ -104,9 +107,9 @@ class WebXMLAnalyzer {
             ClassLoader classLoader = new URLClassLoader(new URL[]{url});
             servletClass = classLoader.loadClass(fullClassName);
         } catch (MalformedURLException e) {
-            LOGGER.warn("Malformed URL had occurred: ", e);
+            LOG.warn("Malformed URL had occurred: ", e);
         } catch (ClassNotFoundException e) {
-            LOGGER.warn("Class cannot be found: ", e);
+            LOG.warn("Class cannot be found: ", e);
         }
         return servletClass;
     }
@@ -120,19 +123,20 @@ class WebXMLAnalyzer {
     }
 
     private class ParsingErrorHandler implements ErrorHandler {
+
         @Override
         public void warning(SAXParseException exception) {
-            LOGGER.warn(webInf.getAbsolutePath() + " is not valid.", exception);
+            LOG.warn(webInf.getAbsolutePath() + " is not valid.", exception);
         }
 
         @Override
         public void error(SAXParseException exception) {
-            LOGGER.warn(webInf.getAbsolutePath() + " is not valid.", exception);
+            LOG.warn(webInf.getAbsolutePath() + " is not valid.", exception);
         }
 
         @Override
         public void fatalError(SAXParseException exception) {
-            LOGGER.warn(webInf.getAbsolutePath() + " is not valid.", exception);
+            LOG.warn(webInf.getAbsolutePath() + " is not valid.", exception);
             isValid = false;
         }
     }
