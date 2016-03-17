@@ -11,6 +11,7 @@
     <modules>
         <module>modules/cgi</module>
         <module>modules/configuration</module>
+        <module>modules/common</module>
         <module>modules/deployment</module>
         <module>modules/design</module>
         <module>modules/dispatcher</module>
