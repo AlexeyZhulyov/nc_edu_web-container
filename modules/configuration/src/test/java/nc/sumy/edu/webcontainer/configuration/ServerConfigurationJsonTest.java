@@ -16,8 +16,7 @@ public class ServerConfigurationJsonTest {
 
     @Test(expected = JsonReadingException.class)
     public void systemVariableConfigurationTest() {
-        ServerConfiguration config = new ServerConfigurationJson();
-        config.checkSystemVariable("SERVER_HOME");
+        new ServerConfigurationJson().checkSystemVariable("SERVER_HOME");
     }
 
     @Test(expected = JsonReadingException.class)
