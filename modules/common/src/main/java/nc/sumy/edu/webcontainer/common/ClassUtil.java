@@ -1,5 +1,9 @@
 package nc.sumy.edu.webcontainer.common;
 
+import org.apache.commons.io.FileUtils;
+
+import java.io.File;
+import java.io.IOException;
 import java.io.InputStream;
 
 public class ClassUtil {
@@ -18,6 +22,14 @@ public class ClassUtil {
             return klass.newInstance();
         } catch (IllegalAccessException | InstantiationException e) {
             throw new InstanceNotCreatedException(klass.getCanonicalName(), e);
+        }
+    }
+
+    public static String fileToString(File file){
+        try {
+            return FileUtils.readFileToString(file);
+        } catch (IOException e) {
+            throw new FileNotReadException(file.getName(), e);
         }
     }
 }
