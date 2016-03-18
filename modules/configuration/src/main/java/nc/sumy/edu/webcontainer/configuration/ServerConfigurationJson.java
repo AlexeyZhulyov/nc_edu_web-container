@@ -2,7 +2,6 @@ package nc.sumy.edu.webcontainer.configuration;
 
 import java.io.*;
 import java.nio.charset.Charset;
-import java.util.Objects;
 
 import com.google.gson.*;
 import nc.sumy.edu.webcontainer.common.FileNotReadException;
