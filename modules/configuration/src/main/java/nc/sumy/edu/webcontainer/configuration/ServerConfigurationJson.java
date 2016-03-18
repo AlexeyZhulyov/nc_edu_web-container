@@ -2,6 +2,7 @@ package nc.sumy.edu.webcontainer.configuration;
 
 import java.io.*;
 import java.nio.charset.Charset;
+import java.util.Objects;
 
 import com.google.gson.*;
 import nc.sumy.edu.webcontainer.common.FileNotReadException;
@@ -70,7 +71,14 @@ public class ServerConfigurationJson implements ServerConfiguration {
         }
     }
 
-
+    public void checkSystemVariable(String systemVariableName) {
+        String tempPath = System.getenv(systemVariableName);
+        if(Objects.isNull(tempPath)) {
+            throw new JsonReadingException("System variable " + systemVariableName + " doesn't exist. Server could" +
+                    " not be started");
+        }
+        this.configurationProperties.setWwwLocation(tempPath);
+    }
 
     public int getPort() {
         return configurationProperties.getPort();
