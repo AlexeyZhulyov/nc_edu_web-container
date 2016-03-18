@@ -1,5 +1,6 @@
 package nc.sumy.edu.webcontainer.cgi;
 
+import nc.sumy.edu.webcontainer.common.InstanceNotCreatedException;
 import nc.sumy.edu.webcontainer.http.HttpRequest;
 import nc.sumy.edu.webcontainer.http.Request;
 import org.junit.Test;
@@ -7,8 +8,6 @@ import org.junit.Before;
 
 import java.util.HashMap;
 
-import static java.lang.String.*;
-import static nc.sumy.edu.webcontainer.cgi.CgiException.*;
 import static org.junit.Assert.*;
 
 public class CgiHandlerImplTest {
@@ -16,7 +15,6 @@ public class CgiHandlerImplTest {
     private static final String HOST = "nc.pc";
     private static final String IP_ADDRESS = "";
     private final static String CLASS_NAME_TEST = "Test";
-    private final static String EXPECT_EXCEPTION = "Expected an CgiException to be thrown";
 
     @Before
     public void setUp() {
@@ -44,48 +42,23 @@ public class CgiHandlerImplTest {
         assertEquals(testClass.getClass(), cgiHandlerImpl.find("Test"));
     }
 
-    @Test(expected = CgiException.class)
+    @Test(expected = CgiClassNotFoundException.class)
     public void findException() {
         cgiHandlerImpl.find("Absent");
     }
 
-    @Test
-    public void findExceptionMessage() {
-        try {
-            cgiHandlerImpl.find("Absent");
-            fail(EXPECT_EXCEPTION);
-        } catch (CgiClassNotFoundException e) {
-            assertEquals(format(CLASS_NOT_FOUND, "Absent"), e.getMessage());
-        }
+    @Test(expected = CgiInvalidClassException.class)
+    public void runException1() {
+        cgiHandlerImpl.process("TestWithoutRun", new HashMap<>());
     }
 
-    @Test
-    public void runExceptionMessage1() {
-        try {
-            cgiHandlerImpl.process("TestWithoutRun", new HashMap<>());
-            fail(EXPECT_EXCEPTION);
-        } catch (CgiInvalidClassException e) {
-            assertEquals(format(INVALID_CLASS, "TestWithoutRun"), e.getMessage());
-        }
+    @Test(expected = InstanceNotCreatedException.class)
+    public void runException2() {
+        cgiHandlerImpl.process("TestWithPrivateConstructor", new HashMap<>());
     }
 
-    @Test
-    public void runExceptionMessage2() {
-        try {
-            cgiHandlerImpl.process("TestWithPrivateConstructor", new HashMap<>());
-            fail(EXPECT_EXCEPTION);
-        } catch (CgiCannotInvokeMethodException e) {
-            assertEquals(format(CANNOT_INVOKE_METHOD, "run"), e.getMessage());
-        }
-    }
-
-    @Test
-    public void runExceptionMessage3() {
-        try {
-            cgiHandlerImpl.process("AbstractTest", new HashMap<>());
-            fail(EXPECT_EXCEPTION);
-        } catch (CgiException e) {
-            assertEquals(CANNOT_CREATE_INSTANCE, e.getMessage());
-        }
+    @Test(expected = InstanceNotCreatedException.class)
+    public void runException3() {
+        cgiHandlerImpl.process("AbstractTest", new HashMap<>());
     }
 }
