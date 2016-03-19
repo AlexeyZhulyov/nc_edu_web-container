@@ -5,9 +5,7 @@ import org.slf4j.LoggerFactory;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
-import org.xml.sax.ErrorHandler;
 import org.xml.sax.SAXException;
-import org.xml.sax.SAXParseException;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -24,7 +22,7 @@ import java.util.Map;
 import static java.io.File.separator;
 import static java.util.Objects.nonNull;
 
-class WebXMLAnalyzer {
+public class WebXMLAnalyzer {
     private boolean isValid = true;
     private final File webInf;
     private final File webXml;
@@ -59,7 +57,9 @@ class WebXMLAnalyzer {
         DocumentBuilder builder;
         try {
             builder = domFactory.newDocumentBuilder();
-            builder.setErrorHandler(new ParsingErrorHandler());
+            ParsingErrorHandler errorHandler = new ParsingErrorHandler(LOG, webInf);
+            builder.setErrorHandler(errorHandler);
+            isValid = errorHandler.isXmlValid();
             try {
                 document = builder.parse(webXml);
                 document.getDocumentElement().normalize();
@@ -122,22 +122,4 @@ class WebXMLAnalyzer {
         return dataMap;
     }
 
-    private class ParsingErrorHandler implements ErrorHandler {
-
-        @Override
-        public void warning(SAXParseException exception) {
-            LOG.warn(webInf.getAbsolutePath() + " is not valid.", exception);
-        }
-
-        @Override
-        public void error(SAXParseException exception) {
-            LOG.warn(webInf.getAbsolutePath() + " is not valid.", exception);
-        }
-
-        @Override
-        public void fatalError(SAXParseException exception) {
-            LOG.warn(webInf.getAbsolutePath() + " is not valid.", exception);
-            isValid = false;
-        }
-    }
 }

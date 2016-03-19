@@ -13,6 +13,7 @@ public class WarExtractorTest {
     private final File createdFolder1 = new File(DOMAIN_PATH + separator + "sample");
     private final File createdFolder2 = new File(DOMAIN_PATH + separator + "sample2");
     private final File createdFolder3 = new File(DOMAIN_PATH + separator + "sample3");
+    private final File createdFolderIllegal = new File(DOMAIN_PATH + separator + "sampleNotExist");
     private final WarExtractor extractor = new WarExtractor(
             new File("src/test/resources/www_extractor_test/war"),
             new File(DOMAIN_PATH));
@@ -36,6 +37,13 @@ public class WarExtractorTest {
         assertEquals(createdFolder3.exists(), true);
         extractor.extractWarFile("sample3.war");
         assertEquals(createdFolder3.exists(), true);
+    }
+
+    @Test
+    public void testExtractorIllegal() {
+        assertEquals(createdFolderIllegal.exists(), false);
+        extractor.extractWarFile("sampleNotExist.war");
+        assertEquals(createdFolderIllegal.exists(), false);
     }
 
     @After

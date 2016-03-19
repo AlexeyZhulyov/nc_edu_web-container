@@ -141,7 +141,9 @@
                         </execution>
                     </executions>
                     <configuration>
-
+                        <excludes>
+                            <exclude>**/ParsingErrorHandler.*</exclude>
+                        </excludes>
                         <rules>
                             <rule implementation="org.jacoco.maven.RuleConfiguration">
                                 <element>BUNDLE</element>

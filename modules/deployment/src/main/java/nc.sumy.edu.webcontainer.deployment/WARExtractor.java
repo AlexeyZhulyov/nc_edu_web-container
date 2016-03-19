@@ -24,33 +24,45 @@ public class WarExtractor {
 
     @SuppressWarnings("PMD")
     public void extractWarFile(String jarFile) {
-        deployDirectory = new File(deployDirectory.getPath() + separator + split(jarFile, ".")[0]);
-        if (deployDirectory.exists()) {
-            deleteQuietly(deployDirectory);
-        }
-        deployDirectory.mkdir();
+        refreshDirectory(jarFile);
         try {
             JarFile jar = new JarFile(warDirectory + separator + jarFile);
             Enumeration entries = jar.entries();
-            JarEntry jarEntry;
-            File file;
             while (entries.hasMoreElements()) {
-                jarEntry = (JarEntry) entries.nextElement();
-                file = new File(deployDirectory.getPath() + separator + jarEntry.getName());
-                if (jarEntry.isDirectory()) {
-                    file.mkdir();
-                    continue;
-                }
-                try (InputStream in = new BufferedInputStream(jar.getInputStream(jarEntry));
-                     OutputStream out = new BufferedOutputStream(new FileOutputStream(file))
-                ) {
-                    copy(in, out);
-                }
+                extractFile(jar, entries);
             }
         } catch (IOException e) {
             deleteQuietly(deployDirectory);
             LOG.warn("Cannot read/write/found file: ", e);
         }
+    }
+
+    private void extractFile(JarFile jar, Enumeration entries) throws IOException {
+        JarEntry jarEntry;
+        File file;
+        jarEntry = (JarEntry) entries.nextElement();
+        file = new File(deployDirectory.getPath() + separator + jarEntry.getName());
+        if (jarEntry.isDirectory()) {
+            file.mkdir();
+            return;
+        }
+        createFile(jar, jarEntry, file);
+    }
+
+        private void createFile(JarFile jar, JarEntry jarEntry, File file) throws IOException {
+            try (InputStream in = new BufferedInputStream(jar.getInputStream(jarEntry));
+                 OutputStream out = new BufferedOutputStream(new FileOutputStream(file))
+            ) {
+                copy(in, out);
+            }
+        }
+
+    private void refreshDirectory(String jarFile) {
+        deployDirectory = new File(deployDirectory.getPath() + separator + split(jarFile, ".")[0]);
+        if (deployDirectory.exists()) {
+            deleteQuietly(deployDirectory);
+        }
+        deployDirectory.mkdir();
     }
 
 }

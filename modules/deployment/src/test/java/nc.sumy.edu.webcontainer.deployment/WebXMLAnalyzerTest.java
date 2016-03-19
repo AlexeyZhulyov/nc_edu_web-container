@@ -44,8 +44,8 @@ public class WebXMLAnalyzerTest {
         analyzer = new WebXMLAnalyzer(new File(TEST_PATH + Integer.toString(3) + WEB_INF));
         dataMap = analyzer.getDataMap();
         assertEquals(analyzer.isXmlValid(), true);
-        assertEquals(dataMap.containsKey(SERVLET1), false);
-        assertEquals(dataMap.containsKey(SERVLET2), false);
+        assertEquals(dataMap.containsKey(SERVLET1), true);
+        assertEquals(dataMap.containsKey(SERVLET2), true);
     }
 
     @Test
