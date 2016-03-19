@@ -49,13 +49,13 @@ public class ArchiveExtractor {
         createFile(jar, jarEntry, file);
     }
 
-        private void createFile(JarFile jar, JarEntry jarEntry, File file) throws IOException {
-            try (InputStream in = new BufferedInputStream(jar.getInputStream(jarEntry));
+    void createFile(JarFile jar, JarEntry jarEntry, File file) throws IOException {
+        try (InputStream in = new BufferedInputStream(jar.getInputStream(jarEntry));
                  OutputStream out = new BufferedOutputStream(new FileOutputStream(file))
-            ) {
-                copy(in, out);
-            }
+        ) {
+            copy(in, out);
         }
+    }
 
     private void refreshDirectory(String jarFile) {
         deployDirectory = new File(deployDirectory.getPath() + separator + split(jarFile, ".")[0]);
