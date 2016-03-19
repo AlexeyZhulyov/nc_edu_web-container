@@ -6,5 +6,6 @@ import nc.sumy.edu.webcontainer.http.Request;
 public interface Dispatcher {
 
     HttpResponse getResponse(Request request);
+    HttpResponse getResponse();
 
 }

@@ -22,5 +22,10 @@ public class ServerDispatcher implements Dispatcher{
     public HttpResponse getResponse(Request request) {
         return null;
     }
-    
+
+    @Override
+    public HttpResponse getResponse() {
+        return null;
+    }
+
 }
