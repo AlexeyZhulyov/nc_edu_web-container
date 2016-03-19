@@ -12,12 +12,12 @@ import static org.apache.commons.io.FileUtils.deleteQuietly;
 import static org.apache.commons.io.IOUtils.copy;
 import static org.apache.commons.lang3.StringUtils.split;
 
-public class WarExtractor {
-    private static final Logger LOG = LoggerFactory.getLogger(WarExtractor.class);
+public class ArchiveExtractor {
+    private static final Logger LOG = LoggerFactory.getLogger(ArchiveExtractor.class);
     private final File warDirectory;
     private File deployDirectory;
 
-    public WarExtractor(File warDirectory, File domainsDirectory) {
+    public ArchiveExtractor(File warDirectory, File domainsDirectory) {
         this.warDirectory = warDirectory;
         this.deployDirectory = domainsDirectory;
     }

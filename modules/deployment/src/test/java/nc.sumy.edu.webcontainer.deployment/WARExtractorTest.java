@@ -14,7 +14,7 @@ public class WarExtractorTest {
     private final File createdFolder2 = new File(DOMAIN_PATH + separator + "sample2");
     private final File createdFolder3 = new File(DOMAIN_PATH + separator + "sample3");
     private final File createdFolderIllegal = new File(DOMAIN_PATH + separator + "sampleNotExist");
-    private final WarExtractor extractor = new WarExtractor(
+    private final ArchiveExtractor extractor = new ArchiveExtractor(
             new File("src/test/resources/www_extractor_test/war"),
             new File(DOMAIN_PATH));
 
