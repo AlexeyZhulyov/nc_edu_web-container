@@ -8,7 +8,7 @@ import static org.apache.commons.io.FileUtils.deleteQuietly;
 import static org.junit.Assert.assertEquals;
 import static java.io.File.*;
 
-public class WarExtractorTest {
+public class ArchiveExtractorTest {
     private static final String DOMAIN_PATH = "src/test/resources/www_extractor_test/domains";
     private final File createdFolder1 = new File(DOMAIN_PATH + separator + "sample");
     private final File createdFolder2 = new File(DOMAIN_PATH + separator + "sample2");
