@@ -8,7 +8,5 @@ public class ServerDispatcherTest {
 
     @Test
     public void getResponse() {
-        ServerDispatcher dispatcher = new ServerDispatcher();
-        assertEquals(dispatcher.getResponse(), null);
     }
 }

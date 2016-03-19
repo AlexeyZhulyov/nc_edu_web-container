@@ -143,18 +143,15 @@
                     </executions>
                     <configuration>
                         <excludes>
-                            <exclude>**/RequestWrapper.*</exclude>
-                            <exclude>**/ResponseWrapper.*</exclude>
-                            <exclude>**/ParsingErrorHandler.*</exclude>
-                            <exclude>**/AutoDeployment.*</exclude>
-                            <exclude>**/ArchiveExtractor.*</exclude>
-                            <exclude>**/WebXMLAnalyzer.*</exclude>
+                            <exclude>**/web/RequestWrapper.*</exclude>
+                            <exclude>**/web/ResponseWrapper.*</exclude>
+                            <exclude>**/deployment/ParsingErrorHandler.*</exclude>
                         </excludes>
                         <rules>
                             <rule implementation="org.jacoco.maven.RuleConfiguration">
                                 <element>BUNDLE</element>
                                 <limits>
-                                     <limit implementation="org.jacoco.report.check.Limit">
+                                    <limit implementation="org.jacoco.report.check.Limit">
                                         <counter>INSTRUCTION</counter>
                                         <value>COVEREDRATIO</value>
                                         <minimum>0.85</minimum>
