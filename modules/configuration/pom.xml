@@ -12,4 +12,12 @@
 
     <artifactId>configuration</artifactId>
 
+    <dependencies>
+        <dependency>
+            <groupId>nc.edu.webcontainer</groupId>
+            <artifactId>common</artifactId>
+            <version>0.1</version>
+        </dependency>
+    </dependencies>
+
 </project>

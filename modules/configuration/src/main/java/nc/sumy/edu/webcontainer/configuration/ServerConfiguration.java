@@ -8,4 +8,6 @@ public interface ServerConfiguration {
     String getWwwLocation();
 
     void setWwwLocation(String wwwLocation);
+
+    void checkSystemVariable(String systemVariableName);
 }

@@ -2,13 +2,15 @@ package nc.sumy.edu.webcontainer.configuration;
 
 import java.io.*;
 import java.nio.charset.Charset;
-import java.nio.file.Files;
-import java.nio.file.Paths;
+import java.util.Objects;
 
 import com.google.gson.*;
+import nc.sumy.edu.webcontainer.common.FileNotReadException;
 import org.apache.maven.shared.utils.io.IOUtil;
+import nc.sumy.edu.webcontainer.common.FileNotFoundException;
 
-import static nc.sumy.edu.webcontainer.configuration.ClasspathUtils.getInputStreamByName;
+import static nc.sumy.edu.webcontainer.common.ClassUtil.fileToString;
+import static nc.sumy.edu.webcontainer.common.ClassUtil.getInputStreamByName;
 
 
 public class ServerConfigurationJson implements ServerConfiguration {
@@ -16,7 +18,7 @@ public class ServerConfigurationJson implements ServerConfiguration {
 
     class ConfigurationProperties{
         private int port = 8090;
-        private String wwwLocation = "../www";
+        private String wwwLocation;
 
         public void setPort(int port) {
             this.port = port;
@@ -37,9 +39,8 @@ public class ServerConfigurationJson implements ServerConfiguration {
 
     public ServerConfigurationJson(File configurationFile) {
         try{
-            byte[] bytesOfFile = Files.readAllBytes(Paths.get(configurationFile.getPath()));
-            setConfigFromJson( new String(bytesOfFile, Charset.defaultCharset()));
-        } catch (IOException e) {
+            setConfigFromJson( fileToString(configurationFile));
+        } catch (FileNotReadException e) {
             throw new JsonReadingException("File was not read", e);
         }
     }
@@ -48,7 +49,7 @@ public class ServerConfigurationJson implements ServerConfiguration {
         try{
             InputStream inputStream = getInputStreamByName(ServerConfigurationJson.class, configurationFileName);
             setConfigFromJson(IOUtil.toString(inputStream, String.valueOf(Charset.defaultCharset())));
-        } catch (IOException e) {
+        } catch (IOException | FileNotFoundException e) {
             throw new JsonReadingException("File " + configurationFileName +
                      " was not read properly", e);
         }
@@ -56,16 +57,27 @@ public class ServerConfigurationJson implements ServerConfiguration {
 
     public ServerConfigurationJson() {
         this.configurationProperties = new ConfigurationProperties();
+        //checkSystemVariable("SERVER_HOME");
     }
 
 
     private void setConfigFromJson(String propertiesString) {
         try{
             this.configurationProperties = new Gson().fromJson(propertiesString, ConfigurationProperties.class);
+            //checkSystemVariable("SERVER_HOME");
         }
         catch (JsonSyntaxException e) {
             throw new JsonReadingException("ServerConfiguration string has inappropriate format", e);
         }
+    }
+
+    public void checkSystemVariable(String systemVariableName) {
+        String tempPath = System.getenv(systemVariableName);
+        if(Objects.isNull(tempPath)) {
+            throw new JsonReadingException("System variable " + systemVariableName + " doesn't exist. Server could" +
+                    " not be started");
+        }
+        this.configurationProperties.setWwwLocation(tempPath);
     }
 
     public int getPort() {

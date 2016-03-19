@@ -11,7 +11,12 @@ public class ServerConfigurationJsonTest {
     public void noParametersConfigurationTest() {
         ServerConfiguration config = new ServerConfigurationJson();
         assertEquals("Port must be 8090", 8090, config.getPort());
-        assertEquals("WwwLocation must be '../www'", "../www", config.getWwwLocation());
+        assertEquals("WwwLocation must be 'null'", null, config.getWwwLocation());
+    }
+
+    @Test(expected = JsonReadingException.class)
+    public void systemVariableConfigurationTest() {
+        new ServerConfigurationJson().checkSystemVariable("SERVER_HOME");
     }
 
     @Test(expected = JsonReadingException.class)
