@@ -1,4 +1,0 @@
-GROUP,PACKAGE,CLASS,INSTRUCTION_MISSED,INSTRUCTION_COVERED,BRANCH_MISSED,BRANCH_COVERED,LINE_MISSED,LINE_COVERED,COMPLEXITY_MISSED,COMPLEXITY_COVERED,METHOD_MISSED,METHOD_COVERED
-deployment,nc.sumy.edu.webcontainer.deployment,WebXMLAnalyzer,23,242,0,8,5,53,0,12,0,8
-deployment,nc.sumy.edu.webcontainer.deployment,WarExtractor,60,159,12,10,0,32,8,9,0,6
-deployment,nc.sumy.edu.webcontainer.deployment,AutoDeployment,3,0,0,0,1,0,1,0,1,0
