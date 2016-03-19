@@ -12,5 +12,28 @@
 
     <artifactId>listener</artifactId>
 
+    <dependencies>
+        <dependency>
+            <groupId>nc.edu.webcontainer</groupId>
+            <artifactId>configuration</artifactId>
+            <version>0.1</version>
+        </dependency>
+        <dependency>
+            <groupId>nc.edu.webcontainer</groupId>
+            <artifactId>deployment</artifactId>
+            <version>0.1</version>
+        </dependency>
+        <dependency>
+            <groupId>nc.edu.webcontainer</groupId>
+            <artifactId>http</artifactId>
+            <version>0.1</version>
+        </dependency>
+        <dependency>
+            <groupId>nc.edu.webcontainer</groupId>
+            <artifactId>dispatcher</artifactId>
+            <version>0.1</version>
+        </dependency>
+    </dependencies>
+
 
 </project>

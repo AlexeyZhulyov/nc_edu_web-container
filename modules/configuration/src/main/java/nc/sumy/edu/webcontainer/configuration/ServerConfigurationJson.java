@@ -2,13 +2,15 @@ package nc.sumy.edu.webcontainer.configuration;
 
 import java.io.*;
 import java.nio.charset.Charset;
-import java.nio.file.Files;
-import java.nio.file.Paths;
+import java.util.Objects;
 
 import com.google.gson.*;
+import nc.sumy.edu.webcontainer.common.FileNotReadException;
 import org.apache.maven.shared.utils.io.IOUtil;
+import nc.sumy.edu.webcontainer.common.FileNotFoundException;
 
-import static nc.sumy.edu.webcontainer.configuration.ClasspathUtils.getInputStreamByName;
+import static nc.sumy.edu.webcontainer.common.ClassUtil.fileToString;
+import static nc.sumy.edu.webcontainer.common.ClassUtil.getInputStreamByName;
 
 
 public class ServerConfigurationJson implements ServerConfiguration {
@@ -16,6 +18,7 @@ public class ServerConfigurationJson implements ServerConfiguration {
 
     class ConfigurationProperties{
         private int port = 8090;
+        private String wwwLocation;
 
         public void setPort(int port) {
             this.port = port;
@@ -24,43 +27,57 @@ public class ServerConfigurationJson implements ServerConfiguration {
         public int getPort() {
             return port;
         }
+
+        public String getWwwLocation() {
+            return wwwLocation;
+        }
+
+        public void setWwwLocation(String wwwLocation) {
+            this.wwwLocation = wwwLocation;
+        }
     }
 
     public ServerConfigurationJson(File configurationFile) {
         try{
-            byte[] bytesOfFile = Files.readAllBytes(Paths.get(configurationFile.getPath()));
-            String stringFile = new String(bytesOfFile, Charset.defaultCharset());
-            setConfigFromJson(stringFile);
-        } catch (IOException e) {
-            throw new ServerConfigurationJsonReadingException("File was not read", e);
+            setConfigFromJson( fileToString(configurationFile));
+        } catch (FileNotReadException e) {
+            throw new JsonReadingException("File was not read", e);
         }
     }
 
     public ServerConfigurationJson(String configurationFileName) {
         try{
             InputStream inputStream = getInputStreamByName(ServerConfigurationJson.class, configurationFileName);
-            if (inputStream == null) {
-                throw new ServerConfigurationJsonReadingException("Unable to find the file " + configurationFileName);
-            }
             setConfigFromJson(IOUtil.toString(inputStream, String.valueOf(Charset.defaultCharset())));
-        } catch (IOException e) {
-            throw new ServerConfigurationJsonReadingException("File " + configurationFileName +
+        } catch (IOException | FileNotFoundException e) {
+            throw new JsonReadingException("File " + configurationFileName +
                      " was not read properly", e);
         }
     }
 
     public ServerConfigurationJson() {
         this.configurationProperties = new ConfigurationProperties();
+        //checkSystemVariable("SERVER_HOME");
     }
 
 
     private void setConfigFromJson(String propertiesString) {
         try{
             this.configurationProperties = new Gson().fromJson(propertiesString, ConfigurationProperties.class);
+            //checkSystemVariable("SERVER_HOME");
         }
         catch (JsonSyntaxException e) {
-            throw new ServerConfigurationJsonReadingException("ServerConfiguration string has inappropriate format", e);
+            throw new JsonReadingException("ServerConfiguration string has inappropriate format", e);
         }
+    }
+
+    public void checkSystemVariable(String systemVariableName) {
+        String tempPath = System.getProperty(systemVariableName);
+        if(Objects.isNull(tempPath)) {
+            throw new JsonReadingException("System variable " + systemVariableName + " doesn't exist. Server could" +
+                    " not be started");
+        }
+        this.configurationProperties.setWwwLocation(tempPath);
     }
 
     public int getPort() {
@@ -69,5 +86,15 @@ public class ServerConfigurationJson implements ServerConfiguration {
 
     public void setPort(int port) {
         this.configurationProperties.setPort(port);
+    }
+
+    @Override
+    public String getWwwLocation() {
+        return this.configurationProperties.getWwwLocation();
+    }
+
+    @Override
+    public void setWwwLocation(String wwwLocation) {
+        this.configurationProperties.setWwwLocation(wwwLocation);
     }
 }

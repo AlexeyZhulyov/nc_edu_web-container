@@ -11,10 +11,11 @@
     <modules>
         <module>modules/cgi</module>
         <module>modules/configuration</module>
+        <module>modules/common</module>
         <module>modules/deployment</module>
         <module>modules/design</module>
-            <module>modules/dispatcher</module>
-            <module>modules/http</module>
+        <module>modules/dispatcher</module>
+        <module>modules/http</module>
         <module>modules/listener</module>
         <module>modules/security</module>
         <module>modules/web</module>
@@ -142,10 +143,8 @@
                     </executions>
                     <configuration>
                         <excludes>
-                            <exclude>**/ParsingErrorHandler.*</exclude>
-                            <exclude>**/AutoDeployment.*</exclude>
-                            <exclude>**/ArchiveExtractor.*</exclude>
-                            <exclude>**/WebXMLAnalyzer.*</exclude>
+                            <exclude>**/RequestWrapper.*</exclude>
+                            <exclude>**/ResponseWrapper.*</exclude>
                         </excludes>
                         <rules>
                             <rule implementation="org.jacoco.maven.RuleConfiguration">
