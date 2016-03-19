@@ -143,6 +143,9 @@
                     <configuration>
                         <excludes>
                             <exclude>**/ParsingErrorHandler.*</exclude>
+                            <exclude>**/AutoDeployment.*</exclude>
+                            <exclude>**/ArchiveExtractor.*</exclude>
+                            <exclude>**/WebXMLAnalyzer.*</exclude>
                         </excludes>
                         <rules>
                             <rule implementation="org.jacoco.maven.RuleConfiguration">
