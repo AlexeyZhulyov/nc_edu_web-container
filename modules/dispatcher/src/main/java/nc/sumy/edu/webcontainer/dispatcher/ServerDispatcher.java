@@ -10,9 +10,12 @@ import nc.sumy.edu.webcontainer.http.Request;
  * @author Vinogradov Maxim
  */
 public class ServerDispatcher implements Dispatcher{
+    ServerConfiguration serverConfiguration;
+    Deployment deployment;
 
     public ServerDispatcher(ServerConfiguration configuration, Deployment deployment) {
-
+        this.deployment = deployment;
+        this.serverConfiguration = configuration;
     }
 
     @Override
