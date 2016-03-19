@@ -38,10 +38,8 @@ public class ArchiveExtractor {
     }
 
     private void extractFile(JarFile jar, Enumeration entries) throws IOException {
-        JarEntry jarEntry;
-        File file;
-        jarEntry = (JarEntry) entries.nextElement();
-        file = new File(deployDirectory.getPath() + separator + jarEntry.getName());
+        JarEntry jarEntry = (JarEntry) entries.nextElement();
+        File file = new File(deployDirectory.getPath() + separator + jarEntry.getName());
         if (jarEntry.isDirectory()) {
             file.mkdir();
             return;
@@ -51,7 +49,7 @@ public class ArchiveExtractor {
 
     void createFile(JarFile jar, JarEntry jarEntry, File file) throws IOException {
         try (InputStream in = new BufferedInputStream(jar.getInputStream(jarEntry));
-                 OutputStream out = new BufferedOutputStream(new FileOutputStream(file))
+             OutputStream out = new BufferedOutputStream(new FileOutputStream(file))
         ) {
             copy(in, out);
         }
