@@ -28,6 +28,11 @@ public class ServerSocketListener extends Thread {
     }
 
     public void stopListening(){
+        try {
+            serverSocket.close();
+        } catch (IOException e) {
+            LOGGER.warn("ServerSocket was not closed properly.", e);
+        }
         flag = false;
     }
 

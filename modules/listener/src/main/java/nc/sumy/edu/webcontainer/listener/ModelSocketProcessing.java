@@ -24,9 +24,10 @@ public class ModelSocketProcessing {
     }
 
     public void processRequest(Socket clientSocket) {
-        try{
-            InputStream clientInput = clientSocket.getInputStream();
-            OutputStream clientOutput = clientSocket.getOutputStream();
+
+        try( InputStream clientInput = clientSocket.getInputStream();
+             OutputStream clientOutput = clientSocket.getOutputStream())
+        {
             String requestString = IOUtil.toString(clientInput, String.valueOf(Charset.defaultCharset()));
             Request clientRequest = new HttpRequest(requestString,
                     clientSocket.getRemoteSocketAddress().toString(), clientSocket.getInetAddress().getHostAddress() );
@@ -34,6 +35,12 @@ public class ModelSocketProcessing {
             clientOutput.write(serverResponse.getResponse());
         } catch (IOException e) {
             LOGGER.error("Request processing was unsuccessful. IOException appeared", e);
+        } finally {
+            try {
+                clientSocket.close();
+            } catch (IOException e) {
+                LOGGER.warn("Socket was not closed properly.", e);
+            }
         }
     }
 }
