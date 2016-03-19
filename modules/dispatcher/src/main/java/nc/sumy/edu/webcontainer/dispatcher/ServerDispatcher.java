@@ -18,6 +18,10 @@ public class ServerDispatcher implements Dispatcher{
         this.serverConfiguration = configuration;
     }
 
+    public ServerDispatcher() {
+        super();
+    }
+
     @Override
     public HttpResponse getResponse(Request request) {
         return null;
