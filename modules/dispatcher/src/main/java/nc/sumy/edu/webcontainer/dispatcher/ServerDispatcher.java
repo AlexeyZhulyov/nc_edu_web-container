@@ -10,14 +10,26 @@ import nc.sumy.edu.webcontainer.http.Request;
  * @author Vinogradov Maxim
  */
 public class ServerDispatcher implements Dispatcher{
+    ServerConfiguration serverConfiguration;
+    Deployment deployment;
 
     public ServerDispatcher(ServerConfiguration configuration, Deployment deployment) {
+        this.deployment = deployment;
+        this.serverConfiguration = configuration;
+    }
 
+    public ServerDispatcher() {
+        super();
     }
 
     @Override
     public HttpResponse getResponse(Request request) {
         return null;
     }
-    
+
+    @Override
+    public HttpResponse getResponse() {
+        return null;
+    }
+
 }
