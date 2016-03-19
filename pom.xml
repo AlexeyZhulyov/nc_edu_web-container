@@ -143,8 +143,9 @@
                     </executions>
                     <configuration>
                         <excludes>
-                            <exclude>**/RequestWrapper.*</exclude>
-                            <exclude>**/ResponseWrapper.*</exclude>
+                            <exclude>**/web/RequestWrapper.java</exclude>
+                            <exclude>**/web/ResponseWrapper.java</exclude>
+                            <exclude>**/deployment/ParsingErrorHandler.java</exclude>
                         </excludes>
                         <rules>
                             <rule implementation="org.jacoco.maven.RuleConfiguration">
