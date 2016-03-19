@@ -10,10 +10,11 @@ import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 
-public class ServerSocketListener implements Runnable {
+public class ServerSocketListener extends Thread {
     private ServerSocket serverSocket;
     private static final Logger LOGGER = LoggerFactory.getLogger(ServerSocketListener.class);
     private ModelSocketProcessing model;
+    private boolean flag = true;
 
     public ServerSocketListener(ServerConfiguration configuration, Deployment deployment) throws IOException {
         this.model = new ModelSocketProcessing(new ServerDispatcher(configuration, deployment));
@@ -26,10 +27,14 @@ public class ServerSocketListener implements Runnable {
         }
     }
 
+    public void stopListening(){
+        flag = false;
+    }
+
 
     @Override
     public void run() {
-        while (true) {
+        while (flag) {
             try {
                 Socket clientSocket = this.serverSocket.accept();
                 new Thread() {

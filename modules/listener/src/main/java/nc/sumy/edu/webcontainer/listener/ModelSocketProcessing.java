@@ -33,7 +33,7 @@ public class ModelSocketProcessing {
             Response serverResponse = dispatcher.getResponse(clientRequest);
             clientOutput.write(serverResponse.getResponse());
         } catch (IOException e) {
-            LOGGER.warn("Request processing was unsuccessful. IOException appeared", e);
+            LOGGER.error("Request processing was unsuccessful. IOException appeared", e);
         }
     }
 }
