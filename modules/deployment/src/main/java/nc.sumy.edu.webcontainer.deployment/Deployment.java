@@ -1,12 +1,11 @@
 package nc.sumy.edu.webcontainer.deployment;
 
 
+import java.io.File;
 import java.util.Map;
 
 public interface Deployment {
 
-    void listenDeployDirectory();
-
-    Map<String, Class> getServletInfo();
+    Map<File, Map<String, Class>> getDomainsData();
 
 }

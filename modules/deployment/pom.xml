@@ -11,5 +11,12 @@
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>deployment</artifactId>
+    <dependencies>
+        <dependency>
+            <groupId>nc.edu.webcontainer</groupId>
+            <artifactId>configuration</artifactId>
+            <version>0.1</version>
+        </dependency>
+    </dependencies>
 
 </project>
