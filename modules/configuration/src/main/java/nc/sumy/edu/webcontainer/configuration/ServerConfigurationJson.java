@@ -72,7 +72,7 @@ public class ServerConfigurationJson implements ServerConfiguration {
     }
 
     public void checkSystemVariable(String systemVariableName) {
-        String tempPath = System.getenv(systemVariableName);
+        String tempPath = System.getProperty(systemVariableName);
         if(Objects.isNull(tempPath)) {
             throw new JsonReadingException("System variable " + systemVariableName + " doesn't exist. Server could" +
                     " not be started");
