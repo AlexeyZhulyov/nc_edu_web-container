@@ -28,6 +28,11 @@
             <artifactId>configuration</artifactId>
             <version>0.1</version>
         </dependency>
+        <dependency>
+            <groupId>nc.edu.webcontainer</groupId>
+            <artifactId>security</artifactId>
+            <version>0.1</version>
+        </dependency>
     </dependencies>
 
 </project>
