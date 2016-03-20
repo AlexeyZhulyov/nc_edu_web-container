@@ -1,12 +1,12 @@
 package nc.sumy.edu.webcontainer.sequrity;
 
 import nc.sumy.edu.webcontainer.configuration.AccessRulesRepositoryJson;
+import nc.sumy.edu.webcontainer.configuration.ServerConfiguration;
 import nc.sumy.edu.webcontainer.configuration.security.AccessFile;
 import nc.sumy.edu.webcontainer.configuration.security.AccessRules;
 import nc.sumy.edu.webcontainer.configuration.security.RulesContainer;
 import nc.sumy.edu.webcontainer.configuration.security.ServerAccessFile;
-import nc.sumy.edu.webcontainer.http.HttpRequest;
-import nc.sumy.edu.webcontainer.sequrity.interfaces.Security;
+import nc.sumy.edu.webcontainer.http.Request;
 import org.apache.maven.shared.utils.StringUtils;
 
 import java.io.File;
@@ -32,11 +32,11 @@ public class ServerSecurity implements Security {
     private boolean access = false;
 
     // file is not a directory, it will be checked in dispatcher
-    public ServerSecurity(HttpRequest request) {
+    public ServerSecurity(Request request, ServerConfiguration serverConfiguration) {
         host = request.getHost();
         ipAddress = request.getIpAddress();
         file = substring(request.getUrn(), lastIndexOf(request.getUrn(), "/") + 1, length(request.getUrn()));
-        File file = new File(request.getUrn());
+        File file = new File(serverConfiguration.getWwwLocation() + request.getUrn());
         AccessRulesRepositoryJson configuration = new AccessRulesRepositoryJson();
         rules = configuration.getAccessRules(file.getParentFile().getAbsolutePath() + File.separator + CONFIG_FILE);
         if (nonNull(rules)) {
