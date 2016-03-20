@@ -1,11 +1,6 @@
 package nc.sumy.edu.webcontainer.deployment;
 
-import nc.sumy.edu.webcontainer.configuration.ServerConfiguration;
-import nc.sumy.edu.webcontainer.configuration.ServerConfigurationJson;
 import org.junit.Test;
-
-import static java.io.File.*;
-
 
 public class AutoDeploymentTest {
 
