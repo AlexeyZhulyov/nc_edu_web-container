@@ -23,19 +23,24 @@ import static nc.sumy.edu.webcontainer.http.HttpResponse.getResponseCode;
  */
 public class ServerDispatcher implements Dispatcher{
     private static final Logger LOG = LoggerFactory.getLogger(ServerDispatcher.class);
-    private final String errorPagesPath;
-    private ServerConfiguration serverConfiguration = new ServerConfigurationJson();
+    private String errorPagesPath;
+    private final ServerConfiguration serverConfiguration;
     private Deployment deployment;
     private Security security;
     private Request request;
     private HttpResponse response;
 
-    public ServerDispatcher(Request request, Deployment deployment) {
+    public ServerDispatcher(ServerConfiguration serverConfiguration, Deployment deployment) {
         this.deployment = deployment;
-        this.request    = request;
-        this.security   = new ServerSecurity(request, serverConfiguration);
+        this.serverConfiguration    = serverConfiguration;
+    }
+
+    @Override
+    public HttpResponse getResponse(Request request) {
+        security   = new ServerSecurity(request, serverConfiguration);
         errorPagesPath  = serverConfiguration.getWwwLocation() + File.separator + "default" + File.separator;
         makeResponse();
+        return null;
     }
 
     private void makeResponse() {
@@ -89,14 +94,5 @@ public class ServerDispatcher implements Dispatcher{
         }
     }
 
-    @Override
-    public HttpResponse getResponse(Request request) {
-        return null;
-    }
-
-    @Override
-    public HttpResponse getResponse() {
-        return null;
-    }
 
 }
