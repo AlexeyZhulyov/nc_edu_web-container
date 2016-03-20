@@ -153,6 +153,10 @@ public class HttpRequest implements Request {
         return IP_ADDRESS;
     }
 
+    public String getRequestText() {
+        return request;
+    }
+
     @Override
     public boolean equals(Object obj) {
         if (this == obj) return true;

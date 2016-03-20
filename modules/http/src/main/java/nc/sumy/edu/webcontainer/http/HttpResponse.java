@@ -25,8 +25,6 @@ public class HttpResponse implements Response {
         RESPONSE_CODES.put(403, "403 Forbidden");
         RESPONSE_CODES.put(404, "404 Not Found");
         RESPONSE_CODES.put(405, "405 Method Not Allowed");
-        RESPONSE_CODES.put(500, "500 Internal Server Error");
-        RESPONSE_CODES.put(501, "501 Not Implemented");
     }
 
     public HttpResponse(int code) {

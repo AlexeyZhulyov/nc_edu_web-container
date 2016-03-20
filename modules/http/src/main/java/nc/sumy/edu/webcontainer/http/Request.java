@@ -11,4 +11,5 @@ public interface Request {
     Map<String, String> getParameters();
     String getHeader(String key);
     String getParameter(String key);
+    String getRequestText();
 }
