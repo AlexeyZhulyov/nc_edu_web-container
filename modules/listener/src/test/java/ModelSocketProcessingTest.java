@@ -8,7 +8,7 @@ import java.net.Socket;
 
 public class ModelSocketProcessingTest {
     ModelSocketProcessing model = new ModelSocketProcessing(new ServerDispatcher(new ServerConfigurationJson(),
-            new AutoDeployment()));
+            new AutoDeployment(new ServerConfigurationJson())));
     @Test
     public void simpleSocketTest() {
 
