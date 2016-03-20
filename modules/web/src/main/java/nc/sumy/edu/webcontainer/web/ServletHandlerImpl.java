@@ -4,9 +4,11 @@ import nc.sumy.edu.webcontainer.http.HttpResponse;
 
 import javax.servlet.*;
 import javax.servlet.http.HttpServlet;
-import java.io.*;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
+
+import static nc.sumy.edu.webcontainer.common.ClassUtil.newInstance;
 
 public class ServletHandlerImpl implements ServletHandler {
 
@@ -14,21 +16,18 @@ public class ServletHandlerImpl implements ServletHandler {
 
     public ServletResponse processServlet(ServletRequest request, Class klass) {
 
-        HttpServlet servlet;
+        HttpServlet servlet = null;
 
         String className = klass.getCanonicalName();
+        Class<HttpServlet> servletClass = klass;
 
         if (instances.containsKey(className))
             servlet = instances.get(className);
         else {
+            servlet = newInstance(servletClass);
             try {
-                servlet = (HttpServlet) klass.newInstance();
                 servlet.init();
                 instances.put(className, servlet);
-            } catch (InstantiationException e) {
-                throw new WebException("Cannot create instance", e);
-            } catch (IllegalAccessException e) {
-                throw new WebException("No access", e);
             } catch (ServletException e) {
                 throw new WebException("Cannot do init()", e);
             }
