@@ -182,6 +182,10 @@ body.vline {
     top: 52px;
     width: 335px;
 }
+
+.e400 {
+    background: url("images/404.png") no-repeat scroll left top transparent;
+}
 .e403 {
     background: url("images/403.png") no-repeat scroll left top transparent;
 }
