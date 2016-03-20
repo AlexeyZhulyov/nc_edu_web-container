@@ -12,6 +12,7 @@ public class HttpResponseTest {
     private HttpResponse response;
     private Map<String, String> headers;
     private static final String ENDL = "\r\n";
+    private static final String OK_TEXT = "200 OK";
     private static final String SPARATOR = ": ";
     private static final String HTTP_VERSION = "HTTP/1.1 ";
     private static final String HOST = "Host";
@@ -66,7 +67,7 @@ public class HttpResponseTest {
         headers.put(HOST, "vk.com");
         headers.put(CONNECTION, CLOSE_STR);
         response = new HttpResponse(200, headers, STRING.getBytes());
-        result = HTTP_VERSION + "200 OK" + ENDL +
+        result = HTTP_VERSION + OK_TEXT + ENDL +
                 HOST + SPARATOR + "vk.com" + ENDL +
                 CONNECTION_CLOSE + ENDL + ENDL +
                 STRING;
@@ -76,7 +77,7 @@ public class HttpResponseTest {
             assertEquals(result.getBytes()[i], response.getResponse()[i]);
         }
 
-        assertEquals(HttpResponse.getResponseCode(200), "200 OK");
+        assertEquals(HttpResponse.getResponseCode(200), OK_TEXT);
     }
 
     @Test
@@ -85,7 +86,7 @@ public class HttpResponseTest {
         headers.put(HOST, "jclubteam.slack.com");
         headers.put(CONNECTION, CLOSE_STR);
         response = new HttpResponse(200, headers, STRING1.getBytes());
-        result = HTTP_VERSION + "200 OK" + ENDL +
+        result = HTTP_VERSION + OK_TEXT + ENDL +
                 HOST + SPARATOR + "jclubteam.slack.com" + ENDL +
                 CONNECTION_CLOSE + ENDL + ENDL +
                 STRING1;
@@ -102,7 +103,7 @@ public class HttpResponseTest {
         headers.put(HOST, "OMcenter.slack.com");
         headers.put(CONNECTION, CLOSE_STR);
         response = new HttpResponse(200, headers, STRING1.getBytes());
-        result = HTTP_VERSION + "200 OK" + ENDL +
+        result = HTTP_VERSION + OK_TEXT + ENDL +
                 HOST + SPARATOR + "OMcenter.slack.com" + ENDL +
                 CONNECTION_CLOSE + ENDL + ENDL +
                 STRING1;

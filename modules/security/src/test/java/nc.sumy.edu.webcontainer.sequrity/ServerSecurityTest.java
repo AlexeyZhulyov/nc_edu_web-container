@@ -9,7 +9,7 @@ import static org.junit.Assert.assertEquals;
 
 public class ServerSecurityTest {
     private HttpRequest request;
-    private ServerConfiguration serverConfiguration = new ServerConfigurationJson();
+    private final ServerConfiguration serverConfiguration = new ServerConfigurationJson();
     private static final String NONEXISTENT_IP = "qqq.pc";
     private static final String NC_COM = "nc.com";
 

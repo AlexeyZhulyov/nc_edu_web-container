@@ -37,6 +37,7 @@ public class ServerDispatcher implements Dispatcher{
 
     @Override
     public HttpResponse getResponse(Request request) {
+        this.request = request;
         security   = new ServerSecurity(request, serverConfiguration);
         errorPagesPath  = serverConfiguration.getWwwLocation() + File.separator + "default" + File.separator;
         makeResponse();
