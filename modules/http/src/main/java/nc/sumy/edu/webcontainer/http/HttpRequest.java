@@ -26,7 +26,7 @@ public class HttpRequest implements Request {
     private final String IP_ADDRESS;
     private final Map<String, String> headers = new HashMap<>();
     private final Map<String, String> parameters = new HashMap<>();
-    private static final Logger LOGGER = LoggerFactory.getLogger(HttpRequest.class);
+    private static final Logger LOG = LoggerFactory.getLogger(HttpRequest.class);
     private static final String UTF8 = "UTF-8";
     private final String request;
     private final String requestLines[];
@@ -116,7 +116,7 @@ public class HttpRequest implements Request {
             try {
                 param.setValue(URLDecoder.decode(param.getValue(), UTF8));
             } catch (UnsupportedEncodingException e) {
-               LOGGER.error("Cannot decode with UTF-8.", e);
+               LOG.error("Cannot decode with UTF-8.", e);
             }
         }
     }

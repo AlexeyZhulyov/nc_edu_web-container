@@ -99,6 +99,10 @@ public class HttpResponse implements Response {
         return headersStr.toString();
     }
 
+    public static String getResponseCode(int code) {
+        return RESPONSE_CODES.get(code);
+    }
+
     @Override
     public boolean equals(Object obj) {
         if (this == obj) return true;
