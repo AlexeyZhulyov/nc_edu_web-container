@@ -4,6 +4,8 @@ import nc.sumy.edu.webcontainer.http.HttpResponse;
 
 import javax.servlet.*;
 import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
@@ -14,9 +16,9 @@ public class ServletHandlerImpl implements ServletHandler {
 
     private final Map<String, HttpServlet> instances = new HashMap<>();
 
-    public ServletResponse processServlet(ServletRequest request, Class klass) {
+    public HttpServletResponse processServlet(HttpServletRequest request, Class klass) {
 
-        HttpServlet servlet = null;
+        HttpServlet servlet;
 
         String className = klass.getCanonicalName();
         Class<HttpServlet> servletClass = klass;
@@ -43,5 +45,9 @@ public class ServletHandlerImpl implements ServletHandler {
             throw new WebException("Cannot read servlet?", e);
         }
         return response;
+    }
+
+    public void destroy(Class klass){
+        instances.remove(klass.getCanonicalName()).destroy();
     }
 }

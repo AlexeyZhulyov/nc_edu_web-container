@@ -6,14 +6,14 @@ import nc.sumy.edu.webcontainer.web.stub.*;
 import org.junit.Before;
 import org.junit.Test;
 
-import javax.servlet.ServletRequest;
+import javax.servlet.http.HttpServletRequest;
 
 import static org.junit.Assert.assertEquals;
 import static java.lang.String.format;
 
 public class ServletHandlerImplTest {
     private ServletHandler servletHandler;
-    private ServletRequest servletRequest;
+    private HttpServletRequest servletRequest;
 
     @Before
     public void setUp() {
