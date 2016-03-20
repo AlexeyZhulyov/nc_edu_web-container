@@ -1,5 +1,6 @@
 package nc.sumy.edu.webcontainer.web;
 
+import nc.sumy.edu.webcontainer.common.InstanceNotCreatedException;
 import nc.sumy.edu.webcontainer.http.HttpRequest;
 import nc.sumy.edu.webcontainer.web.stub.*;
 import org.junit.Before;
@@ -7,18 +8,15 @@ import org.junit.Test;
 
 import javax.servlet.ServletRequest;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static java.lang.String.format;
 
 public class ServletHandlerImplTest {
-//    private String result;
     private ServletHandler servletHandler;
-    ServletRequest servletRequest;
-    int number = 1;
-    private final static String EXPECT_EXCEPTION = "Expected an CgiException to be thrown";
+    private ServletRequest servletRequest;
 
     @Before
-    public void setUp() throws Exception {
-        //result = "<h1>Hello Servlet</h1>\n<body>Test servlet #" + number + ".</body>\n";
+    public void setUp() {
         servletHandler = new ServletHandlerImpl();
         String requestStr = "GET " + "/" + "TestServlet" + " HTTP/1.1" + "\r\n" +
                 "Host" + ": foo.com" + "\r\n" +
@@ -29,61 +27,39 @@ public class ServletHandlerImplTest {
 
     @Test
     public void process1() {
-        assertEquals("<h1>Hello Servlet</h1>\n<body>Test servlet #" + number + ".</body>\n",
-                new String(((ResponseWrapper) servletHandler.processServlet(servletRequest, TestServlet.class)).getResponse().getBody()).replace("\r", ""));
+        int number = 1;
+        String expected = "<h1>Hello Servlet</h1>\n<body>Test servlet #%s.</body>\n";
+        byte[] body = ((ResponseWrapper) servletHandler.processServlet(servletRequest,TestServlet.class)).getResponse().getBody();
+        String actual = new String(body);
+        assertEquals(format(expected,number), actual.replace("\r", ""));
         number++;
-
-        assertEquals("<h1>Hello Servlet</h1>\n<body>Test servlet #" + number + ".</body>\n",
-                new String(((ResponseWrapper) servletHandler.processServlet(servletRequest, TestServlet.class)).getResponse().getBody()).replace("\r", ""));
+        body = ((ResponseWrapper) servletHandler.processServlet(servletRequest,TestServlet.class)).getResponse().getBody();
+        actual = new String(body);
+        assertEquals(format(expected,number), actual.replace("\r", ""));
     }
 
-    @Test
+    @Test(expected = InstanceNotCreatedException.class)
     public void processExceptionMessage1() {
-        try {
-            servletHandler.processServlet(servletRequest, AbstractTestServlet.class);
-            fail(EXPECT_EXCEPTION);
-        } catch (WebException e) {
-            assertEquals("Cannot create instance", e.getMessage());
-        }
+        servletHandler.processServlet(servletRequest, AbstractTestServlet.class);
     }
 
-    @Test
+    @Test(expected = InstanceNotCreatedException.class)
     public void processExceptionMessage2() {
-        try {
-            servletHandler.processServlet(servletRequest, TestServletWithPrivateConstructor.class);
-            fail(EXPECT_EXCEPTION);
-        } catch (WebException e) {
-            assertEquals("No access", e.getMessage());
-        }
+        servletHandler.processServlet(servletRequest, TestServletWithPrivateConstructor.class);
     }
 
-    @Test
+    @Test(expected = WebException.class)
     public void processExceptionMessage3() {
-        try {
-            servletHandler.processServlet(servletRequest, TestServletInitException.class);
-            fail(EXPECT_EXCEPTION);
-        } catch (WebException e) {
-            assertEquals("Cannot do init()", e.getMessage());
-        }
+        servletHandler.processServlet(servletRequest, TestServletInitException.class);
     }
 
-    @Test
+    @Test(expected = WebException.class)
     public void processExceptionMessage4() {
-        try {
-            servletHandler.processServlet(servletRequest, TestServletServiceException.class);
-            fail(EXPECT_EXCEPTION);
-        } catch (WebException e) {
-            assertEquals("Cannot do service()", e.getMessage());
-        }
+        servletHandler.processServlet(servletRequest, TestServletServiceException.class);
     }
 
-    @Test
+    @Test(expected = WebException.class)
     public void processExceptionMessage5() {
-        try {
-            servletHandler.processServlet(servletRequest, TestServletIOException.class);
-            fail(EXPECT_EXCEPTION);
-        } catch (WebException e) {
-            assertEquals("Cannot read servlet?", e.getMessage());
-        }
+        servletHandler.processServlet(servletRequest, TestServletIOException.class);
     }
 }
