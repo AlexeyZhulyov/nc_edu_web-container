@@ -72,6 +72,7 @@ public class HttpRequestTest {
                 CONNECTION_CLOSE;
         request = new HttpRequest(str, IP_ADDRESS, HOST);
 
+        assertEquals(request.getRequestText(), str);
         assertEquals(request.getMethod(), HttpMethod.GET);
         assertEquals(request.getUrn(), "/someservlet.jsp");
         assertEquals(request.getHeader(HOST_HEADER), "foo.com");

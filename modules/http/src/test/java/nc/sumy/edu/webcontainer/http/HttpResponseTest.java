@@ -75,6 +75,8 @@ public class HttpResponseTest {
         for (int i = 0; i < response.getResponse().length; i++) {
             assertEquals(result.getBytes()[i], response.getResponse()[i]);
         }
+
+        assertEquals(HttpResponse.getResponseCode(200), "200 OK");
     }
 
     @Test
