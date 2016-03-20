@@ -25,8 +25,7 @@ public class ArchiveExtractor {
     @SuppressWarnings("PMD")
     public void extractWarFile(String jarFile) {
         refreshDirectory(jarFile);
-        try {
-            JarFile jar = new JarFile(warDirectory + separator + jarFile);
+        try (JarFile jar = new JarFile(warDirectory + separator + jarFile)) {
             Enumeration entries = jar.entries();
             while (entries.hasMoreElements()) {
                 extractFile(jar, entries);
