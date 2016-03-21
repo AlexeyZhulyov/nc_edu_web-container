@@ -49,8 +49,7 @@ public class ServerDispatcher implements Dispatcher{
         if (isNull(request.getRequestText())) {
             createErrorPageResponse(BAD_REQUEST);
         } else if (request.getMethod() == HttpMethod.OPTIONS) {
-            response.setHeader("Pragma", "no-cache");
-            response.setHeader("Connection", "close");
+            setDefaultPageHeaders(response);
             response.setBody("200 OK".getBytes());
         } else if (request.getMethod() == HttpMethod.UNKNOWN) {
             createErrorPageResponse(NOT_ALLOWED);
@@ -82,18 +81,22 @@ public class ServerDispatcher implements Dispatcher{
     private void createErrorPageResponse(ResponseCode code) {
         String errorPageTitle = code.getString() + ".html";
         response = new HttpResponse(code.getCode());
-        response.setHeader("Content-Type", "text/html");
-        response.setHeader("Cache-Control", "no-cache");
-        response.setHeader("Pragma", "no-cache");
-        response.setHeader("Connection", "close");
+        setDefaultPageHeaders(response);
         File errorPage = new File(errorPagesPath + errorPageTitle);
-        /*TODO try to find another variant of reading bytes*/
         try {
             response.setBody(readAllBytes(errorPage.toPath()));
         } catch (IOException e) {
             response.setBody(getResponseCode(code.getCode()).getBytes());
             LOG.warn("Cannot find or read default page " + errorPageTitle, e);
         }
+    }
+
+    private void setDefaultPageHeaders(HttpResponse response){
+        response.setHeader("Content-Type", "text/html");
+        response.setHeader("Content-Language", "en");
+        response.setHeader("Cache-Control", "no-cache");
+        response.setHeader("Pragma", "no-cache");
+        response.setHeader("Connection", "close");
     }
 
 
