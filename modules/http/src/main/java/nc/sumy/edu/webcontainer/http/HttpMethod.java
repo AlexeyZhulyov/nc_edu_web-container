@@ -1,7 +1,7 @@
 package nc.sumy.edu.webcontainer.http;
 
 /**
- * Enum that  contain HttpMethod-data.
+ * Enum that  contain method types of request.
  * @author Vinogradov Maxim
  */
 public enum HttpMethod {
