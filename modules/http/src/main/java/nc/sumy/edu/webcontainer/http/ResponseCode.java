@@ -5,11 +5,11 @@ package nc.sumy.edu.webcontainer.http;
  * @author Vinogradov Maxim
  */
 public enum ResponseCode {
-    CODE_200(200),
-    CODE_400(400),
-    CODE_403(403),
-    CODE_404(404),
-    CODE_405(405);
+    OK(200),
+    BAD_REQUEST(400),
+    FORBIDDEN(403),
+    NOT_FOUND(404),
+    NOT_ALLOWED(405);
 
     private final int code;
 
@@ -20,4 +20,9 @@ public enum ResponseCode {
     public int getCode() {
         return code;
     }
+
+    public String getString() {
+        return Integer.toString(code);
+    }
+
 }

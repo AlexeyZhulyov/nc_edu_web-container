@@ -1,11 +1,11 @@
 package nc.sumy.edu.webcontainer.dispatcher;
 
 import nc.sumy.edu.webcontainer.configuration.ServerConfiguration;
-import nc.sumy.edu.webcontainer.configuration.ServerConfigurationJson;
 import nc.sumy.edu.webcontainer.deployment.Deployment;
 import nc.sumy.edu.webcontainer.http.HttpMethod;
 import nc.sumy.edu.webcontainer.http.HttpResponse;
 import nc.sumy.edu.webcontainer.http.Request;
+import nc.sumy.edu.webcontainer.http.ResponseCode;
 import nc.sumy.edu.webcontainer.sequrity.Security;
 import nc.sumy.edu.webcontainer.sequrity.ServerSecurity;
 import org.slf4j.Logger;
@@ -16,6 +16,7 @@ import java.io.*;
 import static java.nio.file.Files.readAllBytes;
 import static java.util.Objects.isNull;
 import static nc.sumy.edu.webcontainer.http.HttpResponse.getResponseCode;
+import static nc.sumy.edu.webcontainer.http.ResponseCode.*;
 
 /**
  * Class that takes a request, analyzes it and gives the output response.
@@ -46,19 +47,19 @@ public class ServerDispatcher implements Dispatcher{
 
     private void makeResponse() {
         if (isNull(request.getRequestText())) {
-            createErrorPageResponse(400);
+            createErrorPageResponse(BAD_REQUEST);
         } else if (request.getMethod() == HttpMethod.OPTIONS) {
             response.setHeader("Pragma", "no-cache");
             response.setHeader("Connection", "close");
             response.setBody("200 OK".getBytes());
         } else if (request.getMethod() == HttpMethod.UNKNOWN) {
-            createErrorPageResponse(405);
+            createErrorPageResponse(NOT_ALLOWED);
         } else if (!security.isAllow()) {
-            createErrorPageResponse(403);
+            createErrorPageResponse(FORBIDDEN);
         } else if (isItServlet()) {
 
         } else if (isPageNotFound()) {
-            createErrorPageResponse(404);
+            createErrorPageResponse(NOT_FOUND);
         } else if (isItJsp()) {
 
         } else {
@@ -78,9 +79,9 @@ public class ServerDispatcher implements Dispatcher{
         return false;
     }
 
-    private void createErrorPageResponse(int code) {
-        String errorPageTitle = Integer.toString(code) + ".html";
-        response = new HttpResponse(code);
+    private void createErrorPageResponse(ResponseCode code) {
+        String errorPageTitle = code.getString() + ".html";
+        response = new HttpResponse(code.getCode());
         response.setHeader("Content-Type", "text/html");
         response.setHeader("Cache-Control", "no-cache");
         response.setHeader("Pragma", "no-cache");
@@ -90,7 +91,7 @@ public class ServerDispatcher implements Dispatcher{
         try {
             response.setBody(readAllBytes(errorPage.toPath()));
         } catch (IOException e) {
-            response.setBody(getResponseCode(code).getBytes());
+            response.setBody(getResponseCode(code.getCode()).getBytes());
             LOG.warn("Cannot find or read default page " + errorPageTitle, e);
         }
     }

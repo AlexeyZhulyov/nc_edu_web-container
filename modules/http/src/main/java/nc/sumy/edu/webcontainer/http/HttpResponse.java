@@ -6,6 +6,7 @@ import java.util.*;
 
 import static java.lang.System.arraycopy;
 import static java.util.Objects.isNull;
+import static nc.sumy.edu.webcontainer.http.ResponseCode.*;
 
 /**
  * Class that build HTTP response and contain response-data.
@@ -20,11 +21,11 @@ public class HttpResponse implements Response {
     private byte[] body;
 
     static {
-        RESPONSE_CODES.put(200, "200 OK");
-        RESPONSE_CODES.put(400, "400 Bad Request");
-        RESPONSE_CODES.put(403, "403 Forbidden");
-        RESPONSE_CODES.put(404, "404 Not Found");
-        RESPONSE_CODES.put(405, "405 Method Not Allowed");
+        RESPONSE_CODES.put(OK.getCode(), "200 OK");
+        RESPONSE_CODES.put(BAD_REQUEST.getCode(), "400 Bad Request");
+        RESPONSE_CODES.put(FORBIDDEN.getCode(), "403 Forbidden");
+        RESPONSE_CODES.put(NOT_FOUND.getCode(), "404 Not Found");
+        RESPONSE_CODES.put(NOT_ALLOWED.getCode(), "405 Method Not Allowed");
     }
 
     public HttpResponse(int code) {
