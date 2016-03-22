@@ -157,6 +157,10 @@ public class HttpRequest implements Request {
         return request;
     }
 
+    public String getFilePath() {
+        return headers.get("Host") + urn;
+    }
+
     @Override
     public boolean equals(Object obj) {
         if (this == obj) return true;

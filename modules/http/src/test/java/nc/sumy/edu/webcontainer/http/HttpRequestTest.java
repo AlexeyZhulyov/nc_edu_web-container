@@ -103,6 +103,7 @@ public class HttpRequestTest {
         assertEquals(request.getHeader(ACCEPT), "text/jsp");
         assertEquals(request.getHeader(CONNECTION), CLOSE_STR);
         assertEquals(request.getHeader(NONEXISTENT_VAR), "");
+        assertEquals(request.getFilePath(), "foo.com/someservlet.jsp");
 
         assertEquals(request.getParameter("param1"), "foo");
         assertEquals(request.getParameter(NONEXISTENT_VAR), "");
