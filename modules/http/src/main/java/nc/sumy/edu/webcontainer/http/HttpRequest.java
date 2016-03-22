@@ -63,11 +63,12 @@ public class HttpRequest implements Request {
                 firstLine[1] = replace(firstLine[1], "http://", "");
             } else if (startsWith(firstLine[1], "https://")) {
                 firstLine[1] = replace(firstLine[1], "https://", "");
-            }
+            }/*
             int pos = indexOf(firstLine[1], '/');
             String host = substring(firstLine[1], 0, pos);
-            headers.put("Host", host);
+            headers.put("Host", host); //???
             firstLine[1] = replace(firstLine[1], host, "");
+            */
         }
         if (method == HttpMethod.GET && contains(firstLine[1], '?')) {
             String[] pathParts = split(firstLine[1], "\\?");
@@ -155,10 +156,6 @@ public class HttpRequest implements Request {
 
     public String getRequestText() {
         return request;
-    }
-
-    public String getFilePath() {
-        return headers.get("Host") + urn;
     }
 
     @Override

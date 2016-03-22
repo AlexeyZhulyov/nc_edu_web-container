@@ -98,12 +98,10 @@ public class HttpRequestTest {
         request = new HttpRequest(str, IP_ADDRESS, HOST);
 
         assertEquals(request.getMethod(), HttpMethod.GET);
-        assertEquals(request.getUrn(), "/someservlet.jsp");
-        assertEquals(request.getHeader(HOST_HEADER), "foo.com");
+        assertEquals(request.getUrn(), "foo.com/someservlet.jsp");
         assertEquals(request.getHeader(ACCEPT), "text/jsp");
         assertEquals(request.getHeader(CONNECTION), CLOSE_STR);
         assertEquals(request.getHeader(NONEXISTENT_VAR), "");
-        assertEquals(request.getFilePath(), "foo.com/someservlet.jsp");
 
         assertEquals(request.getParameter("param1"), "foo");
         assertEquals(request.getParameter(NONEXISTENT_VAR), "");
@@ -122,7 +120,7 @@ public class HttpRequestTest {
 
         request = new HttpRequest(str, IP_ADDRESS, HOST);
         assertEquals(request.getMethod(), HttpMethod.POST);
-        assertEquals(request.getUrn(), "/news.html");
+        assertEquals(request.getUrn(), "www.site.ru/news.html");
         assertEquals(request.getHeader(HOST_HEADER), "www.site.ru");
         assertEquals(request.getHeader("Referer"), URI_SAMPLE);
         assertEquals(request.getHeader("Cookie"), "income=1");
@@ -141,8 +139,7 @@ public class HttpRequestTest {
         str = METHOD_OPTION + URI_SAMPLE + " " + HTTP_VERSION + ENDL;
         request = new HttpRequest(str, IP_ADDRESS, HOST);
         assertEquals(request.getMethod(), HttpMethod.OPTIONS);
-        assertEquals(request.getUrn(), "/news.html");
-        assertEquals(request.getHeader(HOST_HEADER), "www.site.ru");
+        assertEquals(request.getUrn(), "www.site.ru/news.html");
         assertEquals(request.getHeader(NONEXISTENT_VAR), "");
         assertEquals(request.getHeader(null), "");
         assertEquals(request.getParameter(NONEXISTENT_VAR), "");
