@@ -17,6 +17,7 @@ import java.util.Map;
 public class RequestWrapper implements HttpServletRequest {
 
     private Request request;
+    private HttpSession httpSession = new HttpSessionImpl();
 
     public RequestWrapper(Request request) {
         this.request = request;
@@ -312,7 +313,7 @@ public class RequestWrapper implements HttpServletRequest {
 
     @Override
     public HttpSession getSession() {
-        throw new UnsupportedOperationException();
+        return httpSession;
     }
 
     @Override

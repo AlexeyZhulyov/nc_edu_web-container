@@ -15,6 +15,8 @@ public class ResponseWrapper implements HttpServletResponse {
     private ByteArrayOutputStream output;
     private PrintWriter writer;
     private Response response;
+    private int bufferedSize;
+
 
     public ResponseWrapper(Response response) {
         this.response = response;
@@ -25,6 +27,8 @@ public class ResponseWrapper implements HttpServletResponse {
     public Response getResponse() {
         response.setBody(output.toByteArray());
         return response;
+
+
     }
 
     /**
@@ -37,7 +41,7 @@ public class ResponseWrapper implements HttpServletResponse {
 
     @Override
     public String getContentType() {
-        throw new UnsupportedOperationException();
+        return response.getHeader("Content-Type");
     }
 
     @Override
@@ -67,12 +71,12 @@ public class ResponseWrapper implements HttpServletResponse {
 
     @Override
     public void setContentType(String s) {
-        throw new UnsupportedOperationException();
+        response.setHeader("Content-Type", s);
     }
 
     @Override
     public void setBufferSize(int i) {
-        throw new UnsupportedOperationException();
+        this.bufferedSize = i;
     }
 
     @Override
