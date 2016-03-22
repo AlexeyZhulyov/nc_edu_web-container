@@ -1,9 +1,10 @@
 package nc.sumy.edu.webcontainer.web;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import nc.sumy.edu.webcontainer.http.HttpRequest;
+import nc.sumy.edu.webcontainer.http.HttpResponse;
+
 import java.io.File;
 
 public interface JspHandler {
-    public HttpServletResponse processJSP(HttpServletRequest request, File file);
+    public HttpResponse processJSP(HttpRequest request, File file);
 }
