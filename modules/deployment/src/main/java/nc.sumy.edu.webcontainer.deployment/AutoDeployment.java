@@ -7,8 +7,7 @@ import org.slf4j.LoggerFactory;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.*;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 import static java.io.File.*;
 import static java.nio.file.StandardWatchEventKinds.*;
@@ -20,7 +19,7 @@ public class AutoDeployment extends Thread implements Deployment {
     private final File domainFolder;
     private final File warFolder;
     ServerConfiguration configuration;
-    Map<File, Map<String, Class>> domainsData = new HashMap<>();
+    ConcurrentHashMap<File, ConcurrentHashMap<String, Class>> domainsData = new ConcurrentHashMap<>();
 
     public AutoDeployment(ServerConfiguration configuration) {
         this.configuration = configuration;
@@ -91,7 +90,7 @@ public class AutoDeployment extends Thread implements Deployment {
     }
 
     @Override
-    public Map<File, Map<String, Class>> getDomainsData() {
+    public ConcurrentHashMap <File, ConcurrentHashMap <String, Class>> getDomainsData() {
         return domainsData;
     }
 }

@@ -18,6 +18,7 @@ import java.net.URL;
 import java.net.URLClassLoader;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 import static java.io.File.separator;
 import static java.util.Objects.nonNull;
@@ -30,7 +31,7 @@ public class WebXMLAnalyzer {
     private final File classPath;
     private final Map<String, String> servletTagMap = new HashMap<>();
     private final Map<String, String> servletMappingTagMap = new HashMap<>();
-    private final Map<String, Class> dataMap = new HashMap<>();
+    private final ConcurrentHashMap<String, Class> dataMap = new ConcurrentHashMap<>();
     /*Constants*/
     private static final Logger LOG = LoggerFactory.getLogger(WebXMLAnalyzer.class);
     private static final String WEB_XML = "web.xml";
@@ -118,7 +119,7 @@ public class WebXMLAnalyzer {
         return isValid;
     }
 
-    public Map<String, Class> getDataMap() {
+    public ConcurrentHashMap<String, Class> getDataMap() {
         return dataMap;
     }
 
