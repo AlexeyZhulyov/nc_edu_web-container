@@ -1,29 +1,33 @@
 package nc.sumy.edu.webcontainer.dispatcher;
 
-import static org.apache.commons.lang3.StringUtils.split;
-
 public enum PageType {
-    HTML("text/html"),
-    HTM("text/htm"),
-    CSS("text/css"),
-    XML("text/xml"),
-    JSP("text/jsp"),
-    PDF("application/pdf"),
-    ZIP("application/zip"),
-    JAVASCRIPT("application/javascript "),
-    GIF("image/gif"),
-    JPEG("image/jpeg"),
-    JPG("image/jpg"),
-    SWG("image/swg"),
-    PNG("image/png");
+    HTML("html", "text/html"),
+    HTM("htm", "text/htm"),
+    CSS("css", "text/css"),
+    XML("xml", "text/xml"),
+    JSP("jsp", "text/jsp"),
+    PDF("pdf", "application/pdf"),
+    ZIP("zip", "application/zip"),
+    JAVASCRIPT("js", "application/javascript "),
+    GIF("gif", "image/gif"),
+    JPEG("jpeg", "image/jpeg"),
+    JPG("jpg", "image/jpg"),
+    SWG("swg", "image/swg"),
+    PNG("png", "image/png");
 
     private final String fileExtension;
+    private final String mime;
 
-    PageType(String fileExtension) {
+    PageType(String fileExtension, String mime) {
         this.fileExtension = fileExtension;
+        this.mime = mime;
+    }
+
+    public String getMIME() {
+        return mime;
     }
 
     public String getFileExtension() {
-        return split(fileExtension, "/")[1];
+        return fileExtension;
     }
 }
