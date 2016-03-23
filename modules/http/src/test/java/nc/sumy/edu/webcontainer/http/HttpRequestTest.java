@@ -99,6 +99,7 @@ public class HttpRequestTest {
 
         assertEquals(request.getMethod(), HttpMethod.GET);
         assertEquals(request.getUrn(), "foo.com/someservlet.jsp");
+        assertEquals(request.getDomainName(), "foo.com");
         assertEquals(request.getHeader(ACCEPT), "text/jsp");
         assertEquals(request.getHeader(CONNECTION), CLOSE_STR);
         assertEquals(request.getHeader(NONEXISTENT_VAR), "");
