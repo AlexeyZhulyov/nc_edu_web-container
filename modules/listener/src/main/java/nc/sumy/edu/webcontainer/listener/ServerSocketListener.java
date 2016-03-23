@@ -19,12 +19,7 @@ public class ServerSocketListener extends Thread {
     public ServerSocketListener(ServerConfiguration configuration, Deployment deployment) throws IOException {
         this.model = new ModelSocketProcessing(new ServerDispatcher(configuration, deployment));
         int port = configuration.getPort();
-        try {
-            this.serverSocket = new ServerSocket(port);
-        } catch (IOException e) {
-            LOGGER.error("Could not create ServerSocket at port " + port, e);
-            throw e;
-        }
+        this.serverSocket = new ServerSocket(port);
     }
 
     public void stopListening(){
