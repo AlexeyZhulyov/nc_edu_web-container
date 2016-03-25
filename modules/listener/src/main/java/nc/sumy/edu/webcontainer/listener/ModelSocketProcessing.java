@@ -30,7 +30,7 @@ public class ModelSocketProcessing {
         {
             String requestString = IOUtil.toString(clientInput, String.valueOf(Charset.defaultCharset()));
             Request clientRequest = new HttpRequest(requestString,
-                    clientSocket.getRemoteSocketAddress().toString(), clientSocket.getInetAddress().getHostAddress() );
+                    clientSocket.getRemoteSocketAddress().toString(), clientSocket.getInetAddress().getHostName() );
             Response serverResponse = dispatcher.getResponse(clientRequest);
             clientOutput.write(serverResponse.getResponse());
         } catch (IOException e) {
