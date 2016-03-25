@@ -46,4 +46,22 @@ ModelSocketProcessingTest {
         String requestString = IOUtil.toString(inputStream, String.valueOf(Charset.defaultCharset()));
         Assert.assertEquals("Test request", "Test request", requestString);
     }
+
+    @Test
+    public void failedSocketProcessingTest() throws IOException {
+        //create sockets
+        ServerSocket serverSocket = new ServerSocket(7002);
+        Socket socketOnClientSide = new Socket("localhost", 7002);
+        //write request
+        OutputStream clientOutput = socketOnClientSide.getOutputStream();
+        clientOutput.write("Test request".getBytes());
+        //process request
+        Socket socketOnServerSide = serverSocket.accept();
+        socketOnServerSide.close();
+        model.processRequest(socketOnServerSide);
+        //compare results
+        InputStream inputStream = socketOnClientSide.getInputStream();
+        String requestString = IOUtil.toString(inputStream, String.valueOf(Charset.defaultCharset()));
+        Assert.assertEquals("Test request", "Test request", requestString);
+    }
 }
