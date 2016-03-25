@@ -23,7 +23,7 @@ public class ServerConfigurationJson implements ServerConfiguration {
         public void setPort(int port) {
             this.port = port;
         }
-
+ 
         public int getPort() {
             return port;
         }
@@ -31,7 +31,7 @@ public class ServerConfigurationJson implements ServerConfiguration {
         public String getServerLocation() {
             return serverHome;
         }
-
+ 
         public void setServerLocation(String serverLocation) {
             this.serverHome = serverLocation;
         }
@@ -89,12 +89,12 @@ public class ServerConfigurationJson implements ServerConfiguration {
     }
 
     @Override
-    public String getServerLocation() {
+    public String getWwwLocation() {
         return this.configurationProperties.getServerLocation();
     }
 
     @Override
-    public void setServerLocation(String serverLocation) {
+    public void setWwwLocation(String serverLocation) {
         this.configurationProperties.setServerLocation(serverLocation);
     }
 }
