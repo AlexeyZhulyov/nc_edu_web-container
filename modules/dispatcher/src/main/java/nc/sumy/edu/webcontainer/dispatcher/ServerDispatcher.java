@@ -14,25 +14,26 @@ import java.io.*;
 import java.text.DateFormat;
 import java.util.Date;
 import java.util.Map;
+import java.util.Objects;
+import java.util.TimeZone;
 import java.util.concurrent.ConcurrentHashMap;
 
-import static java.text.DateFormat.getTimeInstance;
-import static java.util.Objects.isNull;
-import static java.util.TimeZone.getTimeZone;
 import static nc.sumy.edu.webcontainer.http.HttpResponse.getResponseCode;
 import static nc.sumy.edu.webcontainer.http.ResponseCode.*;
 import static nc.sumy.edu.webcontainer.dispatcher.PageType.*;
 import static org.apache.commons.lang3.StringUtils.*;
+import static nc.sumy.edu.webcontainer.dispatcher.Header.*;
 
 /**
  * Class that takes a request, analyzes it and gives the output response.
  * @author Vinogradov Maxim
  */
+@SuppressWarnings("PMD")
 public class ServerDispatcher implements Dispatcher{
     private static final Logger LOG = LoggerFactory.getLogger(ServerDispatcher.class);
     private String errorPagesPath;
     private final ServerConfiguration serverConfiguration;
-    private Deployment deployment;
+    private final Deployment deployment;
     private Security security;
     private Request request;
     private HttpResponse response;
@@ -52,7 +53,7 @@ public class ServerDispatcher implements Dispatcher{
     }
 
     private void makeResponse() {
-        String pagePath = serverConfiguration.getWwwLocation() + File.separator + request.getFilePath();
+        String pagePath = serverConfiguration.getWwwLocation() + File.separator + request.getUrn();
         if (initialInspection())
             return;
         if (!security.isAllow()) {
@@ -66,10 +67,11 @@ public class ServerDispatcher implements Dispatcher{
         if (createServletPage())
             return;
         createErrorPageResponse(NOT_FOUND);
+        response.setHeader("Content-Length", Integer.toString(response.getBody().length));
     }
 
     private boolean initialInspection() {
-        if (isNull(request.getRequestText()) || isEmpty(request.getRequestText())) {
+        if (Objects.isNull(request.getRequestText()) || isEmpty(request.getRequestText())) {
             createErrorPageResponse(BAD_REQUEST);
             return true;
         } else if (request.getMethod() == HttpMethod.OPTIONS) {
@@ -87,12 +89,12 @@ public class ServerDispatcher implements Dispatcher{
         File page = new File(pagePath);
         if (page.exists() && page.isDirectory()) {
             String index = "index.";
-            File indexPage = new File(pagePath + File.separator + index + "html");
+            File indexPage = new File(pagePath + File.separator + index + HTML.getFileExtension());
             if (indexPage.exists()) {
                 createStaticPageResponse(page);
                 return true;
             }
-            indexPage = new File(pagePath + File.separator + index + "jsp");
+            indexPage = new File(pagePath + File.separator + index + JSP.getFileExtension());
             if (indexPage.exists()) {
                 createJspPageResponse(page);
                 return true;
@@ -115,19 +117,28 @@ public class ServerDispatcher implements Dispatcher{
         return false;
     }
 
+    //Smth could happened here =(
     private boolean createServletPage() {
         ConcurrentHashMap<File, ConcurrentHashMap<String, Class>> domainData = deployment.getDomainsData();
-        String domainName;
         for (Map.Entry<File, ConcurrentHashMap<String, Class>> domain : domainData.entrySet()) {
-            domainName = substring(domain.getKey().getPath(),
-                    lastIndexOf(domain.getKey().getPath(), File.separator));
-            if (StringUtils.equals(request.getHeader("Host"), domainName)) {
-                for (Map.Entry<String, Class> servletPair:  domain.getValue().entrySet()) {
-                    if (endsWith(request.getFilePath(), servletPair.getKey())) {
-                        ServletHandler handler = new ServletHandlerImpl();
-                        handler.processServlet((HttpRequest) request, servletPair.getValue());
-                        return true;
-                    }
+            if (findUrlMapping(request, domain))
+                return true;
+
+        }
+        return false;
+    }
+
+    @SuppressWarnings("PMD")
+    private boolean findUrlMapping(Request request, Map.Entry<File, ConcurrentHashMap<String, Class>> domain) {
+        String domainName = substring(domain.getKey().getPath(),
+                lastIndexOf(domain.getKey().getPath(), File.separator));
+        if (StringUtils.equals(request.getDomainName(), domainName)) {
+            for (Map.Entry<String, Class> servletPair : domain.getValue().entrySet()) {
+                if (endsWith(request.getUrn(), servletPair.getKey())) {
+                    ServletHandler handler = new ServletHandlerImpl();
+                    setSuccessHeaders(response);
+                    response = handler.processServlet((HttpRequest) request, servletPair.getValue());
+                    return true;
                 }
             }
         }
@@ -137,11 +148,13 @@ public class ServerDispatcher implements Dispatcher{
     private void createJspPageResponse(File page) {
         JspHandler handler = new JspHandlerImpl();
         response = handler.processJSP((HttpRequest) request, page);
+        setSuccessHeaders(response);
     }
 
     private void createStaticPageResponse(File page) {
         WebHandler handler = new WebHandlerImpl();
         response.setBody(handler.process(page).getBytes());
+        setSuccessHeaders(response);
     }
 
     private void createErrorPageResponse(ResponseCode code) {
@@ -159,14 +172,61 @@ public class ServerDispatcher implements Dispatcher{
     }
 
     private void setErrorPageHeaders(HttpResponse response){
-        DateFormat df = getTimeInstance();
-        df.setTimeZone(getTimeZone("GMT"));
-        response.setHeader("Date:", df.format(new Date()));
-        response.setHeader("Content-Type", "text/html");
-        response.setHeader("Content-Language", "en");
-        response.setHeader("Cache-Control", "no-cache");
-        response.setHeader("Pragma", "no-cache");
-        response.setHeader("Connection", "close");
+        setDefaultHeaders(response);
+        response.setHeader(CONTENT_TYPE.getHeader(), "text/html");
+        response.setHeader(CONTENT_LANGUAGE.getHeader(), "en");
+        response.setHeader(CACHE_CONTROL.getHeader(), "no-cache");
+        response.setHeader(PRAGMA.getHeader(), "no-cache");
+    }
+
+    @SuppressWarnings("PMD")
+    private void setSuccessHeaders(HttpResponse response) {
+        setDefaultHeaders(response);
+        String temp[] = split(request.getUrn(), ".");
+        String extension = temp[temp.length - 1];
+        switch (extension) {
+            case "html" : setContentType(response, HTML.getMIME());
+                break;
+            case "htm" : setContentType(response, HTM.getMIME());
+                break;
+            case "css" : setContentType(response, CSS.getMIME());
+                break;
+            case "xml" : setContentType(response, XML.getMIME());
+                break;
+            case "jsp" : setContentType(response, JSP.getMIME());
+                break;
+            case "pdf" : setContentType(response, PDF.getMIME());
+                break;
+            case "zip" : setContentType(response, ZIP.getMIME());
+                break;
+            case "js"  : setContentType(response, JAVASCRIPT.getMIME());
+                break;
+            case "gif" : setContentType(response, GIF.getMIME());
+                break;
+            case "jpeg" : setContentType(response, JPEG.getMIME());
+                break;
+            case "jpg" : setContentType(response, JPG.getMIME());
+                break;
+            case "swg" : setContentType(response, SWG.getMIME());
+                break;
+            case "png" : setContentType(response, PNG.getMIME());
+                break;
+            default:  setContentType(response, HTML.getMIME());
+                break;
+        }
+        response.setHeader(CACHE_CONTROL.getHeader(), "public, max-age=60");
+    }
+
+    private void setContentType(HttpResponse response, String mime) {
+        response.setHeader(CONTENT_TYPE.getHeader(), mime + "; charset=utf-8");
+    }
+
+    private void setDefaultHeaders(HttpResponse response) {
+        DateFormat dateFormat = DateFormat.getTimeInstance();
+        dateFormat.setTimeZone(TimeZone.getTimeZone("GMT"));
+        response.setHeader(DATE.getHeader(), dateFormat.format(new Date()));
+        response.setHeader(SERVER.getHeader(), "ServerLite");
+        response.setHeader(CONNECTION.getHeader(), "close");
     }
 
 }

@@ -31,6 +31,7 @@ public class HttpRequest implements Request {
     private final String request;
     private final String requestLines[];
     private final String firstLine[];
+    private String domainName;
 
     public HttpRequest(String request, String ipAddress, String host) {
         this.request = request;
@@ -64,8 +65,6 @@ public class HttpRequest implements Request {
             } else if (startsWith(firstLine[1], "https://")) {
                 firstLine[1] = replace(firstLine[1], "https://", "");
             }/*
-            int pos = indexOf(firstLine[1], '/');
-            String host = substring(firstLine[1], 0, pos);
             headers.put("Host", host); //???
             firstLine[1] = replace(firstLine[1], host, "");
             */
@@ -82,6 +81,8 @@ public class HttpRequest implements Request {
         } else {
             urn = firstLine[1];
         }
+        int pos = indexOf(firstLine[1], '/');
+        domainName = substring(firstLine[1], 0, pos);
     }
 
     private void parseHeaders() {
@@ -156,6 +157,10 @@ public class HttpRequest implements Request {
 
     public String getRequestText() {
         return request;
+    }
+
+    public String getDomainName() {
+        return domainName;
     }
 
     @Override

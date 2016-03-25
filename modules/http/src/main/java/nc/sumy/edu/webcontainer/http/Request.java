@@ -12,4 +12,5 @@ public interface Request {
     String getHeader(String key);
     String getParameter(String key);
     String getRequestText();
+    String getDomainName();
 }
