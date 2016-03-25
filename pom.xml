@@ -19,6 +19,7 @@
         <module>modules/listener</module>
         <module>modules/security</module>
         <module>modules/web</module>
+        <module>modules/server</module>
     </modules>
 
     <properties>
