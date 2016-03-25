@@ -52,6 +52,9 @@ public class ServerConfigurationJsonTest {
     public void setConfigurationTest() {
         ServerConfiguration config = new ServerConfigurationJson(new File("src/test/resources/validTestConfiguration.json"));
         config.setPort(100);
+        config.setWwwLocation("test/www");
         assertEquals("Port must be 100", 100, config.getPort());
+        assertEquals("WwwLocation must be 'test/www'", "test/www", config.getWwwLocation());
+
     }
 }
