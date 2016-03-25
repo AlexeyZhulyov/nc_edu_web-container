@@ -5,9 +5,9 @@ public interface ServerConfiguration {
 
     void setPort(int port);
 
-    String getWwwLocation();
+    String getServerLocation();
 
-    void setWwwLocation(String wwwLocation);
+    void setServerLocation(String wwwLocation);
 
     void checkSystemVariable(String systemVariableName);
 }

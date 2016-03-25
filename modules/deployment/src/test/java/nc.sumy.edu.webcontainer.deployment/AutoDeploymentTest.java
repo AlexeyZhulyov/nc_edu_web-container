@@ -8,7 +8,7 @@ public class AutoDeploymentTest {
     public void deploymentTest() {
         /*
        ServerConfiguration configuration = new ServerConfigurationJson();
-        configuration.setWwwLocation("src" + separator +
+        configuration.setServerLocation("src" + separator +
                 "test" + separator + "resources" + separator + "folder_listener");
         AutoDeployment autoDeployment = new AutoDeployment(configuration);
         autoDeployment.run();*/
