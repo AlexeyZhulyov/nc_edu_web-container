@@ -44,6 +44,9 @@ ModelSocketProcessingTest {
         //compare results
         InputStream inputStream = socketOnClientSide.getInputStream();
         String requestString = IOUtil.toString(inputStream, String.valueOf(Charset.defaultCharset()));
+
+        serverSocket.close();
+        socketOnClientSide.close();
         Assert.assertEquals("Test request", "Test request", requestString);
     }
 
@@ -62,6 +65,6 @@ ModelSocketProcessingTest {
         //compare results
         InputStream inputStream = socketOnClientSide.getInputStream();
         String requestString = IOUtil.toString(inputStream, String.valueOf(Charset.defaultCharset()));
-        Assert.assertEquals("Test request", "Test request", requestString);
+        Assert.assertEquals("Test request", "", requestString);
     }
 }

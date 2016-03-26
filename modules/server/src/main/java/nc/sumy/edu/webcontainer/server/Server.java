@@ -13,7 +13,7 @@ import java.io.IOException;
 
 public class Server {
     ServerConfiguration config;
-    Deployment deploy;
+    AutoDeployment deploy;
     ServerSocketListener listener;
     private static final Logger LOGGER = LoggerFactory.getLogger(Server.class);
 
@@ -48,7 +48,7 @@ public class Server {
 
     public void stopServer() {
         listener.stopListening();
-        deploy.stopDeployControll();
+        //deploy.stopDeployControll();
         LOGGER.info("Server stopped successfully.");
         System.exit(0);
     }
