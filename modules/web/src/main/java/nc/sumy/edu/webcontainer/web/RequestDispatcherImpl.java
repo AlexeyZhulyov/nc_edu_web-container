@@ -150,7 +150,7 @@ public class RequestDispatcherImpl implements RequestDispatcher {
 
     private void createStaticPageResponse(File page) {
         WebHandler handler = new WebHandlerImpl();
-        response.setBody(handler.process(page).getBytes());
+        response.setBody(handler.process(page));
         setSuccessHeaders((HttpResponse) response);
     }
 
@@ -161,7 +161,7 @@ public class RequestDispatcherImpl implements RequestDispatcher {
         File errorPage = new File(errorPagesPath + errorPageTitle);
         WebHandler handler = new WebHandlerImpl();
         try {
-            response.setBody(handler.process(errorPage).getBytes());
+            response.setBody(handler.process(errorPage));
         } catch (FileNotReadException e) {
             response.setBody(getResponseCode(code.getCode()).getBytes());
         }

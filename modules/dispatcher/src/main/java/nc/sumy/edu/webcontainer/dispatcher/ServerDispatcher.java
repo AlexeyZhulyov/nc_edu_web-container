@@ -156,7 +156,7 @@ public class ServerDispatcher implements Dispatcher{
     private void createStaticPageResponse(File page) {
         response = new HttpResponse(OK.getCode());
         WebHandler handler = new WebHandlerImpl();
-        response.setBody(handler.process(page).getBytes());
+        response.setBody(handler.process(page));
         setSuccessHeaders(response);
     }
 
@@ -167,7 +167,7 @@ public class ServerDispatcher implements Dispatcher{
         File errorPage = new File(errorPagesPath + errorPageTitle);
         WebHandler handler = new WebHandlerImpl();
         try {
-            response.setBody(handler.process(errorPage).getBytes());
+            response.setBody(handler.process(errorPage));
         } catch (FileNotReadException e) {
             response.setBody(getResponseCode(code.getCode()).getBytes());
             LOG.warn("Cannot find or read default page " + errorPageTitle, e);
