@@ -6,29 +6,30 @@ import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.io.IOException;
-import java.nio.file.*;
+import java.nio.file.Path;
+import java.nio.file.WatchEvent;
+import java.nio.file.WatchKey;
+import java.nio.file.WatchService;
 import java.util.concurrent.ConcurrentHashMap;
 
-import static java.io.File.*;
+import static java.io.File.separator;
 import static java.nio.file.StandardWatchEventKinds.*;
-import static org.apache.commons.io.FileUtils.deleteQuietly;
-import static org.apache.commons.lang3.StringUtils.*;
+import static org.apache.commons.lang3.StringUtils.endsWithIgnoreCase;
+import static org.apache.commons.lang3.StringUtils.replace;
 
 public class AutoDeployment extends Thread implements Deployment {
     private static final Logger LOG = LoggerFactory.getLogger(AutoDeployment.class);
-    private final File domainFolder;
-    private final File warFolder;
+    private final File wwwFolder;
     ServerConfiguration configuration;
     ConcurrentHashMap<File, ConcurrentHashMap<String, Class>> domainsData = new ConcurrentHashMap<>();
 
     public AutoDeployment(ServerConfiguration configuration) {
         this.configuration = configuration;
-        domainFolder = new File(configuration.getWwwLocation() + separator + "www" + separator + "domain");
-        warFolder = new File(configuration.getWwwLocation() + separator + "www" + separator + "war");
+        wwwFolder = new File(configuration.getWwwLocation() + separator + "www");
     }
 
     public void run() {
-        Path path = warFolder.toPath();
+        Path path = wwwFolder.toPath();
         try {
             WatchService watchService = path.getFileSystem().newWatchService();
             path.register(watchService, ENTRY_CREATE, ENTRY_DELETE, ENTRY_MODIFY);
@@ -37,7 +38,6 @@ public class AutoDeployment extends Thread implements Deployment {
                     WatchKey key = watchService.take();
                     for (WatchEvent event : key.pollEvents()) {
                         eventChooser(event);
-
                         key.reset();
                     }
                 } catch (InterruptedException e) {
@@ -57,27 +57,20 @@ public class AutoDeployment extends Thread implements Deployment {
             case "ENTRY_CREATE": createDomain(event.context().toString());
                 break;
             case "ENTRY_MODIFY": {
-                deleteDomain(event.context().toString());
                 createDomain(event.context().toString());
             }
             break;
-            case "ENTRY_DELETE": deleteDomain(event.context().toString());
+            case "ENTRY_DELETE": LOG.info("File deleted: " +
+                    getFileInDomainFolder(event.context().toString()).getName());
                 break;
             default: LOG.info("Unknown event in deployment-folder.");
                 break;
         }
     }
 
-    private void deleteDomain(String fileTitle) {
-        if (endsWithIgnoreCase(fileTitle, "war")) {
-            deleteQuietly(getFileInDomainFolder(fileTitle));
-            domainsData.remove(getFileInDomainFolder(fileTitle));
-        }
-    }
-
     private void createDomain(String fileTitle) {
         if (endsWithIgnoreCase(fileTitle, "war")) {
-            ArchiveExtractor extractor = new ArchiveExtractor(warFolder, domainFolder);
+            ArchiveExtractor extractor = new ArchiveExtractor(wwwFolder);
             extractor.extractWarFile(fileTitle);
             File webInf = new File(getFileInDomainFolder(fileTitle).getPath() + separator + "WEB-INF");
             WebXMLAnalyzer xmlAnalyzer = new WebXMLAnalyzer(webInf);
@@ -86,7 +79,7 @@ public class AutoDeployment extends Thread implements Deployment {
     }
 
     private File getFileInDomainFolder(String fileTitle) {
-        return new File(domainFolder + separator + replace(fileTitle, ".war", ""));
+        return new File(wwwFolder + separator + replace(fileTitle, ".war", ""));
     }
 
     @Override

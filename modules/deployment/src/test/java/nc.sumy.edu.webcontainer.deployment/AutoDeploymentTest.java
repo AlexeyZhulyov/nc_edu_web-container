@@ -1,17 +1,15 @@
 package nc.sumy.edu.webcontainer.deployment;
 
-import org.junit.Test;
-
 public class AutoDeploymentTest {
-
+/*
     @Test
     public void deploymentTest() {
-        /*
+
        ServerConfiguration configuration = new ServerConfigurationJson();
-        configuration.setServerLocation("src" + separator +
-                "test" + separator + "resources" + separator + "folder_listener");
+        configuration.setWwwLocation("src" + File.separator +
+                "test" + File.separator + "resources" + File.separator + "folder_listener");
         AutoDeployment autoDeployment = new AutoDeployment(configuration);
-        autoDeployment.run();*/
-    }
+        autoDeployment.run();
+    }*/
 
 }

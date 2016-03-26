@@ -1,24 +1,31 @@
 package nc.sumy.edu.webcontainer.web;
 
+import nc.sumy.edu.webcontainer.common.ClassUtil;
+import nc.sumy.edu.webcontainer.http.HttpRequest;
 import nc.sumy.edu.webcontainer.http.HttpResponse;
 
 import javax.servlet.*;
 import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import java.io.File;
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
+import java.io.PrintWriter;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
 
 import static nc.sumy.edu.webcontainer.common.ClassUtil.newInstance;
 
 public class ServletHandlerImpl implements ServletHandler {
 
-    private final Map<String, HttpServlet> instances = new HashMap<>();
+    private static final ConcurrentMap<String, HttpServlet> instances = new ConcurrentHashMap<>();
 
-    public HttpServletResponse processServlet(HttpServletRequest request, Class klass) {
+    public HttpResponse processServlet(HttpRequest request, Class klass) {
 
         HttpServlet servlet;
+        PrintWriter logWriter = null;
+        ResponseWrapper responseWrapper = new ResponseWrapper(new HttpResponse(200));
+        ServletConfig servletConfig = null;
 
         String className = klass.getCanonicalName();
         Class<HttpServlet> servletClass = klass;
@@ -27,27 +34,38 @@ public class ServletHandlerImpl implements ServletHandler {
             servlet = instances.get(className);
         else {
             servlet = newInstance(servletClass);
+
+            String klassPath = klass.getProtectionDomain().getCodeSource().getLocation().getPath();
+            String libPath = (klassPath.contains("classes") ? klassPath.substring(0, klassPath.lastIndexOf("classes")) + "lib/" : null);
+            String configPath = (klassPath.contains("WEB-INF") ? klassPath.substring(0, klassPath.lastIndexOf("/WEB-INF")) : null);
+            URL configUrl = null;
             try {
-                servlet.init();
+                configUrl = (configPath == null ? null : new File(configPath).toURI().toURL());
+            } catch (MalformedURLException e) {
+                e.printStackTrace();
+            }
+            ClassUtil.addFilesFromDirToSysClassPath(libPath);
+
+            servletConfig = new ServletConfigImpl(logWriter, configUrl);
+            try {
+                servlet.init(servletConfig);
                 instances.put(className, servlet);
             } catch (ServletException e) {
                 throw new WebException("Cannot do init()", e);
             }
         }
 
-        ResponseWrapper response = new ResponseWrapper(new HttpResponse(200));
+        RequestWrapper requestWrapper = new RequestWrapper(request, servletConfig);
 
         try {
-            servlet.service(request, response);
-        } catch (ServletException e) {
+            servlet.service(requestWrapper, responseWrapper);
+        } catch (ServletException | IOException e) {
             throw new WebException("Cannot do service()", e);
-        } catch (IOException e) {
-            throw new WebException("Cannot read servlet?", e);
         }
-        return response;
+        return (HttpResponse) responseWrapper.getResponse();
     }
 
-    public void destroy(Class klass){
+    public void destroy(Class klass) {
         instances.remove(klass.getCanonicalName()).destroy();
     }
 }

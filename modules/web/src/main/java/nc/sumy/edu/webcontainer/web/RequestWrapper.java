@@ -18,9 +18,16 @@ public class RequestWrapper implements HttpServletRequest {
 
     private Request request;
     private HttpSession httpSession = new HttpSessionImpl();
+    ServletConfig servletConfig;
 
-    public RequestWrapper(Request request) {
+
+    public RequestWrapper(Request request, ServletConfig servletConfig) {
         this.request = request;
+        this.servletConfig = servletConfig;
+    }
+
+    public Request getRequest() {
+        return request;
     }
 
     /**
@@ -42,7 +49,7 @@ public class RequestWrapper implements HttpServletRequest {
     }
 
     @Override
-    public void setCharacterEncoding(String s) throws UnsupportedEncodingException {
+    public void setCharacterEncoding(String s) {
         throw new UnsupportedOperationException();
     }
 
@@ -62,7 +69,7 @@ public class RequestWrapper implements HttpServletRequest {
     }
 
     @Override
-    public ServletInputStream getInputStream() throws IOException {
+    public ServletInputStream getInputStream() {
         throw new UnsupportedOperationException();
     }
 
@@ -107,7 +114,7 @@ public class RequestWrapper implements HttpServletRequest {
     }
 
     @Override
-    public BufferedReader getReader() throws IOException {
+    public BufferedReader getReader() {
         throw new UnsupportedOperationException();
     }
 
@@ -148,7 +155,7 @@ public class RequestWrapper implements HttpServletRequest {
 
     @Override
     public RequestDispatcher getRequestDispatcher(String s) {
-        throw new UnsupportedOperationException();
+        return new RequestDispatcherImpl(s, this);
     }
 
     @Override
@@ -178,16 +185,16 @@ public class RequestWrapper implements HttpServletRequest {
 
     @Override
     public ServletContext getServletContext() {
+        return servletConfig.getServletContext();
+    }
+
+    @Override
+    public AsyncContext startAsync() {
         throw new UnsupportedOperationException();
     }
 
     @Override
-    public AsyncContext startAsync() throws IllegalStateException {
-        throw new UnsupportedOperationException();
-    }
-
-    @Override
-    public AsyncContext startAsync(ServletRequest servletRequest, ServletResponse servletResponse) throws IllegalStateException {
+    public AsyncContext startAsync(ServletRequest servletRequest, ServletResponse servletResponse) {
         throw new UnsupportedOperationException();
     }
 
@@ -342,32 +349,32 @@ public class RequestWrapper implements HttpServletRequest {
     }
 
     @Override
-    public boolean authenticate(HttpServletResponse httpServletResponse) throws IOException, ServletException {
+    public boolean authenticate(HttpServletResponse httpServletResponse) {
         throw new UnsupportedOperationException();
     }
 
     @Override
-    public void login(String s, String s1) throws ServletException {
-
-    }
-
-    @Override
-    public void logout() throws ServletException {
-
-    }
-
-    @Override
-    public Collection<Part> getParts() throws IOException, ServletException {
+    public void login(String s, String s1) {
         throw new UnsupportedOperationException();
     }
 
     @Override
-    public Part getPart(String s) throws IOException, ServletException {
+    public void logout() {
         throw new UnsupportedOperationException();
     }
 
     @Override
-    public <T extends HttpUpgradeHandler> T upgrade(Class<T> aClass) throws IOException, ServletException {
+    public Collection<Part> getParts() {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public Part getPart(String s) {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public <T extends HttpUpgradeHandler> T upgrade(Class<T> aClass) {
         throw new UnsupportedOperationException();
     }
 }

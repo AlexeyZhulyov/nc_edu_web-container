@@ -25,12 +25,10 @@ public class ResponseWrapper implements HttpServletResponse {
     }
 
     public Response getResponse() {
+        writer.flush();
         response.setBody(output.toByteArray());
         return response;
-
-
     }
-
     /**
      * implementation of HttpServletResponse
      */
@@ -176,7 +174,7 @@ public class ResponseWrapper implements HttpServletResponse {
 
     @Override
     public void addHeader(String s, String s1) {
-        throw new UnsupportedOperationException();
+        response.setHeader(s,s1);
     }
 
     @Override
