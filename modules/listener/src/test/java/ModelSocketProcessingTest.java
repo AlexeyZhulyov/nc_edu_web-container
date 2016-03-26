@@ -37,7 +37,7 @@ ModelSocketProcessingTest {
         Socket socketOnClientSide = new Socket("localhost", 7001);
         //write request
         OutputStream clientOutput = socketOnClientSide.getOutputStream();
-        clientOutput.write("Test request".getBytes());
+        clientOutput.write("GET /smth.gif \r\n".getBytes());
         //process request
         Socket socketOnServerSide = serverSocket.accept();
         model.processRequest(socketOnServerSide);

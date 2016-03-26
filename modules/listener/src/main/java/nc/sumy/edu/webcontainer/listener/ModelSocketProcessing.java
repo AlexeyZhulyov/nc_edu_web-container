@@ -28,7 +28,10 @@ public class ModelSocketProcessing {
         try( InputStream clientInput = clientSocket.getInputStream();
              OutputStream clientOutput = clientSocket.getOutputStream())
         {
-            String requestString = IOUtil.toString(clientInput, String.valueOf(Charset.defaultCharset()));
+            //String requestString = IOUtil.toString(clientInput, String.valueOf(Charset.defaultCharset()));
+            byte[] bytes = new byte[clientInput.available()];
+            clientInput.read(bytes);
+            String requestString = new String(bytes);
             Request clientRequest = new HttpRequest(requestString,
                     clientSocket.getRemoteSocketAddress().toString(), clientSocket.getInetAddress().getHostName() );
             Response serverResponse = dispatcher.getResponse(clientRequest);
