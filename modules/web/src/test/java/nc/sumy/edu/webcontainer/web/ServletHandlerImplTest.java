@@ -1,19 +1,28 @@
 package nc.sumy.edu.webcontainer.web;
 
+import nc.sumy.edu.webcontainer.common.ClassUtil;
 import nc.sumy.edu.webcontainer.common.InstanceNotCreatedException;
 import nc.sumy.edu.webcontainer.http.HttpRequest;
+import nc.sumy.edu.webcontainer.http.Response;
 import nc.sumy.edu.webcontainer.web.stub.*;
 import org.junit.Before;
 import org.junit.Test;
 
+import javax.security.auth.login.Configuration;
+import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
+
+import java.io.File;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLClassLoader;
 
 import static org.junit.Assert.assertEquals;
 import static java.lang.String.format;
 
 public class ServletHandlerImplTest {
     private ServletHandler servletHandler;
-    private HttpServletRequest servletRequest;
+    private HttpRequest request;
 
     @Before
     public void setUp() {
@@ -22,44 +31,55 @@ public class ServletHandlerImplTest {
                 "Host" + ": foo.com" + "\r\n" +
                 "Accept" + ": text/html" + "\r\n" +
                 "Range-Unit: 3388 | 1024";
-        servletRequest = new RequestWrapper(new HttpRequest(requestStr, "", ""));
+        request = new HttpRequest(requestStr, "", "");
     }
 
     @Test
-    public void process1() {
+    public void processMainDemoServlet() throws ClassNotFoundException, MalformedURLException {
+        String expected = ClassUtil.fileToString(new File(getClass().getResource("/TestIndex.html").getPath()));
+        ClassLoader classLoader = new URLClassLoader(new URL[]{new File("../www/Servlets_demo/WEB-INF/classes").toURI().toURL()});
+        Class klass = Class.forName("sumy.javacourse.webdemo.controller.Main", true, classLoader);
+        Response response = servletHandler.processServlet(request, klass);
+        byte[] body = response.getBody();
+        String actual = new String(body);
+        assertEquals(expected.replaceAll("\\s", ""), actual.replace("\r", "").replaceAll("\\s", ""));
+    }
+
+    @Test
+    public void processServletInstances() {
         int number = 1;
         String expected = "<h1>Hello Servlet</h1>\n<body>Test servlet #%s.</body>\n";
-        byte[] body = ((ResponseWrapper) servletHandler.processServlet(servletRequest,TestServlet.class)).getResponse().getBody();
+        byte[] body = servletHandler.processServlet(request, TestServlet.class).getBody();
         String actual = new String(body);
-        assertEquals(format(expected,number), actual.replace("\r", ""));
+        assertEquals(format(expected, number), actual.replace("\r", ""));
         number++;
-        body = ((ResponseWrapper) servletHandler.processServlet(servletRequest,TestServlet.class)).getResponse().getBody();
+        body = servletHandler.processServlet(request, TestServlet.class).getBody();
         actual = new String(body);
-        assertEquals(format(expected,number), actual.replace("\r", ""));
+        assertEquals(format(expected, number), actual.replace("\r", ""));
     }
 
     @Test(expected = InstanceNotCreatedException.class)
     public void processExceptionMessage1() {
-        servletHandler.processServlet(servletRequest, AbstractTestServlet.class);
+        servletHandler.processServlet(request, AbstractTestServlet.class);
     }
 
     @Test(expected = InstanceNotCreatedException.class)
     public void processExceptionMessage2() {
-        servletHandler.processServlet(servletRequest, TestServletWithPrivateConstructor.class);
+        servletHandler.processServlet(request, TestServletWithPrivateConstructor.class);
     }
 
     @Test(expected = WebException.class)
     public void processExceptionMessage3() {
-        servletHandler.processServlet(servletRequest, TestServletInitException.class);
+        servletHandler.processServlet(request, TestServletInitException.class);
     }
 
     @Test(expected = WebException.class)
     public void processExceptionMessage4() {
-        servletHandler.processServlet(servletRequest, TestServletServiceException.class);
+        servletHandler.processServlet(request, TestServletServiceException.class);
     }
 
     @Test(expected = WebException.class)
     public void processExceptionMessage5() {
-        servletHandler.processServlet(servletRequest, TestServletIOException.class);
+        servletHandler.processServlet(request, TestServletIOException.class);
     }
 }

@@ -4,9 +4,14 @@ import javax.servlet.ServletContext;
 import javax.servlet.http.HttpSession;
 import javax.servlet.http.HttpSessionContext;
 import java.util.Enumeration;
+import java.util.HashMap;
+import java.util.Map;
 
 @SuppressWarnings("PMD")
 public class HttpSessionImpl implements HttpSession {
+
+    private Map<String,Object> attributes = new HashMap<>();
+
     @Override
     public long getCreationTime() {
         throw new UnsupportedOperationException();
@@ -44,7 +49,7 @@ public class HttpSessionImpl implements HttpSession {
 
     @Override
     public Object getAttribute(String s) {
-        throw new UnsupportedOperationException();
+        return attributes.get(s);
     }
 
     @Override
@@ -64,12 +69,12 @@ public class HttpSessionImpl implements HttpSession {
 
     @Override
     public void setAttribute(String s, Object o) {
-        throw new UnsupportedOperationException();
+        attributes.put(s, o);
     }
 
     @Override
     public void putValue(String s, Object o) {
-        throw new UnsupportedOperationException();
+        setAttribute(s, o);
     }
 
     @Override
