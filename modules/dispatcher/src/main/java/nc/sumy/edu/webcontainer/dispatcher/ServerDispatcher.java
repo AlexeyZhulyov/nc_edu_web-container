@@ -149,8 +149,8 @@ public class ServerDispatcher implements Dispatcher{
 
     private void createJspPageResponse(File page) {
         JspHandler handler = new JspHandlerImpl();
+        //setSuccessHeaders(response);
         response = handler.processJSP((HttpRequest) request, page);
-        setSuccessHeaders(response);
     }
 
     private void createStaticPageResponse(File page) {
@@ -199,7 +199,7 @@ public class ServerDispatcher implements Dispatcher{
                 break;
             case "xml" : setContentType(response, "text/xml");
                 break;
-            case "jsp" : setContentType(response, "text/jsp");
+            case "jsp" : setContentType(response, "text/html");
                 break;
             case "pdf" : setContentType(response, "application/pdf");
                 break;
