@@ -1,7 +1,10 @@
 package nc.sumy.edu.webcontainer.http;
 
+import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
+
+import java.lang.reflect.Array;
 import java.util.*;
 
 import static java.lang.System.arraycopy;
@@ -44,9 +47,13 @@ public class HttpResponse implements Response {
         response = "HTTP/1.1 ";
         response += RESPONSE_CODES.get(code)
                 + ENDL
-                + getHeadersSting()
-                + new String(body);
-        return response.getBytes();
+                + getHeadersSting();
+        byte[] part1 = response.getBytes();
+        byte[] part2 = body;
+        byte[] result = new byte[part1.length + part2.length];
+        System.arraycopy(part1, 0, result, 0, part1.length);
+        System.arraycopy(part2, 0, result, part1.length, part2.length);
+        return result;
     }
 
     public Response setCode(int code) {

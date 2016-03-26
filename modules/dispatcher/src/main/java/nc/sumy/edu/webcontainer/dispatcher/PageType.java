@@ -8,7 +8,7 @@ public enum PageType {
     JSP("jsp", "text/jsp"),
     PDF("pdf", "application/pdf"),
     ZIP("zip", "application/zip"),
-    JAVASCRIPT("js", "application/javascript "),
+    JAVASCRIPT("js", "application/javascript"),
     GIF("gif", "image/gif"),
     JPEG("jpeg", "image/jpeg"),
     JPG("jpg", "image/jpg"),

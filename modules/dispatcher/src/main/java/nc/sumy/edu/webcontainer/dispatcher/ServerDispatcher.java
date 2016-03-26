@@ -47,13 +47,16 @@ public class ServerDispatcher implements Dispatcher{
     public HttpResponse getResponse(Request request) {
         this.request = request;
         security = new ServerSecurity(request, serverConfiguration);
-        errorPagesPath  = serverConfiguration.getWwwLocation() + File.separator + "default" + File.separator;
+        errorPagesPath  = serverConfiguration.getWwwLocation() + File.separator +
+                "www" + File.separator + "default" + File.separator;
         makeResponse();
         return response;
     }
 
     private void makeResponse() {
-        String pagePath = serverConfiguration.getWwwLocation() + File.separator + request.getUrn();
+        String pagePath = serverConfiguration.getWwwLocation() + File.separator + "www" + File.separator
+                + request.getUrn().replace("/",File.separator);
+        System.out.println("pagePath = " + pagePath);
         if (initialInspection())
             return;
         if (!security.isAllow()) {
@@ -123,7 +126,6 @@ public class ServerDispatcher implements Dispatcher{
         for (Map.Entry<File, ConcurrentHashMap<String, Class>> domain : domainData.entrySet()) {
             if (findUrlMapping(request, domain))
                 return true;
-
         }
         return false;
     }
@@ -152,6 +154,7 @@ public class ServerDispatcher implements Dispatcher{
     }
 
     private void createStaticPageResponse(File page) {
+        response = new HttpResponse(OK.getCode());
         WebHandler handler = new WebHandlerImpl();
         response.setBody(handler.process(page).getBytes());
         setSuccessHeaders(response);
@@ -184,34 +187,37 @@ public class ServerDispatcher implements Dispatcher{
         setDefaultHeaders(response);
         String temp[] = split(request.getUrn(), ".");
         String extension = temp[temp.length - 1];
+        System.out.println("!!!!!!!!!!!!!--Extension------------------");
+        System.out.println(extension);
+        System.out.println("!!!!!!!!!!!!----------------------");
         switch (extension) {
-            case "html" : setContentType(response, HTML.getMIME());
+            case "html" : setContentType(response, "text/html");
                 break;
-            case "htm" : setContentType(response, HTM.getMIME());
+            case "htm" : setContentType(response, "text/htm");
                 break;
-            case "css" : setContentType(response, CSS.getMIME());
+            case "css" : setContentType(response, "text/css");
                 break;
-            case "xml" : setContentType(response, XML.getMIME());
+            case "xml" : setContentType(response, "text/xml");
                 break;
-            case "jsp" : setContentType(response, JSP.getMIME());
+            case "jsp" : setContentType(response, "text/jsp");
                 break;
-            case "pdf" : setContentType(response, PDF.getMIME());
+            case "pdf" : setContentType(response, "application/pdf");
                 break;
-            case "zip" : setContentType(response, ZIP.getMIME());
+            case "zip" : setContentType(response, "application/zip");
                 break;
-            case "js"  : setContentType(response, JAVASCRIPT.getMIME());
+            case "js"  : setContentType(response, "application/javascript");
                 break;
-            case "gif" : setContentType(response, GIF.getMIME());
+            case "gif" : setContentType(response, "image/gif");
                 break;
-            case "jpeg" : setContentType(response, JPEG.getMIME());
+            case "jpeg" : setContentType(response, "image/jpeg");
                 break;
-            case "jpg" : setContentType(response, JPG.getMIME());
+            case "jpg" : setContentType(response, "image/jpg");
                 break;
-            case "swg" : setContentType(response, SWG.getMIME());
+            case "swg" : setContentType(response, "image/swg");
                 break;
-            case "png" : setContentType(response, PNG.getMIME());
+            case "png" : setContentType(response, "image/png");
                 break;
-            default:  setContentType(response, HTML.getMIME());
+            default:  setContentType(response, "text/html");
                 break;
         }
         response.setHeader(CACHE_CONTROL.getHeader(), "public, max-age=60");

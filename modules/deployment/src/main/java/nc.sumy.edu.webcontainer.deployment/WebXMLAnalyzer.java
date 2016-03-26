@@ -47,7 +47,8 @@ public class WebXMLAnalyzer {
         webXml = new File(webInf.toString() + separator + WEB_XML);
         classPath = new File(webInf.toString() + separator + CLASS + separator);
         validateXMLbyDTD();
-        if (isValid) {
+        //TODO: ....
+        if (true) {
             makeDataMap();
         }
     }

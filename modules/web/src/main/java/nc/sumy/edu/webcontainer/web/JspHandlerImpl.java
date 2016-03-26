@@ -22,7 +22,7 @@ import static nc.sumy.edu.webcontainer.common.ClassUtil.*;
 
 public class JspHandlerImpl implements JspHandler {
 
-    private static final ConcurrentMap<File, HttpJspPage> instances = new ConcurrentHashMap<>();
+    private static final ConcurrentMap<File, HttpJspPage> INSTANCES = new ConcurrentHashMap<>();
     private String outputDir;
     private final JspC jspc = new JspC();
 
@@ -34,8 +34,8 @@ public class JspHandlerImpl implements JspHandler {
         ResponseWrapper responseWrapper = new ResponseWrapper(new HttpResponse(200));
         ServletConfig servletConfig = null;
 
-        if (instances.containsKey(file)) {
-            jspPage = instances.get(file);
+        if (INSTANCES.containsKey(file)) {
+            jspPage = INSTANCES.get(file);
             if (((ServletConfigImpl) jspPage.getServletConfig()).getDate().getTime() < file.lastModified()) {
                 destroy(file);
                 jspPage = null;
@@ -66,7 +66,7 @@ public class JspHandlerImpl implements JspHandler {
             } catch (ServletException e) {
                 e.printStackTrace();
             }
-            instances.put(file, jspPage);
+            INSTANCES.put(file, jspPage);
         }
         RequestWrapper requestWrapper = new RequestWrapper(request, servletConfig);
 
@@ -81,7 +81,7 @@ public class JspHandlerImpl implements JspHandler {
     }
 
     public void destroy(File file) {
-        instances.remove(file).jspDestroy();
+        INSTANCES.remove(file).jspDestroy();
     }
 
     private void execute(String dir) {

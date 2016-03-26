@@ -18,7 +18,8 @@ import static nc.sumy.edu.webcontainer.common.ClassUtil.newInstance;
 
 public class ServletHandlerImpl implements ServletHandler {
 
-    private static final ConcurrentMap<String, HttpServlet> instances = new ConcurrentHashMap<>();
+    private static final ConcurrentMap<String, HttpServlet> INSTANCES = new ConcurrentHashMap<>();
+
 
     public HttpResponse processServlet(HttpRequest request, Class klass) {
 
@@ -30,26 +31,23 @@ public class ServletHandlerImpl implements ServletHandler {
         String className = klass.getCanonicalName();
         Class<HttpServlet> servletClass = klass;
 
-        if (instances.containsKey(className))
-            servlet = instances.get(className);
+        if (INSTANCES.containsKey(className))
+            servlet = INSTANCES.get(className);
         else {
             servlet = newInstance(servletClass);
 
-            String klassPath = klass.getProtectionDomain().getCodeSource().getLocation().getPath();
-            String libPath = (klassPath.contains("classes") ? klassPath.substring(0, klassPath.lastIndexOf("classes")) + "lib/" : null);
-            String configPath = (klassPath.contains("WEB-INF") ? klassPath.substring(0, klassPath.lastIndexOf("/WEB-INF")) : null);
-            URL configUrl = null;
-            try {
-                configUrl = (configPath == null ? null : new File(configPath).toURI().toURL());
-            } catch (MalformedURLException e) {
-                e.printStackTrace();
-            }
+            String klassPath = getKlassPath(klass);
+            String libPath = getLibPath(klassPath);
+            String configPath = getConfigPath(klassPath);
+
+            URL configUrl = getConfigUrl(configPath);
+
             ClassUtil.addFilesFromDirToSysClassPath(libPath);
 
             servletConfig = new ServletConfigImpl(logWriter, configUrl);
             try {
                 servlet.init(servletConfig);
-                instances.put(className, servlet);
+                INSTANCES.put(className, servlet);
             } catch (ServletException e) {
                 throw new WebException("Cannot do init()", e);
             }
@@ -65,7 +63,27 @@ public class ServletHandlerImpl implements ServletHandler {
         return (HttpResponse) responseWrapper.getResponse();
     }
 
+    private URL getConfigUrl(String configPath) {
+        try {
+            return (configPath == null ? null : new File(configPath).toURI().toURL());
+        } catch (MalformedURLException e) {
+            throw new WebException("MalformedURLException for config", e);
+        }
+    }
+
+    private String getConfigPath(String klassPath) {
+        return (klassPath.contains("WEB-INF") ? klassPath.substring(0, klassPath.lastIndexOf("/WEB-INF")) : null);
+    }
+
+    private String getLibPath(String klassPath) {
+        return (klassPath.contains("classes") ? klassPath.substring(0, klassPath.lastIndexOf("classes")) + "lib/" : null);
+    }
+
+    private String getKlassPath(Class klass) {
+        return klass.getProtectionDomain().getCodeSource().getLocation().getPath();
+    }
+
     public void destroy(Class klass) {
-        instances.remove(klass.getCanonicalName()).destroy();
+        INSTANCES.remove(klass.getCanonicalName()).destroy();
     }
 }

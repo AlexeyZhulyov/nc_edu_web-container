@@ -2,7 +2,6 @@ package nc.sumy.edu.webcontainer.common;
 
 import org.apache.commons.io.FileUtils;
 
-import javax.management.ReflectionException;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -34,11 +33,11 @@ public class ClassUtil {
         try {
             return FileUtils.readFileToString(file);
         } catch (IOException e) {
-            throw new FileNotReadException(file.getName(), e);
+            throw new FileNotReadException(file.getAbsolutePath(), e);
         }
     }
 
-    public static void addURLToSystemClassPath(URL u) {
+    public static void addURLToSystemClassPath(URL url) {
         URLClassLoader sysloader = (URLClassLoader) ClassLoader.getSystemClassLoader();
         Class sysclass = URLClassLoader.class;
 
@@ -46,22 +45,22 @@ public class ClassUtil {
         try {
             method = sysclass.getDeclaredMethod("addURL", new Class[]{URL.class});
             method.setAccessible(true);
-            method.invoke(sysloader, new Object[]{u});
+            method.invoke(sysloader, new Object[]{url});
         } catch (NoSuchMethodException | InvocationTargetException | IllegalAccessException e) {
             throw new SystemClassloaderException(e);
         }
     }
 
-    public static void addFileToSystemClassPath(String s) {
-        File f = new File(s);
-        addFileToSystemClassPath(f);
+    public static void addFileToSystemClassPath(String dir) {
+        File file = new File(dir);
+        addFileToSystemClassPath(file);
     }
 
-    public static void addFileToSystemClassPath(File f) {
+    public static void addFileToSystemClassPath(File dir) {
         try {
-            addURLToSystemClassPath(f.toURI().toURL());
+            addURLToSystemClassPath(dir.toURI().toURL());
         } catch (IOException e) {
-            throw new FileNotFoundException(f.getName(), e);
+            throw new FileNotFoundException(dir.getName(), e);
         }
     }
 

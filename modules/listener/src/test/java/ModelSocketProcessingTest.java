@@ -1,4 +1,3 @@
-import junit.framework.Assert;
 import nc.sumy.edu.webcontainer.configuration.ServerConfigurationJson;
 import nc.sumy.edu.webcontainer.deployment.AutoDeployment;
 import nc.sumy.edu.webcontainer.dispatcher.Dispatcher;
@@ -8,6 +7,7 @@ import nc.sumy.edu.webcontainer.http.Request;
 import nc.sumy.edu.webcontainer.http.Response;
 import nc.sumy.edu.webcontainer.listener.ModelSocketProcessing;
 import org.apache.maven.shared.utils.io.IOUtil;
+import org.junit.Assert;
 import org.junit.Test;
 
 import java.io.IOException;
@@ -30,24 +30,40 @@ ModelSocketProcessingTest {
     };
 
     ModelSocketProcessing model = new ModelSocketProcessing(dispatcher);
-    @Test
-    public void simpleSocketTest() throws IOException {
-        //create sockets
-        ServerSocket serverSocket = new ServerSocket(7001);
-        Socket socketOnClientSide = new Socket("localhost", 7001);
-        //write request
-        OutputStream clientOutput = socketOnClientSide.getOutputStream();
-        clientOutput.write("Test request".getBytes());
-        //process request
-        Socket socketOnServerSide = serverSocket.accept();
-        model.processRequest(socketOnServerSide);
-        //compare results
-        InputStream inputStream = socketOnClientSide.getInputStream();
-        String requestString = IOUtil.toString(inputStream, String.valueOf(Charset.defaultCharset()));
 
-        serverSocket.close();
-        socketOnClientSide.close();
-        Assert.assertEquals("Test request", "Test request", requestString);
+    @Test
+    public void simpleSocketTest() {
+        ServerSocket serverSocket = null;
+        Socket socketOnClientSide = null;
+        Socket socketOnServerSide = null;
+        OutputStream clientOutput = null;
+        InputStream inputStream = null;
+        try {//create sockets
+            serverSocket = new ServerSocket(7013);
+            socketOnClientSide = new Socket("localhost", 7013);
+            socketOnServerSide = serverSocket.accept();
+            //write request
+            clientOutput = socketOnClientSide.getOutputStream();
+            clientOutput.write("Test request".getBytes());
+            //process request
+            model.processRequest(socketOnServerSide);
+            //compare results
+            inputStream = socketOnClientSide.getInputStream();
+            String requestString = IOUtil.toString(inputStream, String.valueOf(Charset.defaultCharset()));
+            Assert.assertEquals("Test request", "HTTP/1.1 200 OK\n\nTest request".replace("\r", ""), requestString.replace("\r", ""));
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                serverSocket.close();
+                socketOnClientSide.close();
+                socketOnServerSide.close();
+                clientOutput.close();
+                inputStream.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     @Test
@@ -65,6 +81,13 @@ ModelSocketProcessingTest {
         //compare results
         InputStream inputStream = socketOnClientSide.getInputStream();
         String requestString = IOUtil.toString(inputStream, String.valueOf(Charset.defaultCharset()));
+        serverSocket.close();
+                socketOnClientSide.close();
+                socketOnServerSide.close();
+                clientOutput.close();
+                inputStream.close();
         Assert.assertEquals("Test request", "", requestString);
+
     }
+
 }

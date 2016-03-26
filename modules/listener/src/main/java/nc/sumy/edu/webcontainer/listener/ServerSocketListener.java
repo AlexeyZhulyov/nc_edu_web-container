@@ -17,7 +17,8 @@ public class ServerSocketListener extends Thread {
     private boolean flag = true;
 
     public ServerSocketListener(ServerConfiguration configuration, Deployment deployment) throws IOException {
-        this.model = new ModelSocketProcessing(new ServerDispatcher(configuration, deployment));
+        //this.model = new ModelSocketProcessing(new ServerDispatcher(configuration, deployment));
+        this.model = new ModelSocketProcessing(configuration, deployment);
         int port = configuration.getPort();
         this.serverSocket = new ServerSocket(port);
     }

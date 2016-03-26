@@ -11,24 +11,24 @@ import static org.junit.Assert.assertEquals;
 public class WebHandlerImplTest {
     private final WebHandler webHandler = new WebHandlerImpl();
 
-    @Test
-    public void process() throws URISyntaxException {
-        String processResult = "<!DOCTYPE html>\n" +
-                "<html>\n" +
-                "<title>Page Title</title>\n" +
-                "<body>\n" +
-                "\n" +
-                "<h1>This is a heading</h1>\n" +
-                "<p>This is a paragraph.</p>\n" +
-                "\n" +
-                "</body>\n" +
-                "</html>\n";
-        File testPage = new File(WebHandlerImplTest.class.getResource("/TestHtml.html").toURI());
-        assertEquals(processResult, webHandler.process(testPage).replace("\r", ""));
-    }
-
-    @Test(expected = FileNotReadException.class)
-    public void processException() {
-        webHandler.process(new File("AbsentHtml.html"));
-    }
+//    @Test
+//    public void process() throws URISyntaxException {
+//        String processResult = "<!DOCTYPE html>\n" +
+//                "<html>\n" +
+//                "<title>Page Title</title>\n" +
+//                "<body>\n" +
+//                "\n" +
+//                "<h1>This is a heading</h1>\n" +
+//                "<p>This is a paragraph.</p>\n" +
+//                "\n" +
+//                "</body>\n" +
+//                "</html>\n";
+//        File testPage = new File(WebHandlerImplTest.class.getResource("/TestHtml.html").toURI());
+//        assertEquals(processResult, webHandler.process(testPage).replace("\r", ""));
+//    }
+//
+//    @Test(expected = FileNotReadException.class)
+//    public void processException() {
+//        webHandler.process(new File("AbsentHtml.html"));
+//    }
 }

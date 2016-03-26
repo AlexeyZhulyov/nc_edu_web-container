@@ -11,6 +11,6 @@ public class FileNotFoundException extends RuntimeException {
     }
 
     public FileNotFoundException(String fileName, Throwable cause) {
-        super(format(fileName), cause);
+        super(format(MESSAGE, fileName), cause);
     }
 }
