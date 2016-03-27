@@ -64,10 +64,7 @@ public class HttpRequest implements Request {
                 firstLine[1] = replace(firstLine[1], "http://", "");
             } else if (startsWith(firstLine[1], "https://")) {
                 firstLine[1] = replace(firstLine[1], "https://", "");
-            }/*
-            headers.put("Host", host); //???
-            firstLine[1] = replace(firstLine[1], host, "");
-            */
+            }
         }
         if (method == HttpMethod.GET && contains(firstLine[1], '?')) {
             String[] pathParts = split(firstLine[1], "\\?");
@@ -82,10 +79,7 @@ public class HttpRequest implements Request {
             urn = firstLine[1];
         }
         int pos = indexOf(firstLine[1], '/', 2);
-        System.out.println("-----------HttpRequest -> parseURI -> domainName -> firstLine[1]: " + firstLine[1]);
-        System.out.println("-----pos = " + pos);
         domainName = substring(firstLine[1], 0, pos);
-        System.out.println("-----------HttpRequest -> parseURI -> domainName -> domainName " + domainName);
 
     }
 
@@ -196,4 +190,5 @@ public class HttpRequest implements Request {
                 .append(parameters)
                 .toHashCode();
     }
+
 }
