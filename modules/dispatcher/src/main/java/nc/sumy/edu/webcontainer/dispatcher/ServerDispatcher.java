@@ -92,6 +92,10 @@ public class ServerDispatcher implements Dispatcher{
     private boolean createIndexPage(String pagePath) {
         File page = new File(pagePath);
         if (page.exists() && page.isDirectory()) {
+            if(!endsWith(pagePath.replace("\\", "/"), "/")) {
+                createRedirectPage();
+                return true;
+            }
             String index = "index.";
             File indexPage = new File(pagePath + File.separator + index + HTML.getFileExtension());
             if (indexPage.exists()) {
@@ -107,6 +111,15 @@ public class ServerDispatcher implements Dispatcher{
             return true;
         }
         return false;
+    }
+
+    private void createRedirectPage() {
+        response = new HttpResponse(OK.getCode());
+        //redirectTo = redirectTo.replace("\\", "/");
+        //String[] strings = split(redirectTo, "/");
+        //response.setHeader("Refresh", "0;url=" + strings[strings.length-1] + "/");
+        response.setHeader("Refresh", "0;url=" + request.getUrn() + "/");
+        response.setBody(new byte[0]);
     }
 
     private boolean createStaticOrJspPage(String pagePath) {
