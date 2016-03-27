@@ -3,6 +3,9 @@ package nc.sumy.edu.webcontainer.web;
 import nc.sumy.edu.webcontainer.common.ClassUtil;
 import nc.sumy.edu.webcontainer.http.HttpRequest;
 import nc.sumy.edu.webcontainer.http.HttpResponse;
+import nc.sumy.edu.webcontainer.web.servlet.RequestWrapper;
+import nc.sumy.edu.webcontainer.web.servlet.ResponseWrapper;
+import nc.sumy.edu.webcontainer.web.servlet.ServletConfigImpl;
 import org.apache.jasper.JasperException;
 import org.apache.jasper.JspC;
 
@@ -44,8 +47,7 @@ public class JspHandlerImpl implements JspHandler {
         }
         if (jspPage == null) {
             String filePath = file.getAbsolutePath();
-            String pathUnpackWar = filePath.substring(0,filePath.indexOf(File.separator, filePath.lastIndexOf("www")+4)+1);
-            System.out.println("pathUnpackWar " + pathUnpackWar);
+            String pathUnpackWar = filePath.substring(0, filePath.indexOf(File.separator, filePath.lastIndexOf("www") + 4) + 1);
 
             outputDir = pathUnpackWar + "WEB-INF" + File.separator + "classes";
 
@@ -61,12 +63,12 @@ public class JspHandlerImpl implements JspHandler {
             try {
                 servletConfig = new ServletConfigImpl(logWriter, new File(pathUnpackWar).toURI().toURL());
             } catch (MalformedURLException e) {
-                e.printStackTrace();
+                throw new WebURLException(pathUnpackWar, e);
             }
             try {
                 jspPage.init(servletConfig);
             } catch (ServletException e) {
-                e.printStackTrace();
+                throw new JspInitException(filePath, e);
             }
             INSTANCES.put(file, jspPage);
         }
@@ -74,10 +76,8 @@ public class JspHandlerImpl implements JspHandler {
 
         try {
             jspPage._jspService(requestWrapper, responseWrapper);
-        } catch (ServletException e) {
-            throw new WebException("Servlet exception with _jspService", e);
-        } catch (IOException e) {
-            throw new WebException("IO exception with _jspService", e);
+        } catch (ServletException | IOException e) {
+            throw new JspServiceException(file.getPath(), e);
         }
         return (HttpResponse) responseWrapper.getResponse();
     }
@@ -95,7 +95,7 @@ public class JspHandlerImpl implements JspHandler {
             jspc.setArgs(new String[]{"-webapp", dir});
             jspc.execute();
         } catch (JasperException e) {
-            throw new WebException("Cannot execute jsp", e);
+            throw new JspExecutionException(dir, e);
 
         }
     }
@@ -107,13 +107,14 @@ public class JspHandlerImpl implements JspHandler {
         try {
             klassToLoad = new File(outputDir).toURI().toURL();
         } catch (MalformedURLException e) {
-            e.printStackTrace();
+            throw new WebURLException(outputDir, e);
         }
         classLoader = new URLClassLoader(new URL[]{klassToLoad});
+        String className = "executed.jsp." + file.getName().replace('.', '_');
         try {
-            klass = classLoader.loadClass("executed.jsp." + file.getName().replace('.', '_'));
+            klass = classLoader.loadClass(className);
         } catch (ClassNotFoundException e) {
-            throw new WebException("Class not found", e);
+            throw new JspClassNotFoundException(className, e);
         }
         return (Class<HttpJspPage>) klass;
     }

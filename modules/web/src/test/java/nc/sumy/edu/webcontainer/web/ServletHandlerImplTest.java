@@ -1,12 +1,12 @@
 package nc.sumy.edu.webcontainer.web;
 
-//import nc.sumy.edu.webcontainer.common.ClassUtil;
-//import nc.sumy.edu.webcontainer.common.InstanceNotCreatedException;
-import nc.sumy.edu.webcontainer.http.HttpRequest;
-//import nc.sumy.edu.webcontainer.http.Response;
-//import nc.sumy.edu.webcontainer.web.stub.*;
-import org.junit.Before;
-//import org.junit.Test;
+////import nc.sumy.edu.webcontainer.common.ClassUtil;
+////import nc.sumy.edu.webcontainer.common.InstanceNotCreatedException;
+//import nc.sumy.edu.webcontainer.http.HttpRequest;
+////import nc.sumy.edu.webcontainer.http.Response;
+////import nc.sumy.edu.webcontainer.web.stub.*;
+//import org.junit.Before;
+////import org.junit.Test;
 
 //import java.io.File;
 //import java.net.MalformedURLException;
@@ -17,18 +17,18 @@ import org.junit.Before;
 //import static java.lang.String.format;
 
 public class ServletHandlerImplTest {
-    private ServletHandler servletHandler;
-    private HttpRequest request;
+//    private ServletHandler servletHandler;
+//    private HttpRequest request;
 
-    @Before
-    public void setUp() {
-        servletHandler = new ServletHandlerImpl();
-        String requestStr = "GET " + "/" + "TestServlet" + " HTTP/1.1" + "\r\n" +
-                "Host" + ": foo.com" + "\r\n" +
-                "Accept" + ": text/html" + "\r\n" +
-                "Range-Unit: 3388 | 1024";
-        request = new HttpRequest(requestStr, "", "");
-    }
+//    @Before
+//    public void setUp() {
+//        servletHandler = new ServletHandlerImpl();
+//        String requestStr = "GET " + "/" + "TestServlet" + " HTTP/1.1" + "\r\n" +
+//                "Host" + ": foo.com" + "\r\n" +
+//                "Accept" + ": text/html" + "\r\n" +
+//                "Range-Unit: 3388 | 1024";
+//        request = new HttpRequest(requestStr, "", "");
+//    }
 
 //    @Test
 //    public void processMainDemoServlet() throws ClassNotFoundException, MalformedURLException {

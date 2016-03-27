@@ -13,7 +13,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.File;
-import java.nio.file.Files;
 import java.text.DateFormat;
 import java.util.Date;
 import java.util.Map;
@@ -200,14 +199,14 @@ public class ServerDispatcher implements Dispatcher{
 
     private void createStaticPageResponse(File page) {
         response = new HttpResponse(OK.getCode());
-        WebHandler handler = new WebHandlerImpl();
+        StaticContentHandler handler = new StaticContentHandlerImpl();
         response.setBody(handler.process(page));
         setSuccessHeaders(response);
     }
 
     private void createFileListPageResponse(File[] filesList) {
         response = new HttpResponse(OK.getCode());
-        WebHandler handler = new WebHandlerImpl();
+        StaticContentHandler handler = new StaticContentHandlerImpl();
         byte[] top = handler.process(new File(errorPagesPath + "filesListTop.html"));
         byte[] bottom = handler.process(new File(errorPagesPath + "filesListBottom.html"));
         StringBuilder buider = new StringBuilder();
@@ -239,7 +238,7 @@ public class ServerDispatcher implements Dispatcher{
         response = new HttpResponse(code.getCode());
         setErrorPageHeaders(response);
         File errorPage = new File(errorPagesPath + errorPageTitle);
-        WebHandler handler = new WebHandlerImpl();
+        StaticContentHandler handler = new StaticContentHandlerImpl();
         try {
             response.setBody(handler.process(errorPage));
         } catch (FileNotReadException e) {
