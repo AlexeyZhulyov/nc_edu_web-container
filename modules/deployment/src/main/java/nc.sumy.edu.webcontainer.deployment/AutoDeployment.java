@@ -52,9 +52,14 @@ public class AutoDeployment extends Thread implements Deployment {
 
     private void initialDeployment() {
         File[] files = wwwFolder.listFiles();
-
-        for (File warFile: files) {
-            createDomain(warFile.getName());
+        for (File file: files) {
+            if (!createDomain(file.getName())) {
+                File webInf = new File(getFileInDomainFolder(file.getName()).getPath() + separator + "WEB-INF");
+                if (webInf.exists()) {
+                    WebXMLAnalyzer xmlAnalyzer = new WebXMLAnalyzer(webInf);
+                    domainsData.put(getFileInDomainFolder(file.getName()), xmlAnalyzer.getDataMap());
+                }
+            }
         }
     }
 
@@ -69,21 +74,27 @@ public class AutoDeployment extends Thread implements Deployment {
                 createDomain(event.context().toString());
             }
             break;
-            case "ENTRY_DELETE": LOG.info("File deleted: " +
-                    getFileInDomainFolder(event.context().toString()).getName());
+            case "ENTRY_DELETE": {
+                LOG.info("File deleted: " +
+                        getFileInDomainFolder(event.context().toString()).getName());
+                domainsData.remove(getFileInDomainFolder(event.context().toString()));
+            }
                 break;
             default: LOG.info("Unknown event in deployment-folder.");
                 break;
         }
     }
 
-    private void createDomain(String fileTitle) {
+    private boolean createDomain(String fileTitle) {
         if (endsWithIgnoreCase(fileTitle, ".war")) {
             ArchiveExtractor extractor = new ArchiveExtractor(wwwFolder);
             extractor.extractWarFile(fileTitle);
             File webInf = new File(getFileInDomainFolder(fileTitle).getPath() + separator + "WEB-INF");
             WebXMLAnalyzer xmlAnalyzer = new WebXMLAnalyzer(webInf);
             domainsData.put(getFileInDomainFolder(fileTitle), xmlAnalyzer.getDataMap());
+            return true;
+        } else {
+            return false;
         }
     }
 
