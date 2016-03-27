@@ -14,6 +14,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.File;
+import java.nio.file.Files;
 import java.text.DateFormat;
 import java.util.Date;
 import java.util.Map;
@@ -106,6 +107,8 @@ public class ServerDispatcher implements Dispatcher{
                 createJspPageResponse(indexPage);
                 return true;
             }
+            createFileListPageResponse(page.listFiles());
+            return true;
         }
         return false;
     }
@@ -190,6 +193,35 @@ public class ServerDispatcher implements Dispatcher{
         response = new HttpResponse(OK.getCode());
         WebHandler handler = new WebHandlerImpl();
         response.setBody(handler.process(page));
+        setSuccessHeaders(response);
+    }
+
+    private void createFileListPageResponse(File[] filesList) {
+        response = new HttpResponse(OK.getCode());
+        WebHandler handler = new WebHandlerImpl();
+        byte[] top = handler.process(new File(errorPagesPath + "filesListTop.html"));
+        byte[] bottom = handler.process(new File(errorPagesPath + "filesListBottom.html"));
+        StringBuilder buider = new StringBuilder();
+        buider.append("<ul>");
+        for (File f: filesList) {
+            buider.append("<li class=\"files-list-item\">");
+            if(f.isDirectory()) {
+                buider.append("Folder - ");
+            }
+            else{
+                buider.append("File - ");
+            }
+            buider.append(f.getName());
+            buider.append("</li>");
+        }
+        buider.append("</ul>");
+        byte[] middle = new String(buider).getBytes();
+        byte[] body = new byte[top.length + middle.length + bottom.length];
+        System.arraycopy(top, 0, body, 0, top.length);
+        System.arraycopy(middle, 0, body, top.length, middle.length);
+        System.arraycopy(bottom, 0, body, top.length + middle.length, bottom.length);
+
+        response.setBody(body);
         setSuccessHeaders(response);
     }
 
