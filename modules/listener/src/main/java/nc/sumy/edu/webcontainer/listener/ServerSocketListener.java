@@ -9,6 +9,11 @@ import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 
+/**
+ * Class that listen to port on a server, gets Socket and starts its processing.
+ * @author Lukianykhin O.V.
+ */
+
 public class ServerSocketListener extends Thread {
     private final ServerSocket serverSocket;
     private static final Logger LOGGER = LoggerFactory.getLogger(ServerSocketListener.class);
@@ -22,6 +27,9 @@ public class ServerSocketListener extends Thread {
         this.serverSocket = new ServerSocket(port);
     }
 
+    /**
+     * Stops listening of port on a server. Must be used before stopping server.
+     */
     public void stopListening(){
         try {
             serverSocket.close();
