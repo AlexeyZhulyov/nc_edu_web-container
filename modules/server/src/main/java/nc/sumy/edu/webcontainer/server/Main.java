@@ -7,7 +7,7 @@ import java.io.InputStreamReader;
 
 public class Main {
     public static void main(String[] args) {
-        System.setProperty("SERVER_HOME", "C:\\Users\\User\\IdeaProjects\\nc_edu_web-container-5\\modules");
+        System.setProperty("SERVER_HOME", "D:\\Practice\\nc_edu_web-container\\modules");
         Server server = new Server();
         server.startServer();
         BufferedReader consoleReader = new BufferedReader(new InputStreamReader(System.in));

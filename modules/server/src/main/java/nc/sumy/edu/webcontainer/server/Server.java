@@ -8,6 +8,7 @@ import nc.sumy.edu.webcontainer.listener.ServerSocketListener;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.File;
 import java.io.IOException;
 
 public class Server {
@@ -24,6 +25,12 @@ public class Server {
         } catch (JsonReadingException e) {
             LOGGER.error("Server could not be started. System variable 'SERVER_HOME' is not defined", e);
             System.out.println("tut");
+            System.exit(-1);
+        }
+        if(!(new File(config.getWwwLocation()).exists())) {
+            LOGGER.error("Server could not be started. System variable 'SERVER_HOME' defined, but location does not" +
+                    "exist.");
+            System.out.println("tut2");
             System.exit(-1);
         }
         LOGGER.info("Configuration loaded successfully");
