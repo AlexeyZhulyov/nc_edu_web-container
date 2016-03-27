@@ -7,9 +7,15 @@ import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
+import javax.xml.XMLConstants;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.Source;
+import javax.xml.transform.stream.StreamSource;
+import javax.xml.validation.Schema;
+import javax.xml.validation.SchemaFactory;
+import javax.xml.validation.Validator;
 import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
@@ -48,7 +54,7 @@ public class WebXMLAnalyzer {
         classPath = new File(webInf.toString() + separator + CLASS + separator);
         validateXMLbyDTD();
         //TODO: ....
-        if (true) {
+        if (isValid) {
             makeDataMap();
         }
     }
@@ -61,14 +67,25 @@ public class WebXMLAnalyzer {
             builder = domFactory.newDocumentBuilder();
             ParsingErrorHandler errorHandler = new ParsingErrorHandler(LOG, webInf);
             builder.setErrorHandler(errorHandler);
+            document = builder.parse(webXml);
+            document.getDocumentElement().normalize();/*
+            document.normalizeDocument();
+            NodeList nList = document.getElementsByTagName("web-app");
+            Element element = (Element) nList.item(0);
+            element.removeAttribute("xsi:schemaLocation");
+            element.removeAttribute("xsi");
+            document.setXmlStandalone(true);*/
+            SchemaFactory factory =
+                    SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
+            Source xmlFile = new StreamSource(webXml);
+            //Schema schema = factory.newSchema(new File("modules/deployment/src/main/resources/web-app_2_4.xsd"));
+            Schema schema = factory.newSchema();
+            Validator validator = schema.newValidator();
+            validator.validate(xmlFile);
             isValid = errorHandler.isXmlValid();
-            try {
-                document = builder.parse(webXml);
-                document.getDocumentElement().normalize();
-            } catch (SAXException | IOException e) {
-                LOG.warn(webXml.getAbsolutePath() + " cannot be parsed.", e);
-                isValid = false;
-            }
+        } catch (SAXException | IOException e) {
+            LOG.warn(webXml.getAbsolutePath() + " cannot be parsed.", e);
+            isValid = false;
         } catch (ParserConfigurationException e) {
             LOG.warn(webXml.getAbsolutePath() + " have wrong configuration.", e);
             isValid = false;
