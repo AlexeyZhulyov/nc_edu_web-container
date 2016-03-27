@@ -162,6 +162,11 @@
                             <exclude>**/deployment/ArchiveExtractor.*</exclude>
                             <exclude>**/deployment/WebXMLAnalyzer.*</exclude>
                             <exclude>**/dispatcher/ServerDispatcher.*</exclude>
+                            <exclude>**/common/*</exclude>
+                            <exclude>**/listener/*</exclude>
+                            <exclude>**/server/*</exclude>
+                            <exclude>**/dispatcher/*</exclude>
+                            <exclude>**/web/*</exclude>
                         </excludes>
                         <rules>
                             <rule implementation="org.jacoco.maven.RuleConfiguration">
