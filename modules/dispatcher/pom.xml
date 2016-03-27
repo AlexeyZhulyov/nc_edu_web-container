@@ -38,6 +38,11 @@
             <artifactId>web</artifactId>
             <version>0.1</version>
         </dependency>
+        <dependency>
+            <groupId>nc.edu.webcontainer</groupId>
+            <artifactId>cgi</artifactId>
+            <version>0.1</version>
+        </dependency>
     </dependencies>
 
 </project>

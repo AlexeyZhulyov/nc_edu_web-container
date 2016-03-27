@@ -50,7 +50,8 @@ public class HttpSessionImpl implements HttpSession {
     }
 
     @Override
-    public Object getAttribute(String s) {
+     public Object getAttribute(String s) {
+        System.out.println("------------------- get attribute=" + s + " value=" + attributes.get(s));
         return attributes.get(s);
     }
 
@@ -70,13 +71,15 @@ public class HttpSessionImpl implements HttpSession {
     }
 
     @Override
-    public void setAttribute(String s, Object o) {
+     public void setAttribute(String s, Object o) {
+        System.out.println("------------------- set attribute=" + s + " value=" + o);
         attributes.put(s, o);
     }
 
     @Override
-    public void putValue(String s, Object o) {
-        setAttribute(s, o);
+     public void putValue(String s, Object o) {
+        System.out.println("------------------- put attribute=" + s + " value=" + o);
+        attributes.put(s, o);
     }
 
     @Override

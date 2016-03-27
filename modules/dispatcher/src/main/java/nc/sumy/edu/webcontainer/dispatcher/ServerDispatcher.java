@@ -1,5 +1,7 @@
 package nc.sumy.edu.webcontainer.dispatcher;
 
+import nc.sumy.edu.webcontainer.cgi.CgiHandler;
+import nc.sumy.edu.webcontainer.cgi.CgiHandlerImpl;
 import nc.sumy.edu.webcontainer.common.FileNotReadException;
 import nc.sumy.edu.webcontainer.configuration.ServerConfiguration;
 import nc.sumy.edu.webcontainer.deployment.Deployment;
@@ -20,6 +22,7 @@ import java.util.TimeZone;
 import java.util.concurrent.ConcurrentHashMap;
 
 import static nc.sumy.edu.webcontainer.dispatcher.Header.*;
+import static nc.sumy.edu.webcontainer.dispatcher.PageType.CGI;
 import static nc.sumy.edu.webcontainer.dispatcher.PageType.HTML;
 import static nc.sumy.edu.webcontainer.dispatcher.PageType.JSP;
 import static nc.sumy.edu.webcontainer.http.HttpResponse.getResponseCode;
@@ -66,6 +69,8 @@ public class ServerDispatcher implements Dispatcher{
             return;
         }
         if (createIndexPage(pagePath))
+            return;
+        if (createCgiPage(pagePath))
             return;
         if (createStaticOrJspPage(pagePath))
             return;
@@ -117,6 +122,25 @@ public class ServerDispatcher implements Dispatcher{
             }
         }
         return false;
+    }
+
+    private boolean createCgiPage(String pagePath) {
+        File page = new File(pagePath);
+        if (page.exists() && endsWith(pagePath, "." +  CGI.getFileExtension())) {
+            createCgiPageResponse(request.getParameters());
+            return true;
+        }
+        return false;
+    }
+
+    private void createCgiPageResponse(Map<String, String> parameters) {
+        response = new HttpResponse(OK.getCode());
+        String[] classNameArr = split(request.getUrn(), "/");
+        String classNameWithExtension = classNameArr[classNameArr.length-1];
+        String className = split(classNameWithExtension, ".")[0];
+        CgiHandlerImpl cgi= new CgiHandlerImpl();
+        String responseBody = cgi.process(className, parameters);
+        response.setBody(responseBody.getBytes());
     }
 
     //Smth could happened here =(
@@ -231,7 +255,7 @@ public class ServerDispatcher implements Dispatcher{
             default:  setContentType(response, "text/html");
                 break;
         }
-        response.setHeader(CACHE_CONTROL.getHeader(), "public, max-age=60");
+        response.setHeader(CACHE_CONTROL.getHeader(), "public, max-age=0");
     }
 
     private void setContentType(HttpResponse response, String mime) {

@@ -6,6 +6,7 @@ public enum PageType {
     CSS("css", "text/css"),
     XML("xml", "text/xml"),
     JSP("jsp", "text/jsp"),
+    CGI("cgi", "text/html"),
     PDF("pdf", "application/pdf"),
     ZIP("zip", "application/zip"),
     JAVASCRIPT("js", "application/javascript"),
