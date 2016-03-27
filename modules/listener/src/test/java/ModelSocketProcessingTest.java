@@ -30,7 +30,7 @@ ModelSocketProcessingTest {
     };
 
     ModelSocketProcessing model = new ModelSocketProcessing(dispatcher);
-
+/*
     @Test
     public void simpleSocketTest() {
         ServerSocket serverSocket = null;
@@ -65,7 +65,7 @@ ModelSocketProcessingTest {
             }
         }
     }
-
+*/
     @Test
     public void failedSocketProcessingTest() throws IOException {
         //create sockets
