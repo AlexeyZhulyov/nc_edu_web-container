@@ -3,7 +3,6 @@ package nc.sumy.edu.webcontainer.listener;
 
 import nc.sumy.edu.webcontainer.configuration.ServerConfiguration;
 import nc.sumy.edu.webcontainer.deployment.Deployment;
-import nc.sumy.edu.webcontainer.dispatcher.Dispatcher;
 import nc.sumy.edu.webcontainer.dispatcher.ServerDispatcher;
 import nc.sumy.edu.webcontainer.http.HttpRequest;
 import nc.sumy.edu.webcontainer.http.Request;
@@ -17,14 +16,11 @@ import java.io.OutputStream;
 import java.net.Socket;
 
 public class ModelSocketProcessing {
-    private Dispatcher dispatcher;
-    private ServerConfiguration configuration;
-    private Deployment deployment;
+    private final ServerConfiguration configuration;
+    private final Deployment deployment;
     private static final Logger LOGGER = LoggerFactory.getLogger(ModelSocketProcessing.class);
 
-    public ModelSocketProcessing(Dispatcher dispatcher) {
-        this.dispatcher = dispatcher;
-    }
+
 
     public ModelSocketProcessing(ServerConfiguration configuration, Deployment deployment) {
         this.configuration = configuration;
@@ -40,16 +36,16 @@ public class ModelSocketProcessing {
             System.out.println("request size " + clientInput.available());
             ServerDispatcher serverDispatcher = new ServerDispatcher(this.configuration, this.deployment);
             StringBuffer request = new StringBuffer(20480);
-            int i;
+            int readedSize;
             byte[] buffer = new byte[2048];
             try {
-                i = clientInput.read(buffer);
+                readedSize = clientInput.read(buffer);
             }
             catch (IOException e) {
                 e.printStackTrace();
-                i = -1;
+                readedSize = -1;
             }
-            for (int j=0; j<i; j++) {
+            for (int j=0; j<readedSize; j++) {
                 request.append((char) buffer[j]);
             }
 

@@ -4,7 +4,6 @@ import nc.sumy.edu.webcontainer.configuration.JsonReadingException;
 import nc.sumy.edu.webcontainer.configuration.ServerConfiguration;
 import nc.sumy.edu.webcontainer.configuration.ServerConfigurationJson;
 import nc.sumy.edu.webcontainer.deployment.AutoDeployment;
-import nc.sumy.edu.webcontainer.deployment.Deployment;
 import nc.sumy.edu.webcontainer.listener.ServerSocketListener;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -42,7 +41,7 @@ public class Server {
     }
 
     public void startServer() {
-
+        deploy.setDaemon(true);
         deploy.start();
         listener.start();
 
