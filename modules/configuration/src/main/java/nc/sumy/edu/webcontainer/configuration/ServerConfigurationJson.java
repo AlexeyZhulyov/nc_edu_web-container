@@ -17,7 +17,7 @@ public class ServerConfigurationJson implements ServerConfiguration {
     private ConfigurationProperties configurationProperties;
 
     class ConfigurationProperties{
-        private int port = 8090;
+        private int port = 8096;
         private String serverHome;
 
         public void setPort(int port) {
