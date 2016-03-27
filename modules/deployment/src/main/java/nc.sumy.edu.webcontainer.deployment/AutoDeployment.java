@@ -26,6 +26,7 @@ public class AutoDeployment extends Thread implements Deployment {
     public AutoDeployment(ServerConfiguration configuration) {
         this.configuration = configuration;
         wwwFolder = new File(configuration.getWwwLocation() + separator + "www");
+        initialDeployment();
     }
 
     public void run() {
@@ -49,6 +50,14 @@ public class AutoDeployment extends Thread implements Deployment {
         }
     }
 
+    private void initialDeployment() {
+        File[] files = wwwFolder.listFiles();
+
+        for (File warFile: files) {
+            createDomain(warFile.getName());
+        }
+    }
+
     private void eventChooser(WatchEvent event) {
         switch (event.kind().name()) {
             case "OVERFLOW":
@@ -69,7 +78,7 @@ public class AutoDeployment extends Thread implements Deployment {
     }
 
     private void createDomain(String fileTitle) {
-        if (endsWithIgnoreCase(fileTitle, "war")) {
+        if (endsWithIgnoreCase(fileTitle, ".war")) {
             ArchiveExtractor extractor = new ArchiveExtractor(wwwFolder);
             extractor.extractWarFile(fileTitle);
             File webInf = new File(getFileInDomainFolder(fileTitle).getPath() + separator + "WEB-INF");
