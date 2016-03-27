@@ -19,12 +19,10 @@ public class ParsingErrorHandler implements ErrorHandler {
 
     @Override
     public void warning(SAXParseException exception) {
-        log.warn(webInf.getAbsolutePath() + " is not valid.", exception);
     }
 
     @Override
     public void error(SAXParseException exception) {
-        log.warn(webInf.getAbsolutePath() + " is not valid.", exception);
     }
 
     @Override
