@@ -1,4 +1,4 @@
-package nc.sumy.edu.webcontainer.web;
+package nc.sumy.edu.webcontainer.web.servlet;
 
 //import nc.sumy.edu.webcontainer.configuration.ServerConfigurationJson;
 //import nc.sumy.edu.webcontainer.dispatcher.ServerDispatcher;
@@ -6,6 +6,10 @@ import nc.sumy.edu.webcontainer.common.FileNotReadException;
 import nc.sumy.edu.webcontainer.configuration.ServerConfiguration;
 import nc.sumy.edu.webcontainer.configuration.ServerConfigurationJson;
 import nc.sumy.edu.webcontainer.http.*;
+import nc.sumy.edu.webcontainer.web.JspHandler;
+import nc.sumy.edu.webcontainer.web.JspHandlerImpl;
+import nc.sumy.edu.webcontainer.web.StaticContentHandler;
+import nc.sumy.edu.webcontainer.web.StaticContentHandlerImpl;
 
 import javax.servlet.*;
 import javax.servlet.http.HttpServletResponse;
@@ -68,8 +72,6 @@ public class RequestDispatcherImpl implements RequestDispatcher {
     private void makeResponse() {
         String pagePath = null;
         try {
-            System.out.println("------------RequestDispatcherImpl -> makeResponse -> relativePath: " + relativePath);
-            System.out.println("------------RequestDispatcherImpl -> makeResponse -> relativePath: " + requestWrapper.getServletContext());
             pagePath = requestWrapper.getServletContext().getResource(relativePath).getPath();
         } catch (MalformedURLException e) {
             e.printStackTrace();
@@ -151,7 +153,7 @@ public class RequestDispatcherImpl implements RequestDispatcher {
     }
 
     private void createStaticPageResponse(File page) {
-        WebHandler handler = new WebHandlerImpl();
+        StaticContentHandler handler = new StaticContentHandlerImpl();
         response.setBody(handler.process(page));
         setSuccessHeaders((HttpResponse) response);
     }
@@ -161,7 +163,7 @@ public class RequestDispatcherImpl implements RequestDispatcher {
         response = new HttpResponse(code.getCode());
         setErrorPageHeaders((HttpResponse) response);
         File errorPage = new File(errorPagesPath + errorPageTitle);
-        WebHandler handler = new WebHandlerImpl();
+        StaticContentHandler handler = new StaticContentHandlerImpl();
         try {
             response.setBody(handler.process(errorPage));
         } catch (FileNotReadException e) {

@@ -1,4 +1,4 @@
-package nc.sumy.edu.webcontainer.web;
+package nc.sumy.edu.webcontainer.web.servlet;
 
 import org.apache.jasper.servlet.JspCServletContext;
 

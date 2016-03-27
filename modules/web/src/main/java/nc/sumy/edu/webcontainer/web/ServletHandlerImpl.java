@@ -3,6 +3,9 @@ package nc.sumy.edu.webcontainer.web;
 import nc.sumy.edu.webcontainer.common.ClassUtil;
 import nc.sumy.edu.webcontainer.http.HttpRequest;
 import nc.sumy.edu.webcontainer.http.HttpResponse;
+import nc.sumy.edu.webcontainer.web.servlet.RequestWrapper;
+import nc.sumy.edu.webcontainer.web.servlet.ResponseWrapper;
+import nc.sumy.edu.webcontainer.web.servlet.ServletConfigImpl;
 
 import javax.servlet.*;
 import javax.servlet.http.HttpServlet;
@@ -19,7 +22,6 @@ import static nc.sumy.edu.webcontainer.common.ClassUtil.newInstance;
 public class ServletHandlerImpl implements ServletHandler {
 
     private static final ConcurrentMap<String, HttpServlet> INSTANCES = new ConcurrentHashMap<>();
-
 
     public HttpResponse processServlet(HttpRequest request, Class klass) {
 
@@ -51,7 +53,7 @@ public class ServletHandlerImpl implements ServletHandler {
                 servlet.init(servletConfig);
                 INSTANCES.put(className, servlet);
             } catch (ServletException e) {
-                throw new WebException("Cannot do init()", e);
+                throw new ServletInitException(className, e);
             }
         }
 
@@ -60,7 +62,7 @@ public class ServletHandlerImpl implements ServletHandler {
         try {
             servlet.service(requestWrapper, responseWrapper);
         } catch (ServletException | IOException e) {
-            throw new WebException("Cannot do service()", e);
+            throw new ServletServiceException(className, e);
         }
         return (HttpResponse) responseWrapper.getResponse();
     }
@@ -69,7 +71,7 @@ public class ServletHandlerImpl implements ServletHandler {
         try {
             return (configPath == null ? null : new File(configPath).toURI().toURL());
         } catch (MalformedURLException e) {
-            throw new WebException("MalformedURLException for config", e);
+            throw new WebURLException(configPath, e);
         }
     }
 

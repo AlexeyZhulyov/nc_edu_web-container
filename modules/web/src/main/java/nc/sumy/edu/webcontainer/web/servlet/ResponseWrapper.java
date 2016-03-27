@@ -1,4 +1,4 @@
-package nc.sumy.edu.webcontainer.web;
+package nc.sumy.edu.webcontainer.web.servlet;
 
 import nc.sumy.edu.webcontainer.http.Response;
 

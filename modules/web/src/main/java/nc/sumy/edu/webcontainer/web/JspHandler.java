@@ -6,5 +6,5 @@ import nc.sumy.edu.webcontainer.http.HttpResponse;
 import java.io.File;
 
 public interface JspHandler {
-    public HttpResponse processJSP(HttpRequest request, File file);
+    HttpResponse processJSP(HttpRequest request, File file);
 }
