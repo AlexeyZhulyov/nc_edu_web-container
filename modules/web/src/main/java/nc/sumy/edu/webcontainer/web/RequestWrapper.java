@@ -10,18 +10,26 @@ import java.util.Collection;
 import java.util.Enumeration;
 import java.util.Locale;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
 
 @SuppressWarnings("PMD")
 public class RequestWrapper implements HttpServletRequest {
 
+    private static final ConcurrentMap<String, HttpSession> sessions = new ConcurrentHashMap<>();
+
     private Request request;
-    private HttpSession httpSession = new HttpSessionImpl();
+    private HttpSession httpSession;
     ServletConfig servletConfig;
 
 
     public RequestWrapper(Request request, ServletConfig servletConfig) {
         this.request = request;
         this.servletConfig = servletConfig;
+        if (sessions.containsKey(request.getHeader("Cookie")))
+            httpSession = sessions.get(request.getHeader("Cookie"));
+        else
+            httpSession = sessions.put(request.getHeader("Cookie"), new HttpSessionImpl());
     }
 
     public Request getRequest() {
@@ -190,9 +198,9 @@ public class RequestWrapper implements HttpServletRequest {
     @Override
     public ServletContext getServletContext() {
         System.out.println("-------------------RequestWrapper -> getServletContext -> servletConfig: "
-                +  servletConfig);
+                + servletConfig);
         System.out.println("-------------------RequestWrapper -> getServletContext -> servletConfig -> getServletContext: "
-                +  servletConfig.getServletContext());
+                + servletConfig.getServletContext());
         return servletConfig.getServletContext();
     }
 

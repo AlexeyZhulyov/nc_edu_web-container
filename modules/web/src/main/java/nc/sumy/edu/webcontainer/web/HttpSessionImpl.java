@@ -6,11 +6,13 @@ import javax.servlet.http.HttpSessionContext;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
 
 @SuppressWarnings("PMD")
 public class HttpSessionImpl implements HttpSession {
 
-    private Map<String,Object> attributes = new HashMap<>();
+    private ConcurrentMap<String,Object> attributes = new ConcurrentHashMap<>();
 
     @Override
     public long getCreationTime() {
