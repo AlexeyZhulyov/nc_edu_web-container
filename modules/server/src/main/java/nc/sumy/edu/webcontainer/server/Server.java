@@ -27,7 +27,7 @@ public class Server {
             System.out.println("tut");
             System.exit(-1);
         }
-        if(!(new File(config.getWwwLocation()).exists())) {
+        if(!(new File(config.getWwwLocation()).exists()) || !(new File(config.getWwwLocation()).isDirectory())) {
             LOGGER.error("Server could not be started. System variable 'SERVER_HOME' defined, but location does not" +
                     "exist.");
             System.out.println("tut2");
