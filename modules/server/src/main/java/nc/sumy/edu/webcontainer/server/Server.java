@@ -24,6 +24,7 @@ public class Server {
             config.checkSystemVariable("SERVER_HOME");
         } catch (JsonReadingException e) {
             LOGGER.error("Server could not be started. System variable 'SERVER_HOME' is not defined", e);
+            System.out.println("tut");
             System.exit(-1);
         }
         LOGGER.info("Configuration loaded successfully");
@@ -35,6 +36,7 @@ public class Server {
             LOGGER.info("Listener created successfully");
         } catch (IOException e) {
             LOGGER.error("Server fall as Listner could not be created. IOException appeared.", e);
+            System.out.println("vot tut");
             System.exit(-1);
         }
     }
