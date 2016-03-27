@@ -30,6 +30,7 @@ public class ParsingErrorHandler implements ErrorHandler {
     @Override
     public void fatalError(SAXParseException exception) {
         log.warn(webInf.getAbsolutePath() + " is not valid.", exception);
+        System.err.println(exception);
         isValid = false;
     }
 

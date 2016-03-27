@@ -1,6 +1,5 @@
 package nc.sumy.edu.webcontainer.dispatcher;
 
-import nc.sumy.edu.webcontainer.cgi.CgiHandler;
 import nc.sumy.edu.webcontainer.cgi.CgiHandlerImpl;
 import nc.sumy.edu.webcontainer.common.FileNotReadException;
 import nc.sumy.edu.webcontainer.configuration.ServerConfiguration;
@@ -18,14 +17,11 @@ import java.nio.file.Files;
 import java.text.DateFormat;
 import java.util.Date;
 import java.util.Map;
-import java.util.Objects;
 import java.util.TimeZone;
 import java.util.concurrent.ConcurrentHashMap;
 
 import static nc.sumy.edu.webcontainer.dispatcher.Header.*;
-import static nc.sumy.edu.webcontainer.dispatcher.PageType.CGI;
-import static nc.sumy.edu.webcontainer.dispatcher.PageType.HTML;
-import static nc.sumy.edu.webcontainer.dispatcher.PageType.JSP;
+import static nc.sumy.edu.webcontainer.dispatcher.PageType.*;
 import static nc.sumy.edu.webcontainer.http.HttpResponse.getResponseCode;
 import static nc.sumy.edu.webcontainer.http.ResponseCode.*;
 import static org.apache.commons.lang3.StringUtils.*;
@@ -241,8 +237,6 @@ public class ServerDispatcher implements Dispatcher{
 
     private void setErrorPageHeaders(HttpResponse response){
         setDefaultHeaders(response);
-        //response.setHeader("Refresh", "0; url=http://localhost:8090/default/404.html");/*
-       // response.setHeader("Location",   "http://localhost:8090/default/404.html");*/
         response.setHeader(CONTENT_TYPE.getHeader(), "text/html");
         response.setHeader(CONTENT_LANGUAGE.getHeader(), "en");
         response.setHeader(CACHE_CONTROL.getHeader(), "no-cache");
