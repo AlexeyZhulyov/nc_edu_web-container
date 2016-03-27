@@ -6,6 +6,7 @@ package nc.sumy.edu.webcontainer.http;
  */
 public enum ResponseCode {
     OK(200),
+    FOUND(302),
     BAD_REQUEST(400),
     FORBIDDEN(403),
     NOT_FOUND(404),

@@ -8,15 +8,13 @@ import nc.sumy.edu.webcontainer.dispatcher.ServerDispatcher;
 import nc.sumy.edu.webcontainer.http.HttpRequest;
 import nc.sumy.edu.webcontainer.http.Request;
 import nc.sumy.edu.webcontainer.http.Response;
-import org.apache.commons.io.IOUtils;
-import org.apache.maven.shared.utils.io.IOUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.*;
+import java.io.BufferedInputStream;
+import java.io.IOException;
+import java.io.OutputStream;
 import java.net.Socket;
-import java.nio.charset.Charset;
-import java.util.Arrays;
 
 public class ModelSocketProcessing {
     private Dispatcher dispatcher;
@@ -61,13 +59,17 @@ public class ModelSocketProcessing {
 //            String requestString = new String(bytes, Charset.forName("UTF-8"));
             String requestString = request.toString();
             System.out.println("requestString " + requestString);
-            Request clientRequest = new HttpRequest(requestString,
-                    clientSocket.getRemoteSocketAddress().toString(), clientSocket.getInetAddress().getHostName() );
+            Request clientRequest = null;
+            if(requestString != null && !("").equals(requestString)){
+                clientRequest = new HttpRequest(requestString,
+                        clientSocket.getRemoteSocketAddress().toString(), clientSocket.getInetAddress().getHostName() );
+
             Response serverResponse = serverDispatcher.getResponse(clientRequest);
             System.out.println("------------------Start Response -------------------------");
             System.out.println(new String(serverResponse.getResponse()));
             System.out.println("------------------End Response -------------------------");
             clientOutput.write(serverResponse.getResponse());
+            }
         } catch (IOException e) {
             LOGGER.error("Request processing was unsuccessful. IOException appeared", e);
         } finally {

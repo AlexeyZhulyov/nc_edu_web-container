@@ -1,11 +1,11 @@
 package nc.sumy.edu.webcontainer.http;
 
-import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 
-import java.lang.reflect.Array;
-import java.util.*;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 import static java.lang.System.arraycopy;
 import static java.util.Objects.isNull;
@@ -25,6 +25,7 @@ public class HttpResponse implements Response {
 
     static {
         RESPONSE_CODES.put(OK.getCode(), "200 OK");
+        RESPONSE_CODES.put(FOUND.getCode(), "302 Found");
         RESPONSE_CODES.put(BAD_REQUEST.getCode(), "400 Bad Request");
         RESPONSE_CODES.put(FORBIDDEN.getCode(), "403 Forbidden");
         RESPONSE_CODES.put(NOT_FOUND.getCode(), "404 Not Found");
