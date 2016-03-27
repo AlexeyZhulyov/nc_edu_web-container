@@ -98,12 +98,12 @@ public class ServerDispatcher implements Dispatcher{
             String index = "index.";
             File indexPage = new File(pagePath + File.separator + index + HTML.getFileExtension());
             if (indexPage.exists()) {
-                createStaticPageResponse(page);
+                createStaticPageResponse(indexPage);
                 return true;
             }
             indexPage = new File(pagePath + File.separator + index + JSP.getFileExtension());
             if (indexPage.exists()) {
-                createJspPageResponse(page);
+                createJspPageResponse(indexPage);
                 return true;
             }
         }
