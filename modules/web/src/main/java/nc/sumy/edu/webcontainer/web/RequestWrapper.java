@@ -153,6 +153,12 @@ public class RequestWrapper implements HttpServletRequest {
 
     @Override
     public RequestDispatcher getRequestDispatcher(String s) {
+        System.out.println("--------------------RequestWrapper->getRequestDispatcher->servletConfig: "
+                + servletConfig);
+        System.out.println("--------------------RequestWrapper->getRequestDispatcher->request.getRequestText(): "
+                + request.getRequestText());
+        System.out.println("--------------------RequestWrapper->getRequestDispatcher->servletConfig.getServletContext(): "
+                + servletConfig.getServletContext());
         return new RequestDispatcherImpl(s, this);
     }
 
@@ -183,6 +189,10 @@ public class RequestWrapper implements HttpServletRequest {
 
     @Override
     public ServletContext getServletContext() {
+        System.out.println("-------------------RequestWrapper -> getServletContext -> servletConfig: "
+                +  servletConfig);
+        System.out.println("-------------------RequestWrapper -> getServletContext -> servletConfig -> getServletContext: "
+                +  servletConfig.getServletContext());
         return servletConfig.getServletContext();
     }
 

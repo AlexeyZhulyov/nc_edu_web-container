@@ -122,24 +122,34 @@ public class ServerDispatcher implements Dispatcher{
 
     //Smth could happened here =(
     private boolean createServletPage() {
+        System.out.println("------------ createServletPage");
         ConcurrentHashMap<File, ConcurrentHashMap<String, Class>> domainData = deployment.getDomainsData();
+        System.out.println("================domainData: ");
         for (Map.Entry<File, ConcurrentHashMap<String, Class>> domain : domainData.entrySet()) {
-            if (findUrlMapping(request, domain))
+            System.out.println(domain.getKey().getAbsolutePath());
+            if (findUrlMapping(request, domain)) {
+                System.out.println("================findUrlMapping");
                 return true;
+            }
+            System.out.println("================ End domainData: not found ====================== ");
         }
         return false;
     }
 
     @SuppressWarnings("PMD")
     private boolean findUrlMapping(Request request, Map.Entry<File, ConcurrentHashMap<String, Class>> domain) {
+        System.out.println("------------ findUrlMapping");
         String domainName = substring(domain.getKey().getPath(),
-                lastIndexOf(domain.getKey().getPath(), File.separator));
+                lastIndexOf(domain.getKey().getPath(), File.separator)).replace(File.separatorChar, '/');
+        System.out.println("-------------------------- domainName = " + domainName);
+        System.out.println("-------------------------- request.getDomainName = " + request.getDomainName());
         if (StringUtils.equals(request.getDomainName(), domainName)) {
             for (Map.Entry<String, Class> servletPair : domain.getValue().entrySet()) {
                 if (endsWith(request.getUrn(), servletPair.getKey())) {
                     ServletHandler handler = new ServletHandlerImpl();
-                    setSuccessHeaders(response);
                     response = handler.processServlet((HttpRequest) request, servletPair.getValue());
+                    setSuccessHeaders(response);
+                    System.out.println("------------ processServlet");
                     return true;
                 }
             }

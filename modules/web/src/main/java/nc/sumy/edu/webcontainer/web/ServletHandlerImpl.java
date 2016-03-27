@@ -31,8 +31,10 @@ public class ServletHandlerImpl implements ServletHandler {
         String className = klass.getCanonicalName();
         Class<HttpServlet> servletClass = klass;
 
-        if (INSTANCES.containsKey(className))
+        if (INSTANCES.containsKey(className)) {
             servlet = INSTANCES.get(className);
+            servletConfig = servlet.getServletConfig();
+        }
         else {
             servlet = newInstance(servletClass);
 

@@ -13,7 +13,7 @@ public class WebHandlerImpl implements WebHandler {
         try {
            return FileUtils.readFileToByteArray(page);
         } catch (IOException e) {
-            throw new WebException("file was not read", e);
+            throw new WebException("file was not read: " + page.getAbsolutePath(), e);
         }
     }
 }

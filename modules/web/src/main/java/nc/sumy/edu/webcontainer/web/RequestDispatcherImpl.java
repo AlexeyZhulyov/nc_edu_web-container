@@ -68,6 +68,8 @@ public class RequestDispatcherImpl implements RequestDispatcher {
     private void makeResponse() {
         String pagePath = null;
         try {
+            System.out.println("------------RequestDispatcherImpl -> makeResponse -> relativePath: " + relativePath);
+            System.out.println("------------RequestDispatcherImpl -> makeResponse -> relativePath: " + requestWrapper.getServletContext());
             pagePath = requestWrapper.getServletContext().getResource(relativePath).getPath();
         } catch (MalformedURLException e) {
             e.printStackTrace();
@@ -144,8 +146,8 @@ public class RequestDispatcherImpl implements RequestDispatcher {
 
     private void createJspPageResponse(File page) {
         JspHandler handler = new JspHandlerImpl();
-        setSuccessHeaders((HttpResponse) response);
         response = handler.processJSP((HttpRequest) request, page);
+        setSuccessHeaders((HttpResponse) response);
     }
 
     private void createStaticPageResponse(File page) {

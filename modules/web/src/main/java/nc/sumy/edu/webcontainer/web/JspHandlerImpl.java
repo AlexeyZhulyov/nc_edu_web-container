@@ -36,6 +36,7 @@ public class JspHandlerImpl implements JspHandler {
 
         if (INSTANCES.containsKey(file)) {
             jspPage = INSTANCES.get(file);
+            servletConfig = jspPage.getServletConfig();
             if (((ServletConfigImpl) jspPage.getServletConfig()).getDate().getTime() < file.lastModified()) {
                 destroy(file);
                 jspPage = null;
@@ -50,6 +51,7 @@ public class JspHandlerImpl implements JspHandler {
 
             String lib = pathUnpackWar + "WEB-INF" + File.separator + "lib";
             ClassUtil.addFilesFromDirToSysClassPath(lib);
+            ClassUtil.addFileToSystemClassPath(outputDir);
 
 
             execute(pathUnpackWar);
@@ -88,7 +90,7 @@ public class JspHandlerImpl implements JspHandler {
 
         jspc.setOutputDir(outputDir);
         jspc.setCompile(true);
-        jspc.setPackage("executed");
+        jspc.setPackage("executed");  //"executed"
         try {
             jspc.setArgs(new String[]{"-webapp", dir});
             jspc.execute();

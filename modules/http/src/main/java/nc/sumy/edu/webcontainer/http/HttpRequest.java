@@ -81,8 +81,12 @@ public class HttpRequest implements Request {
         } else {
             urn = firstLine[1];
         }
-        int pos = indexOf(firstLine[1], '/');
+        int pos = indexOf(firstLine[1], '/', 2);
+        System.out.println("-----------HttpRequest -> parseURI -> domainName -> firstLine[1]: " + firstLine[1]);
+        System.out.println("-----pos = " + pos);
         domainName = substring(firstLine[1], 0, pos);
+        System.out.println("-----------HttpRequest -> parseURI -> domainName -> domainName " + domainName);
+
     }
 
     private void parseHeaders() {
