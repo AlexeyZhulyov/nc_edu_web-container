@@ -5,6 +5,11 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
+/**
+ * Class that starts server. Program start point.
+ * @author Lukianykhin O.V.
+ */
+
 public class Main {
     public static void main(String[] args) {
         System.setProperty("SERVER_HOME", "D:\\Practice\\nc_edu_web-container\\modules\\");

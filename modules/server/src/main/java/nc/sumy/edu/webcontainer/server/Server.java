@@ -11,6 +11,11 @@ import org.slf4j.LoggerFactory;
 import java.io.File;
 import java.io.IOException;
 
+/**
+ * Class that represents API for work with server. Allows to create, start and stop server.
+ * @author Lukianykhin O.V.
+ */
+
 public class Server {
     ServerConfiguration config;
     AutoDeployment deploy;
