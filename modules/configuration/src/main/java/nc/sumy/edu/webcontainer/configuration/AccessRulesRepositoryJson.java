@@ -12,9 +12,8 @@ import java.io.*;
  * This implementation of AccessRulesRepository works with JSON files.
  * @author Lukianykhin O.V.
  */
-
 public class AccessRulesRepositoryJson implements AccessRulesRepository {
-    private static final Logger LOGGER = LoggerFactory.getLogger(AccessRulesRepositoryJson.class);
+    private static final Logger LOG = LoggerFactory.getLogger(AccessRulesRepositoryJson.class);
 
     @Override
     public AccessRules getAccessRules(String filePath) {
@@ -31,10 +30,10 @@ public class AccessRulesRepositoryJson implements AccessRulesRepository {
                     .fromJson(bufferedReaderFromFile, AccessRules.class);
         } catch (IOException e) {
             if (accessRulesFile == null) {
-                LOGGER.warn("Can not read null file", e);
+                LOG.debug("Can not read null file", e);
             }
             else {
-                LOGGER.warn("Can not read file " + accessRulesFile.getName()+ " properly", e);
+                LOG.debug("Can not read file " + accessRulesFile.getName()+ " properly", e);
             }
             return null;
         }
