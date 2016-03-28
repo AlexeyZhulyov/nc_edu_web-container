@@ -113,9 +113,6 @@ public class ServerDispatcher implements Dispatcher{
 
     private void createRedirectPage() {
         response = new HttpResponse(OK.getCode());
-        //redirectTo = redirectTo.replace("\\", "/");
-        //String[] strings = split(redirectTo, "/");
-        //response.setHeader("Refresh", "0;url=" + strings[strings.length-1] + "/");
         response.setHeader("Refresh", "0;url=" + request.getUrn() + "/");
         response.setBody(new byte[0]);
     }
@@ -153,7 +150,6 @@ public class ServerDispatcher implements Dispatcher{
         response.setBody(responseBody.getBytes());
     }
 
-    //Smth could happened here =(
     private boolean createServletPage() {
         ConcurrentHashMap<File, ConcurrentHashMap<String, Class>> domainData = deployment.getDomainsData();
         for (Map.Entry<File, ConcurrentHashMap<String, Class>> domain : domainData.entrySet()) {
