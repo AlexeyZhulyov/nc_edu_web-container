@@ -2,7 +2,6 @@ package nc.sumy.edu.webcontainer.listener;
 
 import nc.sumy.edu.webcontainer.configuration.ServerConfiguration;
 import nc.sumy.edu.webcontainer.deployment.Deployment;
-import nc.sumy.edu.webcontainer.dispatcher.ServerDispatcher;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -11,20 +10,16 @@ import java.net.ServerSocket;
 import java.net.Socket;
 
 public class ServerSocketListener extends Thread {
-    private ServerSocket serverSocket;
+    private final ServerSocket serverSocket;
     private static final Logger LOGGER = LoggerFactory.getLogger(ServerSocketListener.class);
-    private ModelSocketProcessing model;
+    private final ModelSocketProcessing model;
     private boolean flag = true;
 
     public ServerSocketListener(ServerConfiguration configuration, Deployment deployment) throws IOException {
-        this.model = new ModelSocketProcessing(new ServerDispatcher(configuration, deployment));
+        //this.model = new ModelSocketProcessing(new ServerDispatcher(configuration, deployment));
+        this.model = new ModelSocketProcessing(configuration, deployment);
         int port = configuration.getPort();
-        try {
-            this.serverSocket = new ServerSocket(port);
-        } catch (IOException e) {
-            LOGGER.error("Could not create ServerSocket at port " + port, e);
-            throw e;
-        }
+        this.serverSocket = new ServerSocket(port);
     }
 
     public void stopListening(){

@@ -1,8 +1,8 @@
 package nc.sumy.edu.webcontainer.web;
 
-import javax.servlet.ServletRequest;
-import javax.servlet.ServletResponse;
+import nc.sumy.edu.webcontainer.http.HttpRequest;
+import nc.sumy.edu.webcontainer.http.HttpResponse;
 
 public interface ServletHandler {
-    ServletResponse processServlet(ServletRequest request, Class klass);
+    HttpResponse processServlet(HttpRequest request, Class klass);
 }

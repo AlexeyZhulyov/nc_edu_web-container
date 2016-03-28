@@ -2,10 +2,14 @@ package nc.sumy.edu.webcontainer.http;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
-import java.util.*;
+
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 import static java.lang.System.arraycopy;
 import static java.util.Objects.isNull;
+import static nc.sumy.edu.webcontainer.http.ResponseCode.*;
 
 /**
  * Class that build HTTP response and contain response-data.
@@ -20,13 +24,12 @@ public class HttpResponse implements Response {
     private byte[] body;
 
     static {
-        RESPONSE_CODES.put(200, "200 OK");
-        RESPONSE_CODES.put(400, "400 Bad Request");
-        RESPONSE_CODES.put(403, "403 Forbidden");
-        RESPONSE_CODES.put(404, "404 Not Found");
-        RESPONSE_CODES.put(405, "405 Method Not Allowed");
-        RESPONSE_CODES.put(500, "500 Internal Server Error");
-        RESPONSE_CODES.put(501, "501 Not Implemented");
+        RESPONSE_CODES.put(OK.getCode(), "200 OK");
+        RESPONSE_CODES.put(FOUND.getCode(), "302 Found");
+        RESPONSE_CODES.put(BAD_REQUEST.getCode(), "400 Bad Request");
+        RESPONSE_CODES.put(FORBIDDEN.getCode(), "403 Forbidden");
+        RESPONSE_CODES.put(NOT_FOUND.getCode(), "404 Not Found");
+        RESPONSE_CODES.put(NOT_ALLOWED.getCode(), "405 Method Not Allowed");
     }
 
     public HttpResponse(int code) {
@@ -45,9 +48,13 @@ public class HttpResponse implements Response {
         response = "HTTP/1.1 ";
         response += RESPONSE_CODES.get(code)
                 + ENDL
-                + getHeadersSting()
-                + new String(body);
-        return response.getBytes();
+                + getHeadersSting();
+        byte[] part1 = response.getBytes();
+        byte[] part2 = body;
+        byte[] result = new byte[part1.length + part2.length];
+        System.arraycopy(part1, 0, result, 0, part1.length);
+        System.arraycopy(part2, 0, result, part1.length, part2.length);
+        return result;
     }
 
     public Response setCode(int code) {
@@ -101,6 +108,10 @@ public class HttpResponse implements Response {
         return headersStr.toString();
     }
 
+    public static String getResponseCode(int code) {
+        return RESPONSE_CODES.get(code);
+    }
+
     @Override
     public boolean equals(Object obj) {
         if (this == obj) return true;
@@ -123,4 +134,5 @@ public class HttpResponse implements Response {
                 .append(body)
                 .toHashCode();
     }
+
 }

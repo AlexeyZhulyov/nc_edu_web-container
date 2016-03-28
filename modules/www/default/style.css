@@ -58,29 +58,29 @@ body, html {
   padding:0;
 }
 body {
-  background: #f2f2f2 url("images/background.png") top left;
+  background: #f2f2f2 url("/default/images/background.png") top left;
 }
 body.square {
-    background:url("images/background_square.png") top left !important;
+    background:url("/default/images/background_square.png") top left !important;
 }
 body.hash {
-    background:url("images/background_hash.png") top left !important;
+    background:url("/default/images/background_hash.png") top left !important;
 }
 body.rhash {
-    background:url("images/background_rhash.png") top left !important;
+    background:url("/default/images/background_rhash.png") top left !important;
 }
 body.dline {
-    background:url("images/background_dline.png") top left !important;
+    background:url("/default/images/background_dline.png") top left !important;
 }
 body.line {
-    background:url("images/background_line.png") top left !important;
+    background:url("/default/images/background_line.png") top left !important;
 }
 body.vline {
-    background:url("images/background_vline.png") top left !important;
+    background:url("/default/images/background_vline.png") top left !important;
 }
 /* page Wrapper */
 .blue .wrapper {
-    background: url("../images/container_background.png") repeat-x scroll left top transparent;
+    background: url("/default/images/container_background.png") repeat-x scroll left top transparent;
 }
 /* content wrapper */
 .blue .mainWrapper {
@@ -108,7 +108,7 @@ body.vline {
   	display:table;
 	position:absolute;
 	top:50%;
-	background: url("images/container_background.png") repeat-x scroll left top transparent;
+	background: url("/default/images/container_background.png") repeat-x scroll left top transparent;
 }
 /* content wrapper */
 .mainWrapper {
@@ -137,7 +137,7 @@ body.vline {
 }
 /* your logo */
 .logo {
-    background: url("images/logo.png") no-repeat scroll left top transparent;
+    background: url("/default/images/logo.png") no-repeat scroll left top transparent;
     background-size: cover;
     display: block;
     height: 85px;
@@ -182,14 +182,18 @@ body.vline {
     top: 52px;
     width: 335px;
 }
+
+.e400 {
+    background: url("/default/images/404.png") no-repeat scroll left top transparent;
+}
 .e403 {
-    background: url("images/403.png") no-repeat scroll left top transparent;
+    background: url("/default/images/403.png") no-repeat scroll left top transparent;
 }
 .e404 {
-    background: url("images/404.png") no-repeat scroll left top transparent;
+    background: url("/default/images/404.png") no-repeat scroll left top transparent;
 }
 .e405 {
-    background: url("images/405.png") no-repeat scroll left top transparent;
+    background: url("/default/images/405.png") no-repeat scroll left top transparent;
 }
 
 .robotik {
@@ -221,7 +225,7 @@ body.vline {
 }
 
 .tryToMessage ul li {
-    background: url("images/list_bullet.png") no-repeat scroll left top transparent;
+    background: url("/default/images/list_bullet.png") no-repeat scroll left top transparent;
     display: block;
     margin: 0 0 0 10px;
     padding: 4px 0 4px 10px;
@@ -265,20 +269,20 @@ body.vline {
 }
 
 .searchInput {
-    background: url("images/search_input_background.png") no-repeat scroll left top transparent;
+    background: url("/default/images/search_input_background.png") no-repeat scroll left top transparent;
     margin: 0;
     width: 280px;
 }
 
 .searchButton {
-    background: url("images/search_button_background.png") no-repeat scroll left top transparent;
+    background: url("/default/images/search_button_background.png") no-repeat scroll left top transparent;
     height: 36px;
     margin: 0;
     width: 59px;
 }
 
 .searchButtonHover {
-    background: url("images/search_button_background_.png") no-repeat scroll left top transparent;
+    background: url("/default/images/search_button_background_.png") no-repeat scroll left top transparent;
 	
 }
 
@@ -298,7 +302,7 @@ body.vline {
 }
 /* search button */
 .searchButton input[type="submit"] {
-    background: url("images/transparent.png") no-repeat scroll left top transparent;
+    background: url("/default/images/transparent.png") no-repeat scroll left top transparent;
     border: 0 none;
     color: #FFFFFF;
     display: block;
@@ -361,4 +365,17 @@ footer menu li.last {
 .errorText {
     font-size: 18pt;
     font-weight: bold;
+}
+
+h2 {
+    font-size: 18pt;
+    font-weight: bold;
+    padding-bottom: 5px;
+}
+
+.files-list-item {
+    font-size: 16pt;
+    line-height: 18pt;
+    list-style: circle;
+
 }

@@ -2,15 +2,18 @@ package nc.sumy.edu.webcontainer.web;
 
 import org.apache.commons.io.FileUtils;
 
-import java.io.*;
+import java.io.File;
+import java.io.IOException;
+
+import static nc.sumy.edu.webcontainer.common.ClassUtil.fileToString;
 
 public class WebHandlerImpl implements WebHandler {
 
-    public String process(File page) {
+    public byte[] process(File page) {
         try {
-            return FileUtils.readFileToString(page);
+           return FileUtils.readFileToByteArray(page);
         } catch (IOException e) {
-            throw new WebCannotFindReadFileException(page.getName(), e);
+            throw new WebException("file was not read: " + page.getAbsolutePath(), e);
         }
     }
 }

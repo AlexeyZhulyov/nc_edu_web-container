@@ -17,23 +17,23 @@ public class ServerConfigurationJson implements ServerConfiguration {
     private ConfigurationProperties configurationProperties;
 
     class ConfigurationProperties{
-        private int port = 8090;
-        private String wwwLocation;
+        private int port = 8096;
+        private String serverHome;
 
         public void setPort(int port) {
             this.port = port;
         }
-
+ 
         public int getPort() {
             return port;
         }
 
-        public String getWwwLocation() {
-            return wwwLocation;
+        public String getServerLocation() {
+            return serverHome;
         }
-
-        public void setWwwLocation(String wwwLocation) {
-            this.wwwLocation = wwwLocation;
+ 
+        public void setServerLocation(String serverLocation) {
+            this.serverHome = serverLocation;
         }
     }
 
@@ -77,7 +77,7 @@ public class ServerConfigurationJson implements ServerConfiguration {
             throw new JsonReadingException("System variable " + systemVariableName + " doesn't exist. Server could" +
                     " not be started");
         }
-        this.configurationProperties.setWwwLocation(tempPath);
+        this.configurationProperties.setServerLocation(tempPath);
     }
 
     public int getPort() {
@@ -90,11 +90,11 @@ public class ServerConfigurationJson implements ServerConfiguration {
 
     @Override
     public String getWwwLocation() {
-        return this.configurationProperties.getWwwLocation();
+        return this.configurationProperties.getServerLocation();
     }
 
     @Override
-    public void setWwwLocation(String wwwLocation) {
-        this.configurationProperties.setWwwLocation(wwwLocation);
+    public void setWwwLocation(String serverLocation) {
+        this.configurationProperties.setServerLocation(serverLocation);
     }
 }

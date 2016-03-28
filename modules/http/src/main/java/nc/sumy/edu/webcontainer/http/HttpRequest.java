@@ -26,11 +26,12 @@ public class HttpRequest implements Request {
     private final String IP_ADDRESS;
     private final Map<String, String> headers = new HashMap<>();
     private final Map<String, String> parameters = new HashMap<>();
-    private static final Logger LOGGER = LoggerFactory.getLogger(HttpRequest.class);
+    private static final Logger LOG = LoggerFactory.getLogger(HttpRequest.class);
     private static final String UTF8 = "UTF-8";
     private final String request;
     private final String requestLines[];
     private final String firstLine[];
+    private String domainName;
 
     public HttpRequest(String request, String ipAddress, String host) {
         this.request = request;
@@ -64,10 +65,6 @@ public class HttpRequest implements Request {
             } else if (startsWith(firstLine[1], "https://")) {
                 firstLine[1] = replace(firstLine[1], "https://", "");
             }
-            int pos = indexOf(firstLine[1], '/');
-            String host = substring(firstLine[1], 0, pos);
-            headers.put("Host", host);
-            firstLine[1] = replace(firstLine[1], host, "");
         }
         if (method == HttpMethod.GET && contains(firstLine[1], '?')) {
             String[] pathParts = split(firstLine[1], "\\?");
@@ -81,6 +78,9 @@ public class HttpRequest implements Request {
         } else {
             urn = firstLine[1];
         }
+        int pos = indexOf(firstLine[1], '/', 2);
+        domainName = substring(firstLine[1], 0, pos);
+
     }
 
     private void parseHeaders() {
@@ -116,7 +116,7 @@ public class HttpRequest implements Request {
             try {
                 param.setValue(URLDecoder.decode(param.getValue(), UTF8));
             } catch (UnsupportedEncodingException e) {
-               LOGGER.error("Cannot decode with UTF-8.", e);
+               LOG.error("Cannot decode with UTF-8.", e);
             }
         }
     }
@@ -153,6 +153,14 @@ public class HttpRequest implements Request {
         return IP_ADDRESS;
     }
 
+    public String getRequestText() {
+        return request;
+    }
+
+    public String getDomainName() {
+        return domainName;
+    }
+
     @Override
     public boolean equals(Object obj) {
         if (this == obj) return true;
@@ -182,4 +190,5 @@ public class HttpRequest implements Request {
                 .append(parameters)
                 .toHashCode();
     }
+
 }

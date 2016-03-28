@@ -14,32 +14,29 @@ import static org.apache.commons.lang3.StringUtils.split;
 
 public class ArchiveExtractor {
     private static final Logger LOG = LoggerFactory.getLogger(ArchiveExtractor.class);
-    private final File warDirectory;
-    private File deployDirectory;
+    private final File wwwDirectory;
 
-    public ArchiveExtractor(File warDirectory, File domainsDirectory) {
-        this.warDirectory = warDirectory;
-        this.deployDirectory = domainsDirectory;
+    public ArchiveExtractor(File wwwDirectory) {
+        this.wwwDirectory = wwwDirectory;
     }
 
     @SuppressWarnings("PMD")
     public void extractWarFile(String jarFile) {
         refreshDirectory(jarFile);
-        try {
-            JarFile jar = new JarFile(warDirectory + separator + jarFile);
+        try (JarFile jar = new JarFile(wwwDirectory + separator + jarFile)) {
             Enumeration entries = jar.entries();
             while (entries.hasMoreElements()) {
-                extractFile(jar, entries);
+                extractFile(jarFile, jar, entries);
             }
         } catch (IOException e) {
-            deleteQuietly(deployDirectory);
+            deleteQuietly(new File(wwwDirectory.getPath() + separator + split(jarFile, ".")[0]));
             LOG.warn("Cannot read/write/found file: ", e);
         }
     }
 
-    private void extractFile(JarFile jar, Enumeration entries) throws IOException {
+    private void extractFile(String jarFile, JarFile jar, Enumeration entries) throws IOException {
         JarEntry jarEntry = (JarEntry) entries.nextElement();
-        File file = new File(deployDirectory.getPath() + separator + jarEntry.getName());
+        File file = new File(wwwDirectory.getPath() + separator + split(jarFile, ".")[0] + separator + jarEntry.getName());
         if (jarEntry.isDirectory()) {
             file.mkdir();
             return;
@@ -52,15 +49,16 @@ public class ArchiveExtractor {
              OutputStream out = new BufferedOutputStream(new FileOutputStream(file))
         ) {
             copy(in, out);
+            out.flush();
         }
     }
 
     private void refreshDirectory(String jarFile) {
-        deployDirectory = new File(deployDirectory.getPath() + separator + split(jarFile, ".")[0]);
-        if (deployDirectory.exists()) {
-            deleteQuietly(deployDirectory);
+        File domainDirectory = new File(wwwDirectory.getPath() + separator + split(jarFile, ".")[0]);
+        if (domainDirectory.exists()) {
+            deleteQuietly(domainDirectory);
         }
-        deployDirectory.mkdir();
+        domainDirectory.mkdir();
     }
 
 }
