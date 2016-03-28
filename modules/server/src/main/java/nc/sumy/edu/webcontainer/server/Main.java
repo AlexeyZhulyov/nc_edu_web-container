@@ -11,7 +11,6 @@ import java.io.InputStreamReader;
  */
 public class Main {
     public static void main(String[] args) {
-        System.setProperty("SERVER_HOME", "C:\\Users\\LENOVO\\Desktop\\nc_web_server\\server002\\nc_edu_web-container\\modules\\");
         Server server = new Server();
         server.startServer();
         BufferedReader consoleReader = new BufferedReader(new InputStreamReader(System.in));
