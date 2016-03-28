@@ -9,10 +9,9 @@ import java.io.InputStreamReader;
  * Class that starts server. Program start point.
  * @author Lukianykhin O.V.
  */
-
 public class Main {
     public static void main(String[] args) {
-        System.setProperty("SERVER_HOME", "D:\\Practice\\nc_edu_web-container\\modules\\");
+        System.setProperty("SERVER_HOME", "C:\\Users\\LENOVO\\Desktop\\nc_web_server\\server002\\nc_edu_web-container\\modules\\");
         Server server = new Server();
         server.startServer();
         BufferedReader consoleReader = new BufferedReader(new InputStreamReader(System.in));

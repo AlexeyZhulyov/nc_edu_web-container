@@ -57,7 +57,6 @@ public class ServerDispatcher implements Dispatcher{
     private void makeResponse() {
         String pagePath = serverConfiguration.getWwwLocation() + File.separator + "www" + File.separator
                 + request.getUrn().replace("/",File.separator);
-        System.out.println("pagePath = " + pagePath);
         if (initialInspection())
             return;
         if (!security.isAllow()) {
@@ -156,34 +155,25 @@ public class ServerDispatcher implements Dispatcher{
 
     //Smth could happened here =(
     private boolean createServletPage() {
-        System.out.println("------------ createServletPage");
         ConcurrentHashMap<File, ConcurrentHashMap<String, Class>> domainData = deployment.getDomainsData();
-        System.out.println("================domainData: ");
         for (Map.Entry<File, ConcurrentHashMap<String, Class>> domain : domainData.entrySet()) {
-            System.out.println(domain.getKey().getAbsolutePath());
             if (findUrlMapping(request, domain)) {
-                System.out.println("================findUrlMapping");
                 return true;
             }
-            System.out.println("================ End domainData: not found ====================== ");
         }
         return false;
     }
 
     @SuppressWarnings("PMD")
     private boolean findUrlMapping(Request request, Map.Entry<File, ConcurrentHashMap<String, Class>> domain) {
-        System.out.println("------------ findUrlMapping");
         String domainName = substring(domain.getKey().getPath(),
                 lastIndexOf(domain.getKey().getPath(), File.separator)).replace(File.separatorChar, '/');
-        System.out.println("-------------------------- domainName = " + domainName);
-        System.out.println("-------------------------- request.getDomainName = " + request.getDomainName());
         if (StringUtils.equals(request.getDomainName(), domainName)) {
             for (Map.Entry<String, Class> servletPair : domain.getValue().entrySet()) {
                 if (endsWith(request.getUrn(), servletPair.getKey())) {
                     ServletHandler handler = new ServletHandlerImpl();
                     response = handler.processServlet((HttpRequest) request, servletPair.getValue());
                     setSuccessHeaders(response);
-                    System.out.println("------------ processServlet");
                     return true;
                 }
             }
@@ -193,7 +183,6 @@ public class ServerDispatcher implements Dispatcher{
 
     private void createJspPageResponse(File page) {
         JspHandler handler = new JspHandlerImpl();
-        //setSuccessHeaders(response);
         response = handler.processJSP((HttpRequest) request, page);
     }
 
@@ -260,9 +249,6 @@ public class ServerDispatcher implements Dispatcher{
         setDefaultHeaders(response);
         String temp[] = split(request.getUrn(), ".");
         String extension = temp[temp.length - 1];
-        System.out.println("!!!!!!!!!!!!!--Extension------------------");
-        System.out.println(extension);
-        System.out.println("!!!!!!!!!!!!----------------------");
         switch (extension) {
             case "html" : setContentType(response, "text/html");
                 break;
