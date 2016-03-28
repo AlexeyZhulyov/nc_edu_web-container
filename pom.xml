@@ -155,18 +155,14 @@
                     </executions>
                     <configuration>
                         <excludes>
-                            <exclude>**/web/RequestWrapper.*</exclude>
-                            <exclude>**/web/ResponseWrapper.*</exclude>
-                            <exclude>**/deployment/ParsingErrorHandler.*</exclude>
-                            <exclude>**/deployment/AutoDeployment.*</exclude>
-                            <exclude>**/deployment/ArchiveExtractor.*</exclude>
-                            <exclude>**/deployment/WebXMLAnalyzer.*</exclude>
-                            <exclude>**/dispatcher/ServerDispatcher.*</exclude>
+                            <exclude>**/deployment/*</exclude>
+                            <exclude>**/dispatcher/*</exclude>
                             <exclude>**/common/*</exclude>
                             <exclude>**/listener/*</exclude>
                             <exclude>**/server/*</exclude>
                             <exclude>**/dispatcher/*</exclude>
                             <exclude>**/web/*</exclude>
+                            <exclude>**/web/servlet/*</exclude>
                         </excludes>
                         <rules>
                             <rule implementation="org.jacoco.maven.RuleConfiguration">
