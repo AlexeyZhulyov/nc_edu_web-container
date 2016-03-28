@@ -15,6 +15,11 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.net.Socket;
 
+/**
+ * Class that processes client socket.
+ * @author Lukianykhin O.V.
+ */
+
 public class ModelSocketProcessing {
     private final ServerConfiguration configuration;
     private final Deployment deployment;
@@ -27,6 +32,13 @@ public class ModelSocketProcessing {
         this.deployment = deployment;
     }
 
+
+    /**
+     * Processes Socket from client.
+     * Gets request from socket -> call Dispatcher to get appropriate response
+     * -> send response to client through Socket
+     * @param clientSocket Socket that should be processed
+     */
     public void processRequest(Socket clientSocket) {
 
         try(BufferedInputStream clientInput = new BufferedInputStream(clientSocket.getInputStream());

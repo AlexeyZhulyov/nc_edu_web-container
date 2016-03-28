@@ -7,6 +7,12 @@ import org.slf4j.LoggerFactory;
 
 import java.io.*;
 
+/**
+ * Class that parses configuration of files security.
+ * This implementation of AccessRulesRepository works with JSON files.
+ * @author Lukianykhin O.V.
+ */
+
 public class AccessRulesRepositoryJson implements AccessRulesRepository {
     private static final Logger LOGGER = LoggerFactory.getLogger(AccessRulesRepositoryJson.class);
 

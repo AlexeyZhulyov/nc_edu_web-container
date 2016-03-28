@@ -10,7 +10,7 @@ public class ServerConfigurationJsonTest {
     @Test
     public void noParametersConfigurationTest() {
         ServerConfiguration config = new ServerConfigurationJson();
-        assertEquals("Port must be 8090", 8090, config.getPort());
+        assertEquals("Port must be 8096", 8096, config.getPort());
         assertEquals("WwwLocation must be 'null'", null, config.getWwwLocation());
     }
 

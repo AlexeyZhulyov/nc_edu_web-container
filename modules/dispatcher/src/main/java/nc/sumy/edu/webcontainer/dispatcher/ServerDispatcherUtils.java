@@ -7,8 +7,8 @@ import nc.sumy.edu.webcontainer.http.Request;
 import nc.sumy.edu.webcontainer.http.ResponseCode;
 import nc.sumy.edu.webcontainer.web.JspHandler;
 import nc.sumy.edu.webcontainer.web.JspHandlerImpl;
-import nc.sumy.edu.webcontainer.web.WebHandler;
-import nc.sumy.edu.webcontainer.web.WebHandlerImpl;
+import nc.sumy.edu.webcontainer.web.StaticContentHandler;
+import nc.sumy.edu.webcontainer.web.StaticContentHandlerImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -44,14 +44,14 @@ public class ServerDispatcherUtils {
 
     void createStaticPageResponse(File page) {
         response = new HttpResponse(OK.getCode());
-        WebHandler handler = new WebHandlerImpl();
+        StaticContentHandler handler = new StaticContentHandlerImpl();
         response.setBody(handler.process(page));
         setSuccessHeaders(response);
     }
 
     void createFileListPageResponse(File[] filesList) {
         response = new HttpResponse(OK.getCode());
-        WebHandler handler = new WebHandlerImpl();
+        StaticContentHandler handler = new StaticContentHandlerImpl();
         byte[] top = handler.process(new File(errorPagesPath + "filesListTop.html"));
         byte[] bottom = handler.process(new File(errorPagesPath + "filesListBottom.html"));
         StringBuilder builder = new StringBuilder(51);
@@ -82,7 +82,7 @@ public class ServerDispatcherUtils {
         response = new HttpResponse(code.getCode());
         setErrorPageHeaders(response);
         File errorPage = new File(errorPagesPath + errorPageTitle);
-        WebHandler handler = new WebHandlerImpl();
+        StaticContentHandler handler = new StaticContentHandlerImpl();
         try {
             response.setBody(handler.process(errorPage));
         } catch (FileNotReadException e) {

@@ -11,6 +11,11 @@ import org.slf4j.LoggerFactory;
 import java.io.File;
 import java.io.IOException;
 
+/**
+ * Class that represents API for work with server. Allows to create, start and stop server.
+ * @author Lukianykhin O.V.
+ */
+
 public class Server {
     ServerConfiguration config;
     AutoDeployment deploy;
@@ -27,7 +32,7 @@ public class Server {
             System.out.println("tut");
             System.exit(-1);
         }
-        if(!(new File(config.getWwwLocation()).exists())) {
+        if(!(new File(config.getWwwLocation()).exists()) || !(new File(config.getWwwLocation()).isDirectory())) {
             LOGGER.error("Server could not be started. System variable 'SERVER_HOME' defined, but location does not" +
                     "exist.");
             System.out.println("tut2");

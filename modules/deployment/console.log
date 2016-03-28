@@ -1,8 +1,8 @@
-2016/03/28 10:06:06-797 [main] [WARN] nc.sumy.edu.webcontainer.deployment.ArchiveExtractor - Cannot read/write/found file: 
+2016/03/28 12:17:23-920 [main] [WARN] nc.sumy.edu.webcontainer.deployment.ArchiveExtractor - Cannot read/write/found file: 
 java.io.FileNotFoundException: src\test\resources\www_extractor_test\www\sampleNotExist.war (Не удается найти указанный файл)
 	at java.util.zip.ZipFile.open(Native Method)
-	at java.util.zip.ZipFile.<init>(ZipFile.java:219)
-	at java.util.zip.ZipFile.<init>(ZipFile.java:149)
+	at java.util.zip.ZipFile.<init>(ZipFile.java:220)
+	at java.util.zip.ZipFile.<init>(ZipFile.java:150)
 	at java.util.jar.JarFile.<init>(JarFile.java:166)
 	at java.util.jar.JarFile.<init>(JarFile.java:103)
 	at nc.sumy.edu.webcontainer.deployment.ArchiveExtractor.extractWarFile(ArchiveExtractor.java:26)
@@ -37,11 +37,11 @@ java.io.FileNotFoundException: src\test\resources\www_extractor_test\www\sampleN
 	at org.apache.maven.surefire.booter.ProviderFactory.invokeProvider(ProviderFactory.java:87)
 	at org.apache.maven.surefire.booter.ForkedBooter.runSuitesInProcess(ForkedBooter.java:153)
 	at org.apache.maven.surefire.booter.ForkedBooter.main(ForkedBooter.java:95)
-2016/03/28 10:06:06-828 [main] [WARN] nc.sumy.edu.webcontainer.deployment.ArchiveExtractor - Cannot read/write/found file: 
+2016/03/28 12:17:23-949 [main] [WARN] nc.sumy.edu.webcontainer.deployment.ArchiveExtractor - Cannot read/write/found file: 
 java.io.FileNotFoundException: src\test\resources\www_extractor_test\www\sample2.war (Не удается найти указанный файл)
 	at java.util.zip.ZipFile.open(Native Method)
-	at java.util.zip.ZipFile.<init>(ZipFile.java:219)
-	at java.util.zip.ZipFile.<init>(ZipFile.java:149)
+	at java.util.zip.ZipFile.<init>(ZipFile.java:220)
+	at java.util.zip.ZipFile.<init>(ZipFile.java:150)
 	at java.util.jar.JarFile.<init>(JarFile.java:166)
 	at java.util.jar.JarFile.<init>(JarFile.java:103)
 	at nc.sumy.edu.webcontainer.deployment.ArchiveExtractor.extractWarFile(ArchiveExtractor.java:26)

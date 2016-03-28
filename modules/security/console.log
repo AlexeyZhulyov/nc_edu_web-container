@@ -1,11 +1,11 @@
-2016/03/28 00:40:40-614 [main] [WARN] nc.sumy.edu.webcontainer.configuration.AccessRulesRepositoryJson - Can not read file http-access.json properly
-java.io.FileNotFoundException: C:\Users\maksim\Desktop\nc_web_container\server11\nc_edu_web-container\modules\security\src\test\resources\test-site6\http-access.json (Системе не удается найти указанный путь)
+2016/03/28 12:17:25-989 [main] [WARN] nc.sumy.edu.webcontainer.configuration.AccessRulesRepositoryJson - Can not read file http-access.json properly
+java.io.FileNotFoundException: C:\Users\LENOVO\Desktop\nc_web_server\server001\nc_edu_web-container\modules\security\src\test\resources\test-site6\http-access.json (Системе не удается найти указанный путь)
 	at java.io.FileInputStream.open0(Native Method)
 	at java.io.FileInputStream.open(FileInputStream.java:195)
 	at java.io.FileInputStream.<init>(FileInputStream.java:138)
-	at nc.sumy.edu.webcontainer.configuration.AccessRulesRepositoryJson.getAccessRules(AccessRulesRepositoryJson.java:20)
-	at nc.sumy.edu.webcontainer.configuration.AccessRulesRepositoryJson.getAccessRules(AccessRulesRepositoryJson.java:15)
-	at nc.sumy.edu.webcontainer.sequrity.ServerSecurity.<init>(ServerSecurity.java:41)
+	at nc.sumy.edu.webcontainer.configuration.AccessRulesRepositoryJson.getAccessRules(AccessRulesRepositoryJson.java:26)
+	at nc.sumy.edu.webcontainer.configuration.AccessRulesRepositoryJson.getAccessRules(AccessRulesRepositoryJson.java:21)
+	at nc.sumy.edu.webcontainer.sequrity.ServerSecurity.<init>(ServerSecurity.java:40)
 	at nc.sumy.edu.webcontainer.sequrity.ServerSecurityTest.securityTest6(ServerSecurityTest.java:153)
 	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
 	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)

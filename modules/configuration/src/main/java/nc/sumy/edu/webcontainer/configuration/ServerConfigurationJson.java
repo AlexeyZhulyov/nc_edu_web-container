@@ -12,6 +12,11 @@ import nc.sumy.edu.webcontainer.common.FileNotFoundException;
 import static nc.sumy.edu.webcontainer.common.ClassUtil.fileToString;
 import static nc.sumy.edu.webcontainer.common.ClassUtil.getInputStreamByName;
 
+/**
+ * Class that parses and stores server configuration.
+ * This implementation of ServerConfiguration works with JSON files.
+ * @author Lukianykhin O.V.
+ */
 
 public class ServerConfigurationJson implements ServerConfiguration {
     private ConfigurationProperties configurationProperties;
