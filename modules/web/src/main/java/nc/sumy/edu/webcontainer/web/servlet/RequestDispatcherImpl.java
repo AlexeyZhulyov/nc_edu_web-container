@@ -159,7 +159,7 @@ public class RequestDispatcherImpl implements RequestDispatcher {
     }
 
     private void createErrorPageResponse(ResponseCode code) {
-        String errorPageTitle = code.toString() + ".html";
+        String errorPageTitle = code.getString() + ".html";
         response = new HttpResponse(code.getCode());
         setErrorPageHeaders((HttpResponse) response);
         File errorPage = new File(errorPagesPath + errorPageTitle);

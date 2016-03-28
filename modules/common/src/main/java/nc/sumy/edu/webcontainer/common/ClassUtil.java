@@ -10,8 +10,14 @@ import java.lang.reflect.Method;
 import java.net.URL;
 import java.net.URLClassLoader;
 
+/**
+* Class with util methods.
+*/
 public class ClassUtil {
 
+/**
+* Find by name in klass classpath, read and return file in InputStream. 
+*/
     public static InputStream getInputStreamByName(Class klass, String fileName) {
         InputStream inputStream = klass.getResourceAsStream("/" + fileName);
         if (inputStream == null) {
@@ -21,6 +27,9 @@ public class ClassUtil {
         }
     }
 
+/**
+* Create and return new instance of class klass.
+*/
     public static <T> T newInstance(Class<T> klass) {
         try {
             return klass.newInstance();
@@ -29,6 +38,9 @@ public class ClassUtil {
         }
     }
 
+/**
+* Write file to string and return string.
+*/
     public static String fileToString(File file) {
         try {
             return FileUtils.readFileToString(file);
@@ -36,7 +48,9 @@ public class ClassUtil {
             throw new FileNotReadException(file.getAbsolutePath(), e);
         }
     }
-
+/**
+* Add URL to System ClassPath.
+*/
     public static void addURLToSystemClassPath(URL url) {
         URLClassLoader sysloader = (URLClassLoader) ClassLoader.getSystemClassLoader();
         Class sysclass = URLClassLoader.class;
@@ -50,12 +64,16 @@ public class ClassUtil {
             throw new SystemClassloaderException(e);
         }
     }
-
+/**
+* Add directory defined as string path to System ClassPath.
+*/
     public static void addFileToSystemClassPath(String dir) {
         File file = new File(dir);
         addFileToSystemClassPath(file);
     }
-
+/**
+* Add directory defined as file to System ClassPath.
+*/
     public static void addFileToSystemClassPath(File dir) {
         try {
             addURLToSystemClassPath(dir.toURI().toURL());
@@ -63,7 +81,9 @@ public class ClassUtil {
             throw new FileNotFoundException(dir.getName(), e);
         }
     }
-
+/**
+* Add files in directory defined as string path to System ClassPath.
+*/
     public static void addFilesFromDirToSysClassPath(String libPath) {
         File lib = new File(libPath);
         if (lib != null && lib.exists()) {

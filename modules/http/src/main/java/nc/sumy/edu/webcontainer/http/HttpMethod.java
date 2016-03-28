@@ -5,8 +5,20 @@ package nc.sumy.edu.webcontainer.http;
  * @author Vinogradov Maxim
  */
 public enum HttpMethod {
+
+    /**
+     * <p>GET value is equals GET request-type.</p>
+     */
     GET,
+
+    /**
+     * <p>OPTION value is equals OPTION request-type.</p>
+     */
     OPTIONS,
+
+    /**
+     * <p>POST value is equals POST request-type.</p>
+     */
     POST,
 
     /**

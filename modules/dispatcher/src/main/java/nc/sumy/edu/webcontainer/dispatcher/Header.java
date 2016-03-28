@@ -1,9 +1,5 @@
 package nc.sumy.edu.webcontainer.dispatcher;
 
-/**
- * <p>Enum that contain headers titles of HTTP response.</p>
- * @author Vinogradov Maxim
- */
 public enum Header {
     CONTENT_TYPE("Content-Type"),
     CACHE_CONTROL("Cache-Control"),

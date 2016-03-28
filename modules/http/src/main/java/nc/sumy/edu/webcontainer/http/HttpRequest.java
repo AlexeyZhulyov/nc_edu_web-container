@@ -115,8 +115,8 @@ public class HttpRequest implements Request {
         for (Map.Entry<String, String> param : parameters.entrySet()) {
             try {
                 param.setValue(URLDecoder.decode(param.getValue(), UTF8));
-            } catch (UnsupportedEncodingException e) {
-               LOG.error("Cannot decode with UTF-8.", e);
+                } catch (UnsupportedEncodingException e) {
+                   LOG.error("Cannot decode with UTF-8.", e);
             }
         }
     }

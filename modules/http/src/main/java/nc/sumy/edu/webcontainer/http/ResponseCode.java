@@ -56,8 +56,7 @@ public enum ResponseCode {
     /**
      * @return return code as String.
      */
-    @Override
-    public String toString() {
+    public String getString() {
         return Integer.toString(code);
     }
 

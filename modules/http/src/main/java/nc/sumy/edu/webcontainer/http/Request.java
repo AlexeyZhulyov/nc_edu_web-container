@@ -4,7 +4,6 @@ import java.util.Map;
 
 /**
  * Interface that provides methods for working with request.
- * @author Vinogradov M.O.
  */
 public interface Request {
 
@@ -18,16 +17,36 @@ public interface Request {
      */
     String getIpAddress();
 
+    /**
+     * @return method of HTTP request.
+     */
     HttpMethod getMethod();
 
+    /**
+     * @return URN of HTTP request.
+     */
     String getUrn();
 
+    /**
+     * @return map of headers, where keys is title of headers.
+     */
     Map<String, String> getHeaders();
 
+    /**
+     * @return map of parameters, where keys is title of parameters map.
+     */
     Map<String, String> getParameters();
 
+    /**
+     * @param key of header.
+     * @return value by key from header.
+     */
     String getHeader(String key);
 
+    /**
+     * @param key of parameters map.
+     * @return value by key from parameters.
+     */
     String getParameter(String key);
 
     /**
@@ -35,6 +54,9 @@ public interface Request {
      */
     String getRequestText();
 
+    /**
+     * @return name of domain if it exist.
+     */
     String getDomainName();
 
 }

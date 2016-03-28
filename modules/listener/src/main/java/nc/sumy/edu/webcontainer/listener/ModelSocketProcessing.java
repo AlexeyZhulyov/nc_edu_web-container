@@ -45,7 +45,6 @@ public class ModelSocketProcessing {
              OutputStream clientOutput = clientSocket.getOutputStream())
         {
             // Read a set of characters from the socket
-            System.out.println("request size " + clientInput.available());
             ServerDispatcher serverDispatcher = new ServerDispatcher(this.configuration, this.deployment);
             StringBuffer request = new StringBuffer(20480);
             int readedSize;
@@ -66,16 +65,12 @@ public class ModelSocketProcessing {
             clientOutput.flush();
 //            String requestString = new String(bytes, Charset.forName("UTF-8"));
             String requestString = request.toString();
-            System.out.println("requestString " + requestString);
             Request clientRequest = null;
             if(requestString != null && !("").equals(requestString)){
                 clientRequest = new HttpRequest(requestString,
                         clientSocket.getRemoteSocketAddress().toString(), clientSocket.getInetAddress().getHostName() );
 
             Response serverResponse = serverDispatcher.getResponse(clientRequest);
-            System.out.println("------------------Start Response -------------------------");
-            System.out.println(new String(serverResponse.getResponse()));
-            System.out.println("------------------End Response -------------------------");
             clientOutput.write(serverResponse.getResponse());
             }
         } catch (IOException e) {

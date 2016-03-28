@@ -19,10 +19,17 @@ import java.util.concurrent.ConcurrentMap;
 
 import static nc.sumy.edu.webcontainer.common.ClassUtil.newInstance;
 
+/**
+* Class for processing servlets.
+*/
 public class ServletHandlerImpl implements ServletHandler {
 
     private static final ConcurrentMap<String, HttpServlet> INSTANCES = new ConcurrentHashMap<>();
 
+/**
+* Create a new (with initiating) or take an existing instance of servlet class,
+* invoke method service and return response.
+*/
     public HttpResponse processServlet(HttpRequest request, Class klass) {
 
         HttpServlet servlet;

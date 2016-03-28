@@ -1,5 +1,9 @@
 package nc.sumy.edu.webcontainer.cgi;
 
+/**
+* General exception for cgi module.
+*/
+
 public class CgiException extends RuntimeException {
 
     public static final String CLASS_NOT_FOUND = "Class \"%s\" not found";

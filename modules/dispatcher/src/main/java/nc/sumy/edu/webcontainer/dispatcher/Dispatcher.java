@@ -4,8 +4,8 @@ import nc.sumy.edu.webcontainer.http.HttpResponse;
 import nc.sumy.edu.webcontainer.http.Request;
 
 /**
- * Interface that provides methods for working with dispatcher implementation.
- * @author Vinogradov M.O.
+ * Interface that provides getting response on getting request.
+ * @version 0.1
  */
 public interface Dispatcher {
 

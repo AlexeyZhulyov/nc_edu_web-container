@@ -37,7 +37,7 @@ public class ServerSecurity implements Security {
         file = substring(request.getUrn(), lastIndexOf(request.getUrn(), "/") + 1, length(request.getUrn()));
         File file = new File(serverConfiguration.getWwwLocation() + request.getUrn());
         AccessRulesRepositoryJson configuration = new AccessRulesRepositoryJson();
-        rules = configuration.getAccessRules(file.getParentFile().getAbsolutePath() + File.separator + CONFIG_FILE);
+            rules = configuration.getAccessRules(file.getParentFile().getAbsolutePath() + File.separator + CONFIG_FILE);
         if (nonNull(rules)) {
             AccessFile accessFile = findAccessFile();
             if (nonNull(accessFile)) {

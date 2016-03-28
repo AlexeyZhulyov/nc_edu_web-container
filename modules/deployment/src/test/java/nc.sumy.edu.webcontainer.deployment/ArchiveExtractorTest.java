@@ -12,6 +12,7 @@ import static org.apache.commons.io.FileUtils.deleteQuietly;
 import static org.junit.Assert.assertEquals;
 
 public class ArchiveExtractorTest {
+    //private static final String DOMAIN_PATH = "src/test/resources/www_extractor_test/";
     private static final String WWW_PATH = "src/test/resources/www_extractor_test/www/";
     private final File createdFolder1 = new File(WWW_PATH + "sample");
     private final File createdFolder2 = new File(WWW_PATH + "sample2");

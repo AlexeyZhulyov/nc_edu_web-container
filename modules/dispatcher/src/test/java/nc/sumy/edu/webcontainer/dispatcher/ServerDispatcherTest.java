@@ -1,5 +1,12 @@
 package nc.sumy.edu.webcontainer.dispatcher;
 
-public class ServerDispatcherTest {
+//import org.junit.Test;
 
+public class ServerDispatcherTest {
+/*
+    @Test
+    public void getResponse() {
+        System.out.println(ResponseCode.CODE400.getCode());
+    }
+*/
 }
