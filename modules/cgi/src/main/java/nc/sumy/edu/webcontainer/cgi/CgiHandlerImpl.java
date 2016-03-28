@@ -6,12 +6,18 @@ import org.atteo.classindex.ClassIndex;
 import java.util.Map;
 
 public class CgiHandlerImpl implements CgiHandler {
-
+/**
+* Find class marked with Cgi annotation and implemented CgiAction interface,
+* create instance and invoke run method to process response body.
+*/
     @Override
     public String process(String className, Map<String, String> parameters) {
         return run(find(className), parameters);
     }
 
+/**
+* Find class by name marked with Cgi annotation and implemented CgiAction interface
+*/
     public Class<CgiAction> find(String className) {
         for (Class<?> klass : ClassIndex.getAnnotated(Cgi.class))
             if (klass.getSimpleName().equals(className))
