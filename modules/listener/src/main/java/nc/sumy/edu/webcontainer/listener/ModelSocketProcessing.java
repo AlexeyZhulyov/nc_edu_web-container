@@ -7,13 +7,14 @@ import nc.sumy.edu.webcontainer.dispatcher.ServerDispatcher;
 import nc.sumy.edu.webcontainer.http.HttpRequest;
 import nc.sumy.edu.webcontainer.http.Request;
 import nc.sumy.edu.webcontainer.http.Response;
+import org.apache.commons.io.IOUtils;
+import org.apache.maven.shared.utils.io.IOUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.BufferedInputStream;
-import java.io.IOException;
-import java.io.OutputStream;
+import java.io.*;
 import java.net.Socket;
+import java.nio.charset.Charset;
 
 /**
  * Class that processes client socket.
@@ -41,11 +42,27 @@ public class ModelSocketProcessing {
      */
     public void processRequest(Socket clientSocket) {
 
-        try(BufferedInputStream clientInput = new BufferedInputStream(clientSocket.getInputStream());
+        try( InputStream clientInput = clientSocket.getInputStream();
              OutputStream clientOutput = clientSocket.getOutputStream())
         {
             // Read a set of characters from the socket
             ServerDispatcher serverDispatcher = new ServerDispatcher(this.configuration, this.deployment);
+
+            /*    2nd method of reading Socket to String
+            BufferedReader clientBufferedreader = new BufferedReader(new InputStreamReader(clientInput));
+            StringBuilder requestStringBuilder = new StringBuilder();
+            String temp;
+            while((temp = clientBufferedreader.readLine()) != null) {
+                if(temp.equals("")) {
+                    break;
+                }
+                requestStringBuilder.append(temp);
+                requestStringBuilder.append("\r\n");
+            }
+            String requestString = new String(requestStringBuilder);
+            */
+
+            /* 1st method of reading Socket to String
             StringBuffer request = new StringBuffer(20480);
             int readedSize;
             byte[] buffer = new byte[2048];
@@ -59,12 +76,18 @@ public class ModelSocketProcessing {
             for (int j=0; j<readedSize; j++) {
                 request.append((char) buffer[j]);
             }
-
-            byte[] bytes = new byte[clientInput.available()];
+                String requestString = request.toString();
+            */
+            /* 3rd method of reading Socket to String */
+            BufferedInputStream bufferedInputStream = new BufferedInputStream(clientInput);
+            byte[] bytes = new byte[bufferedInputStream.available()];
             clientInput.read(bytes);
-            clientOutput.flush();
-//            String requestString = new String(bytes, Charset.forName("UTF-8"));
-            String requestString = request.toString();
+            String requestString = new String(bytes, Charset.defaultCharset());
+
+            /*4th method of reading Socket to String (doesn't work)
+            BufferedInputStream bufferedInputStream = new BufferedInputStream(clientInput);
+            String requestString = IOUtils.toString(bufferedInputStream);
+            */
             Request clientRequest = null;
             if(requestString != null && !("").equals(requestString)){
                 clientRequest = new HttpRequest(requestString,
