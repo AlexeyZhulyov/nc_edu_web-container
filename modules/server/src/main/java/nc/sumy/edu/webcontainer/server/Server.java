@@ -31,7 +31,7 @@ public class Server {
             LOG.error("Server could not be started. System variable 'SERVER_HOME' is not defined", e);
             System.exit(-1);
         }
-        if(!(new File(config.getWwwLocation()).exists()) || !(new File(config.getWwwLocation()).isDirectory())) {
+        if(!(config.getServerLocationAsFile().exists()) || !(new File(config.getServerLocation()).isDirectory())) {
             LOG.error("Server could not be started. System variable 'SERVER_HOME' defined, but location does not" +
                     "exist.");
             System.exit(-1);

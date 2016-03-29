@@ -48,14 +48,14 @@ public class ServerDispatcher implements Dispatcher{
     public HttpResponse getResponse(Request request) {
         this.request = request;
         security = new ServerSecurity(request, serverConfiguration);
-        errorPagesPath  = serverConfiguration.getWwwLocation() + File.separator +
+        errorPagesPath  = serverConfiguration.getServerLocation() + File.separator +
                 "www" + File.separator + "default" + File.separator;
         makeResponse();
         return response;
     }
 
     private void makeResponse() {
-        String pagePath = serverConfiguration.getWwwLocation() + File.separator + "www" + File.separator
+        String pagePath = serverConfiguration.getServerLocation() + File.separator + "www" + File.separator
                 + request.getUrn().replace("/",File.separator);
         if (initialInspection())
             return;

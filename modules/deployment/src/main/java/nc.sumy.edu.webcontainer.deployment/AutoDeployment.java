@@ -25,7 +25,7 @@ public class AutoDeployment extends Thread implements Deployment {
 
     public AutoDeployment(ServerConfiguration configuration) {
         this.configuration = configuration;
-        wwwFolder = new File(configuration.getWwwLocation() + separator + "www");
+        wwwFolder = new File(configuration.getServerLocation() + separator + "www");
         initialDeployment();
     }
 

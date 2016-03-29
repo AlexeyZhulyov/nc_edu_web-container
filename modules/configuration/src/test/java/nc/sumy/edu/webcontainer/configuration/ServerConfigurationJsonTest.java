@@ -11,7 +11,7 @@ public class ServerConfigurationJsonTest {
     public void noParametersConfigurationTest() {
         ServerConfiguration config = new ServerConfigurationJson();
         assertEquals("Port must be 8096", 8096, config.getPort());
-        assertEquals("WwwLocation must be 'null'", null, config.getWwwLocation());
+        assertEquals("WwwLocation must be 'null'", null, config.getServerLocation());
     }
 
     @Test(expected = JsonReadingException.class)
@@ -28,14 +28,14 @@ public class ServerConfigurationJsonTest {
     public void validStringParametersConfigurationTest() {
         ServerConfiguration config = new ServerConfigurationJson("validTestConfiguration.json");
         assertEquals("Port must be 8890", 8890, config.getPort());
-        assertEquals("WwwLocation must be 'test/www'", "test/www", config.getWwwLocation());
+        assertEquals("WwwLocation must be 'test/www'", "test/www", config.getServerLocation());
     }
 
     @Test
     public void validFileParametersConfigurationStartAndGetTest() {
         ServerConfiguration config = new ServerConfigurationJson(new File("src/test/resources/validTestConfiguration.json"));
         assertEquals("Port must be 8890", 8890, config.getPort());
-        assertEquals("WwwLocation must be 'test/www'", "test/www", config.getWwwLocation());
+        assertEquals("WwwLocation must be 'test/www'", "test/www", config.getServerLocation());
     }
 
     @Test(expected = JsonReadingException.class)
@@ -52,9 +52,9 @@ public class ServerConfigurationJsonTest {
     public void setConfigurationTest() {
         ServerConfiguration config = new ServerConfigurationJson(new File("src/test/resources/validTestConfiguration.json"));
         config.setPort(100);
-        config.setWwwLocation("../www");
+        config.setServerLocation("../www");
         assertEquals("Port must be 100", 100, config.getPort());
-        assertEquals("WwwLocation must be '../www'", "../www", config.getWwwLocation());
+        assertEquals("WwwLocation must be '../www'", "../www", config.getServerLocation());
 
     }
 }

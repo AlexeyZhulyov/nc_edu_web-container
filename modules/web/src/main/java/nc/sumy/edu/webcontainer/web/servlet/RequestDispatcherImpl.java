@@ -64,7 +64,7 @@ public class RequestDispatcherImpl implements RequestDispatcher {
 
     public Response getResponse(Request request) {
         this.request = request;
-        errorPagesPath = serverConfiguration.getWwwLocation() + File.separator + "default" + File.separator;
+        errorPagesPath = serverConfiguration.getServerLocation() + File.separator + "default" + File.separator;
         makeResponse();
         return response;
     }
