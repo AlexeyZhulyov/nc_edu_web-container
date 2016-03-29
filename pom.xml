@@ -154,16 +154,6 @@
                         </execution>
                     </executions>
                     <configuration>
-                        <excludes>
-                            <exclude>**/deployment/*</exclude>
-                            <exclude>**/dispatcher/*</exclude>
-                            <exclude>**/common/*</exclude>
-                            <exclude>**/listener/*</exclude>
-                            <exclude>**/server/*</exclude>
-                            <exclude>**/dispatcher/*</exclude>
-                            <exclude>**/web/*</exclude>
-                            <exclude>**/web/servlet/*</exclude>
-                        </excludes>
                         <rules>
                             <rule implementation="org.jacoco.maven.RuleConfiguration">
                                 <element>BUNDLE</element>
