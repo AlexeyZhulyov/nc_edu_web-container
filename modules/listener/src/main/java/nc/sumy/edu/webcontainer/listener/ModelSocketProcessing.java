@@ -7,8 +7,6 @@ import nc.sumy.edu.webcontainer.dispatcher.ServerDispatcher;
 import nc.sumy.edu.webcontainer.http.HttpRequest;
 import nc.sumy.edu.webcontainer.http.Request;
 import nc.sumy.edu.webcontainer.http.Response;
-import org.apache.commons.io.IOUtils;
-import org.apache.maven.shared.utils.io.IOUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
