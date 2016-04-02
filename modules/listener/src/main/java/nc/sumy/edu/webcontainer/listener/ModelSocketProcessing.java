@@ -10,9 +10,7 @@ import nc.sumy.edu.webcontainer.http.Response;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.BufferedInputStream;
-import java.io.IOException;
-import java.io.OutputStream;
+import java.io.*;
 import java.net.Socket;
 
 /**
@@ -46,6 +44,21 @@ public class ModelSocketProcessing {
         {
             // Read a set of characters from the socket
             ServerDispatcher serverDispatcher = new ServerDispatcher(this.configuration, this.deployment);
+            //    2nd method of reading Socket to String
+            BufferedReader clientBufferedreader = new BufferedReader(new InputStreamReader(clientInput));
+            StringBuilder requestStringBuilder = new StringBuilder();
+            String temp;
+            while((temp = clientBufferedreader.readLine()) != null) {
+                if(temp.equals("")) {
+                    break;
+                }
+                requestStringBuilder.append(temp);
+                requestStringBuilder.append("\r\n");
+            }
+            String requestString = new String(requestStringBuilder);
+
+
+            /* 1st method of reading Socket to String (works but kostyl' stail)
             StringBuffer request = new StringBuffer(20480);
             int readedSize;
             byte[] buffer = new byte[2048];
@@ -59,19 +72,31 @@ public class ModelSocketProcessing {
             for (int j=0; j<readedSize; j++) {
                 request.append((char) buffer[j]);
             }
-
+                String requestString = request.toString();
+            */
+            /* 3rd method of reading Socket to String (02.04.16 - doesn't work)
+            //BufferedInputStream bufferedInputStream = new BufferedInputStream(clientInput);
             byte[] bytes = new byte[clientInput.available()];
-            clientInput.read(bytes);
-            clientOutput.flush();
-//            String requestString = new String(bytes, Charset.forName("UTF-8"));
-            String requestString = request.toString();
+            String requestString;
+            if(clientInput.read(bytes) != -1) {
+                 requestString = new String(bytes, Charset.defaultCharset());
+            } else {
+                requestString = "";
+            }
+            */
+            /*4th method of reading Socket to String (doesn't work)
+            BufferedInputStream bufferedInputStream = new BufferedInputStream(clientInput);
+            String requestString = IOUtils.toString(bufferedInputStream);
+            */
             Request clientRequest = null;
-            if(requestString != null && !("").equals(requestString)){
+            if(requestString != null && !("").equals(requestString)) {
                 clientRequest = new HttpRequest(requestString,
-                        clientSocket.getRemoteSocketAddress().toString(), clientSocket.getInetAddress().getHostName() );
-
-            Response serverResponse = serverDispatcher.getResponse(clientRequest);
-            clientOutput.write(serverResponse.getResponse());
+                        clientSocket.getRemoteSocketAddress().toString(), clientSocket.getInetAddress().getHostName());
+                Response serverResponse = serverDispatcher.getResponse(clientRequest);
+                clientOutput.write(serverResponse.getResponse());
+            }
+            else {
+                clientOutput.write("".getBytes());
             }
         } catch (IOException e) {
             LOGGER.error("Request processing was unsuccessful. IOException appeared", e);
