@@ -6,7 +6,8 @@ package nc.sumy.edu.webcontainer.sequrity;
 public interface Security {
 
     /**
-     * @return is http-access.json allow to show this page.
+     * @return true if http-access.json allows to show this page,
+     * otherwise - return false.
      */
     boolean isAllow();
 

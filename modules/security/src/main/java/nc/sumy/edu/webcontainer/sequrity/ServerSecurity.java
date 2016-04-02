@@ -18,8 +18,10 @@ import static java.util.Objects.nonNull;
 import static org.apache.commons.lang3.StringUtils.*;
 
 /**
- * Class that provides server security and access to it's resources.
- * It's find and parse http-access.json files, and make a conclusion about it.
+ * Class that provides server security and access to its resources.
+ * In fact, it analyzes the instance of AccessRulesRepositoryJson
+ * and based on its content concludes whether to give access
+ * to the file that was requested.
  * @author Vinogradov Maxim
  */
 public class    ServerSecurity implements Security {
