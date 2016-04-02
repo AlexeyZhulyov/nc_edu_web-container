@@ -22,6 +22,7 @@ public class HttpResponse implements Response {
     private String response = "HTTP/1.1 ";
     private Map<String, String> headers;
     private byte[] body;
+    private String redirectUrl = "";
 
     static {
         RESPONSE_CODES.put(OK.getCode(), "200 OK");
@@ -55,6 +56,15 @@ public class HttpResponse implements Response {
         System.arraycopy(part1, 0, result, 0, part1.length);
         System.arraycopy(part2, 0, result, part1.length, part2.length);
         return result;
+    }
+
+    public String getRedirectUrl() {
+        return redirectUrl;
+    }
+
+    public Response setRedirectUrl(String redirectUrl) {
+        this.redirectUrl = redirectUrl;
+        return this;
     }
 
     public Response setCode(int code) {

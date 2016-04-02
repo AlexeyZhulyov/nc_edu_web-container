@@ -27,6 +27,8 @@ public interface Request {
      */
     String getUrn();
 
+    Request setUrn(String urn);
+
     /**
      * @return map of headers, where keys is title of headers.
      */

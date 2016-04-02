@@ -47,4 +47,9 @@ public interface Response {
     byte[] getBody();
 
     byte[] getResponse();
+
+    String getRedirectUrl();
+
+    Response setRedirectUrl(String redirectUrl);
+
 }

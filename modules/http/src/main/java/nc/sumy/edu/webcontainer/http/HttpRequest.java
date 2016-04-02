@@ -129,6 +129,11 @@ public class HttpRequest implements Request {
         return urn;
     }
 
+    public Request setUrn(String urn) {
+        this.urn = urn;
+        return this;
+    }
+
     public Map<String, String> getHeaders() {
         return headers;
     }

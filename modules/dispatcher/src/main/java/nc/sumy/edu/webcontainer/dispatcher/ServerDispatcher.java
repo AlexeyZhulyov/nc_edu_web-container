@@ -67,12 +67,15 @@ public class ServerDispatcher implements Dispatcher{
             return;
         if (createCgiPage(pagePath))
             return;
-        if (createStaticOrJspPage(pagePath))
+        if (createStaticOrJspPage(pagePath)) {
+            makeRedirection();
             return;
-        if (createServletPage())
+        }
+        if (createServletPage()) {
+            makeRedirection();
             return;
+        }
         createErrorPageResponse(NOT_FOUND);
-        response.setHeader("Content-Length", Integer.toString(response.getBody().length));
     }
 
     private boolean initialInspection() {
@@ -85,6 +88,14 @@ public class ServerDispatcher implements Dispatcher{
             return true;
         }
         return false;
+    }
+
+    private void makeRedirection() {
+        response.setHeader("Content-Length", Integer.toString(response.getBody().length));
+        if (isNotEmpty(response.getRedirectUrl())) {
+            request.setUrn(response.getRedirectUrl());
+            makeResponse();
+        }
     }
 
     private boolean createIndexPage(String pagePath) {
