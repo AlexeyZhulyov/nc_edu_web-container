@@ -29,6 +29,10 @@ import java.util.concurrent.ConcurrentHashMap;
 import static java.io.File.separator;
 import static java.util.Objects.nonNull;
 
+/**
+ * Class that provides validating and parsing web.xml files.
+ * @author Vinogradov M.O.
+ */
 public class WebXMLAnalyzer {
     private boolean isValid = true;
     private final File webInf;

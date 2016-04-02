@@ -12,6 +12,10 @@ import static org.apache.commons.io.FileUtils.deleteQuietly;
 import static org.apache.commons.io.IOUtils.copy;
 import static org.apache.commons.lang3.StringUtils.split;
 
+/**
+ * Class that provides auto-extracting .war files.
+ * @author Vinogradov M.O.
+ */
 public class ArchiveExtractor {
     private static final Logger LOG = LoggerFactory.getLogger(ArchiveExtractor.class);
     private final File wwwDirectory;
