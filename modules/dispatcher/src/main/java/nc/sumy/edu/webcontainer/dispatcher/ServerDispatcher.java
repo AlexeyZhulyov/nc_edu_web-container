@@ -27,7 +27,7 @@ import static org.apache.commons.lang3.StringUtils.*;
 
 /**
  * Class that takes a request, analyzes it and gives the output response.
- * @author Vinogradov Maxim
+ * @author Vinogradov M.O.
  */
 @SuppressWarnings("PMD")
 public class ServerDispatcher implements Dispatcher{
@@ -245,7 +245,8 @@ public class ServerDispatcher implements Dispatcher{
 
     private void setErrorPageHeaders(HttpResponse response){
         setDefaultHeaders(response);
-        response.setHeader(CONTENT_TYPE.getHeader(), "text/html");
+        setContentType(response, HTML.getMIME());
+        //response.setHeader(CONTENT_TYPE.getHeader(), "text/html");
         response.setHeader(CONTENT_LANGUAGE.getHeader(), "en");
         response.setHeader(CACHE_CONTROL.getHeader(), "no-cache");
         response.setHeader(PRAGMA.getHeader(), "no-cache");
@@ -256,36 +257,7 @@ public class ServerDispatcher implements Dispatcher{
         setDefaultHeaders(response);
         String temp[] = split(request.getUrn(), ".");
         String extension = temp[temp.length - 1];
-        switch (extension) {
-            case "html" : setContentType(response, "text/html");
-                break;
-            case "htm" : setContentType(response, "text/htm");
-                break;
-            case "css" : setContentType(response, "text/css");
-                break;
-            case "xml" : setContentType(response, "text/xml");
-                break;
-            case "jsp" : setContentType(response, "text/html");
-                break;
-            case "pdf" : setContentType(response, "application/pdf");
-                break;
-            case "zip" : setContentType(response, "application/zip");
-                break;
-            case "js"  : setContentType(response, "application/javascript");
-                break;
-            case "gif" : setContentType(response, "image/gif");
-                break;
-            case "jpeg" : setContentType(response, "image/jpeg");
-                break;
-            case "jpg" : setContentType(response, "image/jpg");
-                break;
-            case "swg" : setContentType(response, "image/swg");
-                break;
-            case "png" : setContentType(response, "image/png");
-                break;
-            default:  setContentType(response, "text/html");
-                break;
-        }
+        setContentType(response, DEFAULT.getMimeViaExtension(extension));
         response.setHeader(CACHE_CONTROL.getHeader(), "public, max-age=0");
     }
 

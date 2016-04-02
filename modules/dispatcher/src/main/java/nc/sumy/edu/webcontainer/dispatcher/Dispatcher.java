@@ -4,8 +4,7 @@ import nc.sumy.edu.webcontainer.http.HttpResponse;
 import nc.sumy.edu.webcontainer.http.Request;
 
 /**
- * Interface that provides getting response on getting request.
- * @version 0.1
+ * Interface that provides a method to create a response based on the request data.
  */
 public interface Dispatcher {
 
