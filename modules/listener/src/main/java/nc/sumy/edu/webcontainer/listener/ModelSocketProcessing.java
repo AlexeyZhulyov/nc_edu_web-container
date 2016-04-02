@@ -45,8 +45,7 @@ public class ModelSocketProcessing {
         {
             // Read a set of characters from the socket
             ServerDispatcher serverDispatcher = new ServerDispatcher(this.configuration, this.deployment);
-
-            /*    2nd method of reading Socket to String
+            //    2nd method of reading Socket to String
             BufferedReader clientBufferedreader = new BufferedReader(new InputStreamReader(clientInput));
             StringBuilder requestStringBuilder = new StringBuilder();
             String temp;
@@ -58,9 +57,9 @@ public class ModelSocketProcessing {
                 requestStringBuilder.append("\r\n");
             }
             String requestString = new String(requestStringBuilder);
-            */
 
-            /* 1st method of reading Socket to String
+
+            /* 1st method of reading Socket to String (works but kostyl' stail)
             StringBuffer request = new StringBuffer(20480);
             int readedSize;
             byte[] buffer = new byte[2048];
@@ -76,16 +75,21 @@ public class ModelSocketProcessing {
             }
                 String requestString = request.toString();
             */
-            /* 3rd method of reading Socket to String */
-            BufferedInputStream bufferedInputStream = new BufferedInputStream(clientInput);
-            byte[] bytes = new byte[bufferedInputStream.available()];
-            clientInput.read(bytes);
-            String requestString = new String(bytes, Charset.defaultCharset());
-
+            /* 3rd method of reading Socket to String (02.04.16 - doesn't work)
+            //BufferedInputStream bufferedInputStream = new BufferedInputStream(clientInput);
+            byte[] bytes = new byte[clientInput.available()];
+            String requestString;
+            if(clientInput.read(bytes) != -1) {
+                 requestString = new String(bytes, Charset.defaultCharset());
+            } else {
+                requestString = "";
+            }
+            */
             /*4th method of reading Socket to String (doesn't work)
             BufferedInputStream bufferedInputStream = new BufferedInputStream(clientInput);
             String requestString = IOUtils.toString(bufferedInputStream);
             */
+
             Request clientRequest = null;
             if(requestString != null && !("").equals(requestString)){
                 clientRequest = new HttpRequest(requestString,
