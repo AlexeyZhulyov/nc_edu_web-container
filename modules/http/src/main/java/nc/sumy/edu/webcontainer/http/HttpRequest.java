@@ -16,8 +16,8 @@ import static java.util.Objects.nonNull;
 import static org.apache.commons.lang3.StringUtils.*;
 
 /**
- * Class that parse HTTP request and contain request-data.
- * @author Vinogradov Maxim
+ * Class that parses HTTP request and contains data of it.
+ * @author Vinogradov M.O.
  */
 public class HttpRequest implements Request {
     private HttpMethod method;

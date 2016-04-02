@@ -12,8 +12,8 @@ import static java.util.Objects.isNull;
 import static nc.sumy.edu.webcontainer.http.ResponseCode.*;
 
 /**
- * Class that build HTTP response and contain response-data.
- * @author Vinogradov Maxim
+ * Class that creates HTTP response and contains data of it.
+ * @author Vinogradov M.O.
  */
 public class HttpResponse implements Response {
     private static final String ENDL = "\r\n";

@@ -22,7 +22,7 @@ import static org.apache.commons.lang3.StringUtils.*;
  * It's find and parse http-access.json files, and make a conclusion about it.
  * @author Vinogradov Maxim
  */
-public class ServerSecurity implements Security {
+public class    ServerSecurity implements Security {
     private final String host;
     private final String ipAddress;
     private final String file;
