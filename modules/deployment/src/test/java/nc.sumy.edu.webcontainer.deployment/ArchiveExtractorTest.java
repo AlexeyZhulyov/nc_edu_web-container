@@ -48,18 +48,7 @@ public class ArchiveExtractorTest {
         JarFile jar = new JarFile(new File(WWW_PATH + "sample6.war"));
         extractor.createFile(jar, new JarEntry(""), createdFolder4);
     }
-/*
-    @Test(expected = IOException.class)
-    public void testExceptionOnGetInputStream() throws IOException {
-        // assertEquals(createdFolder2.exists(), false);
-        // extractor.extractWarFile("sample2.war");
-        JarFile jar = mock(JarFile.class);
-        JarEntry jarEntry = mock(JarEntry.class);
-        File file = mock(File.class);
-        when(jar.getInputStream(jarEntry)).thenThrow(IOException.class);
-        extractor.createFile(jar, jarEntry, file);
-    }
-*/
+
     @Test
     public void testExtractor3() {
         assertEquals(createdFolder3.exists(), true);
@@ -95,7 +84,6 @@ public class ArchiveExtractorTest {
             }
         }
     }
-
 
     @After
     public void deleteDomainFolder() {
