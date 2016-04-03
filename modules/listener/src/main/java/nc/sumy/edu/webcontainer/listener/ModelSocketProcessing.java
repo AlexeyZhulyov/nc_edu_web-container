@@ -39,27 +39,45 @@ public class ModelSocketProcessing {
      * @param clientSocket Socket that should be processed
      */
     public void processRequest(Socket clientSocket) {
-
-        try( InputStream clientInput = clientSocket.getInputStream();
-             OutputStream clientOutput = clientSocket.getOutputStream())
+        try(OutputStream clientOutput = clientSocket.getOutputStream();
+            InputStream clientInput = clientSocket.getInputStream())
         {
-            // Read a set of characters from the socket
-            ServerDispatcher serverDispatcher = new ServerDispatcher(this.configuration, this.deployment);
-            //    2nd method of reading Socket to String
-            BufferedReader clientBufferedreader = new BufferedReader(new InputStreamReader(clientInput));
-            StringBuilder requestStringBuilder = new StringBuilder();
-            String temp;
-            while((temp = clientBufferedreader.readLine()) != null) {
-                if(temp.equals("")) {
-                    break;
-                }
-                requestStringBuilder.append(temp);
-                requestStringBuilder.append("\r\n");
+            String requestString = readStringFromSocket(clientInput);
+            ServerDispatcher dispatcher = getDispatcher();
+            Request clientRequest = null;
+            if (requestString != null && !("").equals(requestString)) {
+                clientRequest = new HttpRequest(requestString,
+                        clientSocket.getRemoteSocketAddress().toString(), clientSocket.getInetAddress().getHostName());
+                Response serverResponse = dispatcher.getResponse(clientRequest);
+                clientOutput.write(serverResponse.getResponse());
             }
-            String requestString = new String(requestStringBuilder);
+        } catch (IOException e) {
+            LOGGER.error("Request processing was unsuccessful. IOException appeared during processing response", e);
+        }
+        finally {
+            try {
+                clientSocket.close();
+            } catch (IOException e) {
+                LOGGER.warn("Socket was not closed properly.", e);
+            }
+        }
+    }
 
+    public String readStringFromSocket(InputStream clientInput) throws IOException {
+        //    2nd method of reading Socket to String
+        BufferedReader clientBufferedReader = new BufferedReader(new InputStreamReader(clientInput));
+        StringBuilder requestStringBuilder = new StringBuilder();
+        String temp;
+        while((temp = clientBufferedReader.readLine()) != null) {
+            if(temp.equals("")) {
+                break;
+            }
+            requestStringBuilder.append(temp);
+            requestStringBuilder.append("\r\n");
+        }
+        return new String(requestStringBuilder);
 
-            /* 1st method of reading Socket to String (works but kostyl' stail)
+        /* 1st method of reading Socket to String (works but kostyl' stail)
             StringBuffer request = new StringBuffer(20480);
             int readedSize;
             byte[] buffer = new byte[2048];
@@ -89,23 +107,9 @@ public class ModelSocketProcessing {
             BufferedInputStream bufferedInputStream = new BufferedInputStream(clientInput);
             String requestString = IOUtils.toString(bufferedInputStream);
             */
+    }
 
-            Request clientRequest = null;
-            if(requestString != null && !("").equals(requestString)){
-                clientRequest = new HttpRequest(requestString,
-                        clientSocket.getRemoteSocketAddress().toString(), clientSocket.getInetAddress().getHostName() );
-
-            Response serverResponse = serverDispatcher.getResponse(clientRequest);
-            clientOutput.write(serverResponse.getResponse());
-            }
-        } catch (IOException e) {
-            LOGGER.error("Request processing was unsuccessful. IOException appeared", e);
-        } finally {
-            try {
-                clientSocket.close();
-            } catch (IOException e) {
-                LOGGER.warn("Socket was not closed properly.", e);
-            }
-        }
+    public ServerDispatcher getDispatcher() {
+        return new ServerDispatcher(this.configuration, this.deployment);
     }
 }
