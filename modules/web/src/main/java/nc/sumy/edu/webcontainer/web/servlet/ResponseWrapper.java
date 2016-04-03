@@ -54,7 +54,7 @@ public class ResponseWrapper implements HttpServletResponse {
 
     @Override
     public void setCharacterEncoding(String s) {
-
+        throw new UnsupportedOperationException();
     }
 
     @Override
@@ -64,7 +64,7 @@ public class ResponseWrapper implements HttpServletResponse {
 
     @Override
     public void setContentLengthLong(long l) {
-
+        throw new UnsupportedOperationException();
     }
 
     @Override

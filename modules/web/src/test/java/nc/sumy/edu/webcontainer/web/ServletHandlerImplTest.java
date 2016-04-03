@@ -1,81 +1,66 @@
 package nc.sumy.edu.webcontainer.web;
 
-////import nc.sumy.edu.webcontainer.common.ClassUtil;
-////import nc.sumy.edu.webcontainer.common.InstanceNotCreatedException;
-//import nc.sumy.edu.webcontainer.http.HttpRequest;
-////import nc.sumy.edu.webcontainer.http.Response;
-////import nc.sumy.edu.webcontainer.web.stub.*;
-//import org.junit.Before;
-////import org.junit.Test;
+import nc.sumy.edu.webcontainer.http.HttpRequest;
+import nc.sumy.edu.webcontainer.web.stub.*;
 
-//import java.io.File;
-//import java.net.MalformedURLException;
-//import java.net.URL;
-//import java.net.URLClassLoader;
-//
-//import static org.junit.Assert.assertEquals;
-//import static java.lang.String.format;
+import org.junit.Before;
+import org.junit.Test;
+
+import java.net.MalformedURLException;
+import static org.junit.Assert.assertEquals;
 
 public class ServletHandlerImplTest {
-//    private ServletHandler servletHandler;
-//    private HttpRequest request;
+    private ServletHandler servletHandler;
+    private HttpRequest request;
 
-//    @Before
-//    public void setUp() {
-//        servletHandler = new ServletHandlerImpl();
-//        String requestStr = "GET " + "/" + "TestServlet" + " HTTP/1.1" + "\r\n" +
-//                "Host" + ": foo.com" + "\r\n" +
-//                "Accept" + ": text/html" + "\r\n" +
-//                "Range-Unit: 3388 | 1024";
-//        request = new HttpRequest(requestStr, "", "");
-//    }
+    @Before
+    public void setUp() {
+        servletHandler = new ServletHandlerImpl();
+        String requestStr = "GET " + "/" + "TestServlet" + " HTTP/1.1\r\n" +
+                "Host" + ": foo.com\r\n" +
+                "Accept" + ": text/html\r\n" +
+                "Range-Unit: 3388 | 1024\r\n" +
+                "Cookie: JSESSION=123456789";
+        request = new HttpRequest(requestStr, "", "");
+    }
 
-//    @Test
-//    public void processMainDemoServlet() throws ClassNotFoundException, MalformedURLException {
-//        String expected = ClassUtil.fileToString(new File(getClass().getResource("/TestIndex.html").getPath()));
-//        ClassLoader classLoader = new URLClassLoader(new URL[]{new File("../www/Servlets_demo/WEB-INF/classes").toURI().toURL()});
-//        Class klass = Class.forName("sumy.javacourse.webdemo.controller.Main", true, classLoader);
-//        Response response = servletHandler.processServlet(request, klass);
-//        byte[] body = response.getBody();
-//        String actual = new String(body);
-//        assertEquals(expected.replaceAll("\\s", ""), actual.replace("\r", "").replaceAll("\\s", ""));
-//    }
-//
-//    @Test
-//    public void processServletInstances() {
-//        int number = 1;
-//        String expected = "<h1>Hello Servlet</h1>\n<body>Test servlet #%s.</body>\n";
-//        byte[] body = servletHandler.processServlet(request, TestServlet.class).getBody();
-//        String actual = new String(body);
-//        assertEquals(format(expected, number), actual.replace("\r", ""));
-//        number++;
-//        body = servletHandler.processServlet(request, TestServlet.class).getBody();
-//        actual = new String(body);
-//        assertEquals(format(expected, number), actual.replace("\r", ""));
-//    }
-//
-//    @Test(expected = InstanceNotCreatedException.class)
-//    public void processExceptionMessage1() {
-//        servletHandler.processServlet(request, AbstractTestServlet.class);
-//    }
-//
-//    @Test(expected = InstanceNotCreatedException.class)
-//    public void processExceptionMessage2() {
-//        servletHandler.processServlet(request, TestServletWithPrivateConstructor.class);
-//    }
-//
-//    @Test(expected = WebException.class)
-//    public void processExceptionMessage3() {
-//        servletHandler.processServlet(request, TestServletInitException.class);
-//    }
-//
-//    @Test(expected = WebException.class)
-//    public void processExceptionMessage4() {
-//        servletHandler.processServlet(request, TestServletServiceException.class);
-//    }
-//
-//    @Test(expected = WebException.class)
-//    public void processExceptionMessage5() {
-//        servletHandler.processServlet(request, TestServletIOException.class);
-//    }
+    @Test
+    public void processServletState() throws ClassNotFoundException, MalformedURLException {
+        String expected = "<h1>Hello Servlet</h1>\n<body>Test servlet #1.</body>\n";
+        String actual = new String(servletHandler.processServlet(request, TestServlet.class).getBody());
+        assertEquals(expected, actual.replace("\r", ""));
+
+        expected = "<h1>Hello Servlet</h1>\n<body>Test servlet #2.</body>\n";
+        actual = new String(servletHandler.processServlet(request, TestServlet.class).getBody());
+        assertEquals(expected, actual.replace("\r", ""));
+    }
+
+    @Test
+    public void processServletRequestResponse() throws ClassNotFoundException {
+        String expected = "<h1>Test Servlet</h1>\n" + "<body>\n" +
+                "<h1>ServletRequest:</h1>\n" + "<p>RemoteHost: </p>\n" +
+                "<p>ContextPath: null</p>\n" + "<p>Parameter Accept: </p>\n" +
+                "<p>Session: nc.sumy.edu.webcontainer.web.servlet.HttpSessionImpl</p>\n" +
+                "<h1>ServletResponse:</h1>\n" + "<p>ContentType: text/html</p>\n" +
+                "\n" + "</body>\n";
+        String actual = new String(servletHandler.
+                processServlet(request, TestServletRequestResponse.class).getBody());
+        assertEquals(expected, actual.replace("\r", ""));
+    }
+
+    @Test
+    public void destroyServlet() throws ClassNotFoundException {
+        ((ServletHandlerImpl) servletHandler).destroy(TestServlet.class);
+    }
+
+    @Test(expected = ServletInitException.class)
+    public void processInitException() {
+        servletHandler.processServlet(request, TestServletInitException.class);
+    }
+
+    @Test(expected = ServletServiceException.class)
+    public void processServiceException() {
+        servletHandler.processServlet(request, TestServletServiceException.class);
+    }
+
 }

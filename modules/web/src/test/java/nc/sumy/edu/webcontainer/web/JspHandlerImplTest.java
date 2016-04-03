@@ -1,73 +1,65 @@
 package nc.sumy.edu.webcontainer.web;
 
-////import nc.sumy.edu.webcontainer.common.ClassUtil;
-//import nc.sumy.edu.webcontainer.http.HttpRequest;
-//import org.junit.Before;
-////import org.junit.Test;
-//
-//import java.io.File;
-////import java.net.URISyntaxException;
-//
-////import static org.junit.Assert.*;
-////import static java.lang.String.format;
+import nc.sumy.edu.webcontainer.http.HttpRequest;
+import org.junit.Before;
+import org.junit.Test;
+
+import java.io.File;
+import java.net.URISyntaxException;
+import java.net.URL;
+import java.net.URLClassLoader;
+
+import static org.junit.Assert.*;
+import static java.lang.String.*;
 
 public class JspHandlerImplTest {
 
-//    private final JspHandler jspHandler = new JspHandlerImpl();
-//    private HttpRequest request;
-//    File jspTest = new File(JspHandlerImplTest.class.getResource("/test.jsp").getPath());
-//    private static final String BLANK = "\\s";
-    //File jspIndex = new File(JspHandlerImplTest.class.getResource("/index.jsp").getPath());
-    //File jspComments = new File(JspHandlerImplTest.class.getResource("/comments.jsp").getPath());
-//    File jspIndex = new File(new File(".").getParentFile() + "/modules/temp/webapp/jsp/index.jsp");
-//    File jspComments = new File("../modules/temp/webapp/jsp/comments.jsp");
-//    File jspIndex = new File(JspHandlerImplTest.class.getResource("/web").getPath());
-//    File jspComments = new File(JspHandlerImplTest.class.getResource("/comments.jsp").getPath());
+    private HttpRequest request;
 
-//    @Before
-//    public void setUp() {
-//        String requestStr = "GET " + "/" + "TestServlet" + " HTTP/1.1" + "\r\n" +
-//                "Host" + ": foo.com" + "\r\n" +
-//                "Accept" + ": text/html" + "\r\n" +
-//                "Range-Unit: 3388 | 1024";
-//        request = new HttpRequest(requestStr, "", "");
-//    }
+    @Before
+    public void setUp() {
+        String requestStr = "GET " + "/" + "TestServlet" + " HTTP/1.1\r\n" +
+                "Host" + ": foo.com\r\n" +
+                "Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8\n" +
+                "Accept-Encoding: gzip, deflate, sdch\n" +
+                "Accept-Language: ru-RU,ru;q=0.8,en-US;q=0.6,en;q=0.4,uk;q=0.2\n" +
+                "Upgrade-Insecure-Requests: \n" +
+                "User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/49.0.2623.110 Safari/537.36" +
+                "Cookie: JSESSION=123456789";
+        request = new HttpRequest(requestStr, "", "");
+    }
 
-//    @Test
-//    public void process1() {
-//        int number = 1;
-//        String expected = "\n<html>\n" +
-//                "<h1>Hello JSP</h1>\n" +
-//                "<body>\n" +
-//                "<body>Test JSP #%s.</body>\n" +
-//                "</body>\n" +
-//                "</html>";
-//        byte[] body = jspHandler.processJSP(request,jspTest).getBody();
-//        String actual = new String(body);
-//        assertEquals(format(expected,number), actual.replace("\r", ""));
-//        number++;
-//    }
+    @Test
+    public void processServletRedirectToJsp() throws ClassNotFoundException {
+        ServletHandler servletHandler = new ServletHandlerImpl();
+        ClassLoader classLoader = new URLClassLoader(new URL[]{getClass().getResource("/www/Servlets_demo-master/WEB-INF/classes/")});
+        Class testServlet = Class.forName("sumy.javacourse.webdemo.controller.Main", false, classLoader);
+        String actual = new String(servletHandler.
+                processServlet(request, testServlet).getBody());
+        assertEquals("", actual);
+    }
 
-//    @Test
-//    public void process2() throws URISyntaxException {
-//        File wwwPath = new File(new File("").getAbsolutePath()).getParentFile();
-//        //System.out.println(wwwPath.getAbsolutePath());
-//        //System.out.println(JspHandlerImplTest.class.getResource("/index.jsp"));
-//        File jspIndex = new File(wwwPath.getPath() + "/www/Servlets_demo-master/jsp/index.jsp");
-//        System.out.println(jspIndex.getAbsolutePath() + " " + jspIndex.exists());
-//        String expected = ClassUtil.fileToString(new File(JspHandlerImpl.class.getResource("/TestIndex.html").toURI()));
-//        byte[] body = jspHandler.processJSP(request,jspIndex).getBody();
-//        String actual = new String(body);
-//        assertEquals(expected.replaceAll(BLANK, ""), actual.replaceAll(BLANK, ""));
-//    }
-
-//    @Test
-//    public void process3() throws URISyntaxException {
-//        File jspComments = new File("../www/Servlets_demo/jsp/comments.jsp");
-//        System.out.println(jspComments.getAbsolutePath() + " " + jspComments.exists());
-//        String expected = ClassUtil.fileToString(new File(JspHandlerImpl.class.getResource("/TestComments.html").toURI()));
-//        byte[] body = jspHandler.processJSP(request,jspComments).getBody();
-//        String actual = new String(body);
-//        assertEquals(expected.replaceAll(BLANK, ""), actual.replaceAll(BLANK, ""));
-//    }
+    @Test
+    public void processJsp() throws URISyntaxException {
+        JspHandler jspHandler = new JspHandlerImpl();
+        File jspPage = new File(getClass().getResource("/www/Servlets_demo-master/jsp/test.jsp").toURI());
+        String expected = "\n" +
+                "<!DOCTYPE html>\n" +
+                "<html lang=\"en\">\n" +
+                "<head>\n" +
+                "    <title>Test JSP</title>\n" +
+                "</head>\n" +
+                "<h1>Hello JSP</h1>\n" +
+                "<body>\n" +
+                "Test JSP #%s.\n" +
+                "</body>\n" +
+                "</html>\n" +
+                "\n";
+        String actual = new String(jspHandler.
+                processJSP(request, jspPage).getBody());
+        assertEquals(format(expected, 1), actual.replace("\r", ""));
+        actual = new String(jspHandler.
+                processJSP(request, jspPage).getBody());
+        assertEquals(format(expected, 2), actual.replace("\r", ""));
+    }
 }

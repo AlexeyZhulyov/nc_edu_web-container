@@ -9,10 +9,6 @@ import java.io.PrintWriter;
 
 public class TestServlet extends HttpServlet {
 
-//    @Override
-//    public void init(ServletConfig config) throws ServletException {
-//    }
-
     private int number;
 
     @Override
@@ -29,18 +25,4 @@ public class TestServlet extends HttpServlet {
         out.println("<body>Test servlet #" + number + ".</body>");
         number++;
     }
-
-//    @Override
-//    public void destroy() {
-//    }
-//
-//    @Override
-//    public String getServletInfo() {
-//        return null;
-//    }
-//
-//    @Override
-//    public ServletConfig getServletConfig() {
-//        return null;
-//    }
 }
