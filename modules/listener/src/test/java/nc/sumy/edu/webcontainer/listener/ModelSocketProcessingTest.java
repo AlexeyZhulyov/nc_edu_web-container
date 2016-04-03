@@ -20,15 +20,6 @@ import static org.junit.Assert.*;
 
 public class
 ModelSocketProcessingTest {
-    Dispatcher dispatcher = new Dispatcher() {
-        @Override
-        public HttpResponse getResponse(Request request) {
-            byte[] body = request.getRequestText().getBytes();
-            HttpResponse httpResponse = new HttpResponse(200);
-            httpResponse.setBody(body);
-            return httpResponse;
-        }
-    };
 
     @Test
     public void readingFromSocketTest() throws IOException {
