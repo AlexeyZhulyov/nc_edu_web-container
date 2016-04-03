@@ -12,7 +12,6 @@ import org.slf4j.LoggerFactory;
 
 import java.io.*;
 import java.net.Socket;
-import java.nio.charset.Charset;
 
 /**
  * Class that processes client socket.
@@ -38,7 +37,7 @@ public class ModelSocketProcessing {
      * -> send response to client through Socket
      * @param clientSocket Socket that should be processed
      */
-    public void processRequest(Socket clientSocket) {
+    public boolean processRequest(Socket clientSocket) {
         try(OutputStream clientOutput = clientSocket.getOutputStream();
             InputStream clientInput = clientSocket.getInputStream())
         {
@@ -51,8 +50,10 @@ public class ModelSocketProcessing {
                 Response serverResponse = dispatcher.getResponse(clientRequest);
                 clientOutput.write(serverResponse.getResponse());
             }
+            return true;
         } catch (IOException e) {
             LOGGER.error("Request processing was unsuccessful. IOException appeared during processing response", e);
+            return false;
         }
         finally {
             try {
