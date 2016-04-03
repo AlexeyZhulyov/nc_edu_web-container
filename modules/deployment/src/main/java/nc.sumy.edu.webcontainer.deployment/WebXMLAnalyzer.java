@@ -42,6 +42,7 @@ public class WebXMLAnalyzer {
     private final Map<String, String> servletTagMap = new HashMap<>();
     private final Map<String, String> servletMappingTagMap = new HashMap<>();
     private final ConcurrentHashMap<String, Class> dataMap = new ConcurrentHashMap<>();
+    private URI uri;
     /*Constants*/
     private static final Logger LOG = LoggerFactory.getLogger(WebXMLAnalyzer.class);
     private static final String WEB_XML = "web.xml";
@@ -113,9 +114,9 @@ public class WebXMLAnalyzer {
         }
     }
 
-    private Class createClass(String fullClassName) {
+    protected Class createClass(String fullClassName) {
         Class servletClass = null;
-        URI uri = classPath.toURI();
+        uri = classPath.toURI();
         URL url;
         try {
             url = uri.toURL();
@@ -137,4 +138,8 @@ public class WebXMLAnalyzer {
         return dataMap;
     }
 
+    public WebXMLAnalyzer setUri(URI uri) {
+        this.uri = uri;
+        return this;
+    }
 }
