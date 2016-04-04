@@ -72,7 +72,7 @@ ModelSocketProcessingTest {
         StringBuilder requestStringBuilder = new StringBuilder();
         String temp;
         while((temp = clientBufferedReader.readLine()) != null) {
-            if(temp.equals("")) {
+            if("".equals(temp)) {
                 break;
             }
             requestStringBuilder.append(temp);
