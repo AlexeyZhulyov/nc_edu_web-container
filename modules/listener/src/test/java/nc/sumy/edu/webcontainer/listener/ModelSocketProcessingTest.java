@@ -2,10 +2,8 @@ package nc.sumy.edu.webcontainer.listener;
 
 import nc.sumy.edu.webcontainer.configuration.ServerConfiguration;
 import nc.sumy.edu.webcontainer.deployment.Deployment;
-import nc.sumy.edu.webcontainer.dispatcher.Dispatcher;
 import nc.sumy.edu.webcontainer.dispatcher.ServerDispatcher;
 import nc.sumy.edu.webcontainer.http.HttpResponse;
-import nc.sumy.edu.webcontainer.http.Request;
 import org.junit.Test;
 
 import java.io.BufferedReader;
