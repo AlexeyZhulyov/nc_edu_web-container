@@ -65,14 +65,5 @@ public class WebXMLAnalyzerTest {
         assertEquals(dataMap.containsKey(SERVLET1), false);
         assertEquals(dataMap.containsKey(SERVLET2), false);
     }
-/*
-    @Test(expected = MalformedURLException.class)
-    public void testMalformedURLException() throws MalformedURLException {
-        analyzer = new WebXMLAnalyzer(new File(TEST_PATH + Integer.toString(3) + WEB_INF));
-        URI uri = mock(URI.class);
-        when(uri.toURL()).thenThrow(MalformedURLException.class);
-        analyzer.setUri(uri);
-        analyzer.createClass("ddfff/dffd");
-    }
-*/
+
 }

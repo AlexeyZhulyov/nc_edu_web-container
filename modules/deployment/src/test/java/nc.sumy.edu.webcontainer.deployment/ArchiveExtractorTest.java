@@ -34,8 +34,6 @@ public class ArchiveExtractorTest {
 
     @Test(expected = IOException.class)
     public void testExceptionOnGetInputStream() throws IOException {
-       // assertEquals(createdFolder2.exists(), false);
-       // extractor.extractWarFile("sample2.war");
         JarFile jar = mock(JarFile.class);
         JarEntry jarEntry = mock(JarEntry.class);
         File file = mock(File.class);
