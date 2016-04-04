@@ -12,15 +12,16 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.io.File;
+import java.util.Arrays;
 import java.util.concurrent.ConcurrentHashMap;
 
-import static org.junit.Assert.assertEquals;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
+import static org.apache.commons.lang3.StringUtils.*;
+import static org.junit.Assert.*;
+import static org.mockito.Mockito.*;
 
 public class ServerDispatcherTest {
-
     private Dispatcher dispatcher;
+    private String bodyString;
 
     @Before
     public void setUp() {
@@ -38,35 +39,70 @@ public class ServerDispatcherTest {
 
     @Test
     public void getResponseEmptyUrl() {
-        String stringRequest = "GET /";
-        Request request = new HttpRequest(stringRequest, "", "");
-        Response response = dispatcher.getResponse(request);
-        String stringBody = new String(response.getBody());
+        setInitData("GET /");
         File resourceFile = new File(getClass().getResource("/emptyUrl").getFile());
         String expected = ClassUtil.fileToString(resourceFile);
-        assertEquals(expected.replace(" ",""), stringBody.replace(" ",""));
+        assertEquals(expected.replace(" ",""), bodyString.replace(" ",""));
     }
 
     @Test
     public void getResponseIndexPage() {
-        String stringRequest = "GET /my_site/index.html\n";
-        Request request = new HttpRequest(stringRequest, "", "");
-        Response response = dispatcher.getResponse(request);
-        String stringBody = new String(response.getBody());
-        File resourceFile = new File(getClass().getResource("/www/my_site/index.html").getFile());
-        String expected = ClassUtil.fileToString(resourceFile);
-        assertEquals(expected.replace(" ",""), stringBody.replace(" ",""));
+        testStaticPage("GET /my_site/\n");
+    }
+
+    @Test
+    public void getResponseStaticPage() {
+        testStaticPage("GET /my_site/index.html\n");
     }
 
     @Test
     public void getResponseServlet() {
-        String stringRequest = "GET /Servlets_demo-master/Blog\n";
-        Request request = new HttpRequest(stringRequest, "", "");
-        Response response = dispatcher.getResponse(request);
-        String stringBody = new String(response.getBody());
+        setInitData("GET /Servlets_demo-master/Blog\n");
         File resourceFile = new File(getClass().getResource("/servletResponse").getFile());
         String expected = ClassUtil.fileToString(resourceFile);
-        assertEquals(expected.replace("\r",""), stringBody.replace(" ",""));
+        replace(expected, "\r", "\n");
+        replace(bodyString, "\r", "\n");
+        assertEquals(expected, replaceSpaces(bodyString));
+    }
+
+    @Test
+    public void getResponseAbsentPage() {
+        setInitData("GET /absent\n");
+        File resourceFile = new File(getClass().getResource("/www/default/404.html").getFile());
+        String expected = ClassUtil.fileToString(resourceFile);
+        assertEquals(replaceSpaces(expected), replaceSpaces(bodyString));
+    }
+
+    @Test
+    public void testOptionPage() {
+        setInitData("OPTION /absent\n");
+        assertEquals(bodyString, "200 OK");
+    }
+
+    @Test
+    public void enumFunctionTest() {
+        assertEquals(Header.valueOf("DATE"), Header.DATE);
+        String headersString = Arrays.toString(Header.values());
+        assertTrue(contains(headersString, "DATE"));
+        assertEquals(PageType.valueOf("PNG"), PageType.PNG);
+    }
+
+    private void testStaticPage(String stringRequest) {
+        setInitData(stringRequest);
+        File resourceFile = new File(getClass().getResource("/www/my_site/index.html").getFile());
+        String expected = ClassUtil.fileToString(resourceFile);
+        assertEquals(replaceSpaces(expected), replaceSpaces(bodyString));
+    }
+
+    private void setInitData(String requestString) {
+        Request request = new HttpRequest(requestString, "", "");
+        Response response = dispatcher.getResponse(request);
+        bodyString = new String(response.getBody());
+
+    }
+
+    private String replaceSpaces(String src) {
+        return replace(src, " ","");
     }
 
 }

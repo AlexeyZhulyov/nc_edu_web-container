@@ -80,6 +80,7 @@ public class ServerDispatcher implements Dispatcher{
 
     private boolean initialInspection() {
         if (request.getMethod() == HttpMethod.OPTIONS) {
+            response = new HttpResponse(OK.getCode());
             setErrorPageHeaders(response);
             response.setBody("200 OK".getBytes());
             return true;
@@ -229,7 +230,7 @@ public class ServerDispatcher implements Dispatcher{
         setSuccessHeaders(response);
     }
 
-    private void createErrorPageResponse(ResponseCode code) {
+    protected void createErrorPageResponse(ResponseCode code) {
         String errorPageTitle = code.getString() + ".html";
         response = new HttpResponse(code.getCode());
         setErrorPageHeaders(response);
@@ -237,7 +238,7 @@ public class ServerDispatcher implements Dispatcher{
         StaticContentHandler handler = new StaticContentHandlerImpl();
         try {
             response.setBody(handler.process(errorPage));
-        } catch (FileNotReadException e) {
+        } catch (FileNotReadException | StaticContentFileException e) {
             response.setBody(getResponseCode(code.getCode()).getBytes());
             LOG.warn("Cannot find or read default page " + errorPageTitle, e);
         }
@@ -246,7 +247,6 @@ public class ServerDispatcher implements Dispatcher{
     private void setErrorPageHeaders(HttpResponse response){
         setDefaultHeaders(response);
         setContentType(response, HTML.getMIME());
-        //response.setHeader(CONTENT_TYPE.getHeader(), "text/html");
         response.setHeader(CONTENT_LANGUAGE.getHeader(), "en");
         response.setHeader(CACHE_CONTROL.getHeader(), "no-cache");
         response.setHeader(PRAGMA.getHeader(), "no-cache");
