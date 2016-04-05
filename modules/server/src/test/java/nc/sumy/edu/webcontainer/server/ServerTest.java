@@ -36,7 +36,7 @@ public class ServerTest {
     @Test(expected = ServerFailException.class)
     public void usedPortTest() throws  IOException {
         try(ServerSocket serverSocket = new ServerSocket(8096)){
-            System.setProperty(VARIABLE_NAME, "src/test/resources/");
+            System.setProperty(VARIABLE_NAME, "src/test/resources");
             new Server();
         }
     }
