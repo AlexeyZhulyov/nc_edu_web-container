@@ -22,7 +22,7 @@ public class Main {
                     System.exit(0);
                 }
             } catch (IOException e) {
-                continue;
+                LOG.warn("IOException occured. Continue work.", e);
             }
         }
     }
