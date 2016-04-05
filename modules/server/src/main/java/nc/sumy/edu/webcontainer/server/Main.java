@@ -19,6 +19,7 @@ public class Main {
                 String line = consoleReader.readLine();
                 if("Stop server".equals(line)) {
                     server.stopServer();
+                    System.exit(0);
                 }
             } catch (IOException e) {
                 continue;
