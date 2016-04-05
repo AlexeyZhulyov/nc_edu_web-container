@@ -1,4 +1,0 @@
-GROUP,PACKAGE,CLASS,INSTRUCTION_MISSED,INSTRUCTION_COVERED,BRANCH_MISSED,BRANCH_COVERED,LINE_MISSED,LINE_COVERED,COMPLEXITY_MISSED,COMPLEXITY_COVERED,METHOD_MISSED,METHOD_COVERED
-dispatcher,nc.sumy.edu.webcontainer.dispatcher,ServerDispatcher,120,703,8,42,27,136,10,36,2,19
-dispatcher,nc.sumy.edu.webcontainer.dispatcher,Header,0,101,0,0,0,12,0,5,0,5
-dispatcher,nc.sumy.edu.webcontainer.dispatcher,PageType,0,237,0,4,0,26,0,9,0,7

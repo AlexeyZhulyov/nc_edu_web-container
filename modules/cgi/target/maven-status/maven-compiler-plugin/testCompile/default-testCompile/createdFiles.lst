@@ -1,6 +1,0 @@
-nc\sumy\edu\webcontainer\cgi\stub\Test.class
-nc\sumy\edu\webcontainer\cgi\stub\TestWithoutRun.class
-nc\sumy\edu\webcontainer\cgi\stub\TestWithPrivateConstructor.class
-META-INF\annotations\nc.sumy.edu.webcontainer.cgi.Cgi
-nc\sumy\edu\webcontainer\cgi\CgiHandlerImplTest.class
-nc\sumy\edu\webcontainer\cgi\stub\AbstractTest.class

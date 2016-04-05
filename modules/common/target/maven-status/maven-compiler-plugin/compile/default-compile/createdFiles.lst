@@ -1,5 +1,0 @@
-nc\sumy\edu\webcontainer\common\ClassUtil.class
-nc\sumy\edu\webcontainer\common\FileNotReadException.class
-nc\sumy\edu\webcontainer\common\InstanceNotCreatedException.class
-nc\sumy\edu\webcontainer\common\SystemClassloaderException.class
-nc\sumy\edu\webcontainer\common\FileNotFoundException.class
