@@ -55,6 +55,7 @@ public class AutoDeployment extends Thread implements Deployment {
         }
     }
 
+
     private void initialDeployment() {
         File[] files = wwwFolder.listFiles();
         for (File file: files) {
