@@ -9,7 +9,7 @@ public class ServerTest {
     public static final String VARIABLE_NAME = "SERVER_HOME";
     @Test
     public void mainSimulateTest() throws InterruptedException {
-        System.setProperty(VARIABLE_NAME, "src\\test\\resources");
+        System.setProperty(VARIABLE_NAME, "src/test/resources");
         Server server = new Server();
         server.startServer();
         Thread.sleep(3000);
