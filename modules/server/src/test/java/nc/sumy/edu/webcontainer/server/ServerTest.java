@@ -6,7 +6,7 @@ import java.io.IOException;
 import java.net.ServerSocket;
 
 public class ServerTest {
-    public static final VARIABLE_NAME = "SERVER_HOME"; 
+    public static final String VARIABLE_NAME = "SERVER_HOME";
     @Test
     public void mainSimulateTest() throws InterruptedException {
         System.setProperty(VARIABLE_NAME, "src\\test\\resources");
