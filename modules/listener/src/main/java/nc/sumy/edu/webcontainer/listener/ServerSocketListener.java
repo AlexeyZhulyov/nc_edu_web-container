@@ -17,7 +17,7 @@ import java.net.Socket;
 public class ServerSocketListener extends Thread {
     private final ServerSocket serverSocket;
     private static final Logger LOGGER = LoggerFactory.getLogger(ServerSocketListener.class);
-    private final ModelSocketProcessing model;
+    private ModelSocketProcessing model;
     private boolean flag = true;
 
     public ServerSocketListener(ServerConfiguration configuration, Deployment deployment) throws IOException {
@@ -57,5 +57,9 @@ public class ServerSocketListener extends Thread {
                 break;
             }
         }
+    }
+
+    protected void setModel(ModelSocketProcessing model) {
+        this.model = model;
     }
 }

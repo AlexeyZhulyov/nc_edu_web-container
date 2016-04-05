@@ -1,5 +1,11 @@
 package nc.sumy.edu.webcontainer.dispatcher;
 
+import org.apache.commons.lang3.StringUtils;
+
+/**
+ * Enum that contains the types of MIME pages.
+ * @author Vinogradov M.O.
+ */
 public enum PageType {
     HTML("html", "text/html"),
     HTM("htm", "text/htm"),
@@ -14,7 +20,8 @@ public enum PageType {
     JPEG("jpeg", "image/jpeg"),
     JPG("jpg", "image/jpg"),
     SWG("swg", "image/swg"),
-    PNG("png", "image/png");
+    PNG("png", "image/png"),
+    DEFAULT("-", "text/html");
 
     private final String fileExtension;
     private final String mime;
@@ -31,4 +38,14 @@ public enum PageType {
     public String getFileExtension() {
         return fileExtension;
     }
+
+    public String getMimeViaExtension(String fileExtension) {
+        for (PageType pageType: PageType.values()) {
+            if (StringUtils.equals(pageType.getFileExtension(), fileExtension)) {
+                return pageType.getMIME();
+            }
+        }
+        return HTML.getMIME();
+    }
+
 }

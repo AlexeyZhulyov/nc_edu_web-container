@@ -24,18 +24,18 @@ import java.util.concurrent.ConcurrentMap;
 import static nc.sumy.edu.webcontainer.common.ClassUtil.*;
 
 /**
-* Class for processing jsps.
-*/
+ * Class for processing jsps.
+ */
 public class JspHandlerImpl implements JspHandler {
 
     private static final ConcurrentMap<File, HttpJspPage> INSTANCES = new ConcurrentHashMap<>();
     private String outputDir;
     private final JspC jspc = new JspC();
 
-/**
-* Create a new (with compiling, loading and initiating) or take an existing instance of jsp class,
-* invoke method service and return response.
-*/
+    /**
+     * Create a new (with compiling, loading and initiating) or take an existing instance of jsp class,
+     * invoke method service and return response.
+     */
     @Override
     public HttpResponse processJSP(HttpRequest request, File file) {
 
@@ -55,9 +55,7 @@ public class JspHandlerImpl implements JspHandler {
         if (jspPage == null) {
             String filePath = file.getAbsolutePath();
             String pathUnpackWar = filePath.substring(0, filePath.indexOf(File.separator, filePath.lastIndexOf("www") + 4) + 1);
-
             outputDir = pathUnpackWar + "WEB-INF" + File.separator + "classes";
-
             String lib = pathUnpackWar + "WEB-INF" + File.separator + "lib";
             ClassUtil.addFilesFromDirToSysClassPath(lib);
             ClassUtil.addFileToSystemClassPath(outputDir);

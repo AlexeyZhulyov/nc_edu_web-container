@@ -7,6 +7,10 @@ import org.xml.sax.SAXParseException;
 
 import java.io.File;
 
+/**
+ * Class that provides handling errors in xml files.
+ * @author Vinogradov M.O.
+ */
 public class ParsingErrorHandler implements ErrorHandler {
     private final Logger log;
     private boolean isValid = true;

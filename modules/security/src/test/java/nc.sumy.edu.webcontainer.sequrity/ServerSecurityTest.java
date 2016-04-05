@@ -19,7 +19,7 @@ public class ServerSecurityTest {
     @SuppressWarnings("PMD")
     private HttpRequest makeRequest(int number, String ipString) {
         String host = "test-site"+ Integer.toString(number);
-        serverConfiguration.setWwwLocation("src/test/resources/");
+        serverConfiguration.setServerLocation("src/test/resources/");
         String requestString = "GET " + host +
                 "/index.html HTTP/1.1\r\nAccept: text/html\r\n";
         return new HttpRequest(requestString, ipString, host);

@@ -17,6 +17,11 @@ import static java.nio.file.StandardWatchEventKinds.*;
 import static org.apache.commons.lang3.StringUtils.endsWithIgnoreCase;
 import static org.apache.commons.lang3.StringUtils.replace;
 
+/**
+ * Class that provides listening of changes in www-folder and
+ * gathers together functionality of another classes in this package.
+ * @author Vinogradov M.O.
+ */
 public class AutoDeployment extends Thread implements Deployment {
     private static final Logger LOG = LoggerFactory.getLogger(AutoDeployment.class);
     private final File wwwFolder;
@@ -25,7 +30,7 @@ public class AutoDeployment extends Thread implements Deployment {
 
     public AutoDeployment(ServerConfiguration configuration) {
         this.configuration = configuration;
-        wwwFolder = new File(configuration.getWwwLocation() + separator + "www");
+        wwwFolder = new File(configuration.getServerLocation() + separator + "www");
         initialDeployment();
     }
 
@@ -49,6 +54,7 @@ public class AutoDeployment extends Thread implements Deployment {
             LOG.warn("Cannot get default file system or register path: ", e);
         }
     }
+
 
     private void initialDeployment() {
         File[] files = wwwFolder.listFiles();

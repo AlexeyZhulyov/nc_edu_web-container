@@ -1,5 +1,7 @@
 package nc.sumy.edu.webcontainer.configuration;
 
+import java.io.File;
+
 /**
  * Interface that provides methods for working with server configuration
  */
@@ -9,9 +11,9 @@ public interface ServerConfiguration {
 
     void setPort(int port);
 
-    String getWwwLocation();
+    String getServerLocation();
 
-    void setWwwLocation(String wwwLocation);
+    void setServerLocation(String wwwLocation);
 
     /**
      * Method checks whether system variable is set.
@@ -20,4 +22,8 @@ public interface ServerConfiguration {
      * @param systemVariableName system variable that must be checked
      */
     void checkSystemVariable(String systemVariableName);
+
+    default File getServerLocationAsFile() {
+        return new File(getServerLocation());
+    }
 }

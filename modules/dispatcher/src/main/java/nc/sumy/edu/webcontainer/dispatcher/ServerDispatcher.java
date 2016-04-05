@@ -27,7 +27,7 @@ import static org.apache.commons.lang3.StringUtils.*;
 
 /**
  * Class that takes a request, analyzes it and gives the output response.
- * @author Vinogradov Maxim
+ * @author Vinogradov M.O.
  */
 @SuppressWarnings("PMD")
 public class ServerDispatcher implements Dispatcher{
@@ -48,14 +48,14 @@ public class ServerDispatcher implements Dispatcher{
     public HttpResponse getResponse(Request request) {
         this.request = request;
         security = new ServerSecurity(request, serverConfiguration);
-        errorPagesPath  = serverConfiguration.getWwwLocation() + File.separator +
+        errorPagesPath  = serverConfiguration.getServerLocation() + File.separator +
                 "www" + File.separator + "default" + File.separator;
         makeResponse();
         return response;
     }
 
     private void makeResponse() {
-        String pagePath = serverConfiguration.getWwwLocation() + File.separator + "www" + File.separator
+        String pagePath = serverConfiguration.getServerLocation() + File.separator + "www" + File.separator
                 + request.getUrn().replace("/",File.separator);
         if (initialInspection())
             return;
@@ -67,16 +67,20 @@ public class ServerDispatcher implements Dispatcher{
             return;
         if (createCgiPage(pagePath))
             return;
-        if (createStaticOrJspPage(pagePath))
+        if (createStaticOrJspPage(pagePath)) {
+            makeRedirection();
             return;
-        if (createServletPage())
+        }
+        if (createServletPage()) {
+            makeRedirection();
             return;
+        }
         createErrorPageResponse(NOT_FOUND);
-        response.setHeader("Content-Length", Integer.toString(response.getBody().length));
     }
 
     private boolean initialInspection() {
         if (request.getMethod() == HttpMethod.OPTIONS) {
+            response = new HttpResponse(OK.getCode());
             setErrorPageHeaders(response);
             response.setBody("200 OK".getBytes());
             return true;
@@ -85,6 +89,14 @@ public class ServerDispatcher implements Dispatcher{
             return true;
         }
         return false;
+    }
+
+    private void makeRedirection() {
+        response.setHeader("Content-Length", Integer.toString(response.getBody().length));
+        if (isNotEmpty(response.getRedirectUrl())) {
+            request.setUrn(response.getRedirectUrl());
+            makeResponse();
+        }
     }
 
     private boolean createIndexPage(String pagePath) {
@@ -218,7 +230,7 @@ public class ServerDispatcher implements Dispatcher{
         setSuccessHeaders(response);
     }
 
-    private void createErrorPageResponse(ResponseCode code) {
+    protected void createErrorPageResponse(ResponseCode code) {
         String errorPageTitle = code.getString() + ".html";
         response = new HttpResponse(code.getCode());
         setErrorPageHeaders(response);
@@ -226,7 +238,7 @@ public class ServerDispatcher implements Dispatcher{
         StaticContentHandler handler = new StaticContentHandlerImpl();
         try {
             response.setBody(handler.process(errorPage));
-        } catch (FileNotReadException e) {
+        } catch (FileNotReadException | StaticContentFileException e) {
             response.setBody(getResponseCode(code.getCode()).getBytes());
             LOG.warn("Cannot find or read default page " + errorPageTitle, e);
         }
@@ -234,7 +246,7 @@ public class ServerDispatcher implements Dispatcher{
 
     private void setErrorPageHeaders(HttpResponse response){
         setDefaultHeaders(response);
-        response.setHeader(CONTENT_TYPE.getHeader(), "text/html");
+        setContentType(response, HTML.getMIME());
         response.setHeader(CONTENT_LANGUAGE.getHeader(), "en");
         response.setHeader(CACHE_CONTROL.getHeader(), "no-cache");
         response.setHeader(PRAGMA.getHeader(), "no-cache");
@@ -245,36 +257,7 @@ public class ServerDispatcher implements Dispatcher{
         setDefaultHeaders(response);
         String temp[] = split(request.getUrn(), ".");
         String extension = temp[temp.length - 1];
-        switch (extension) {
-            case "html" : setContentType(response, "text/html");
-                break;
-            case "htm" : setContentType(response, "text/htm");
-                break;
-            case "css" : setContentType(response, "text/css");
-                break;
-            case "xml" : setContentType(response, "text/xml");
-                break;
-            case "jsp" : setContentType(response, "text/html");
-                break;
-            case "pdf" : setContentType(response, "application/pdf");
-                break;
-            case "zip" : setContentType(response, "application/zip");
-                break;
-            case "js"  : setContentType(response, "application/javascript");
-                break;
-            case "gif" : setContentType(response, "image/gif");
-                break;
-            case "jpeg" : setContentType(response, "image/jpeg");
-                break;
-            case "jpg" : setContentType(response, "image/jpg");
-                break;
-            case "swg" : setContentType(response, "image/swg");
-                break;
-            case "png" : setContentType(response, "image/png");
-                break;
-            default:  setContentType(response, "text/html");
-                break;
-        }
+        setContentType(response, DEFAULT.getMimeViaExtension(extension));
         response.setHeader(CACHE_CONTROL.getHeader(), "public, max-age=0");
     }
 

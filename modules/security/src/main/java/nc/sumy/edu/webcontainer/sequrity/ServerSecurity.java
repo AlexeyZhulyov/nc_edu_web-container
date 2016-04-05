@@ -18,11 +18,13 @@ import static java.util.Objects.nonNull;
 import static org.apache.commons.lang3.StringUtils.*;
 
 /**
- * Class that provides server security and access to it's resources.
- * It's find and parse http-access.json files, and make a conclusion about it.
+ * Class that provides server security and access to its resources.
+ * In fact, it analyzes the instance of AccessRulesRepositoryJson
+ * and based on its content concludes whether to give access
+ * to the file that was requested.
  * @author Vinogradov Maxim
  */
-public class ServerSecurity implements Security {
+public class    ServerSecurity implements Security {
     private final String host;
     private final String ipAddress;
     private final String file;
@@ -35,7 +37,7 @@ public class ServerSecurity implements Security {
         host = request.getHost();
         ipAddress = request.getIpAddress();
         file = substring(request.getUrn(), lastIndexOf(request.getUrn(), "/") + 1, length(request.getUrn()));
-        File file = new File(serverConfiguration.getWwwLocation() + request.getUrn());
+        File file = new File(serverConfiguration.getServerLocation() + request.getUrn());
         AccessRulesRepositoryJson configuration = new AccessRulesRepositoryJson();
             rules = configuration.getAccessRules(file.getParentFile().getAbsolutePath() + File.separator + CONFIG_FILE);
         if (nonNull(rules)) {

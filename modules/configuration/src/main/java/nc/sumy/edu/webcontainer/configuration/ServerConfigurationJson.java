@@ -94,12 +94,12 @@ public class ServerConfigurationJson implements ServerConfiguration {
     }
 
     @Override
-    public String getWwwLocation() {
+    public String getServerLocation() {
         return this.configurationProperties.getServerLocation();
     }
 
     @Override
-    public void setWwwLocation(String serverLocation) {
+    public void setServerLocation(String serverLocation) {
         this.configurationProperties.setServerLocation(serverLocation);
     }
 }

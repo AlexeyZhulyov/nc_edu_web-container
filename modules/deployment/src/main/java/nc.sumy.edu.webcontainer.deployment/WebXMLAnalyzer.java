@@ -29,6 +29,10 @@ import java.util.concurrent.ConcurrentHashMap;
 import static java.io.File.separator;
 import static java.util.Objects.nonNull;
 
+/**
+ * Class that provides validating and parsing web.xml files.
+ * @author Vinogradov M.O.
+ */
 public class WebXMLAnalyzer {
     private boolean isValid = true;
     private final File webInf;
@@ -52,11 +56,13 @@ public class WebXMLAnalyzer {
         this.webInf = webInf;
         webXml = new File(webInf.toString() + separator + WEB_XML);
         classPath = new File(webInf.toString() + separator + CLASS + separator);
-        validateXMLbyDTD();
-        makeDataMap();
+        validateXML();
+        if (isValid) {
+            makeDataMap();
+        }
     }
 
-    private void validateXMLbyDTD() {
+    private void validateXML() {
         DocumentBuilderFactory domFactory = DocumentBuilderFactory.newInstance();
         domFactory.setValidating(true);
         DocumentBuilder builder;
@@ -65,18 +71,11 @@ public class WebXMLAnalyzer {
             ParsingErrorHandler errorHandler = new ParsingErrorHandler(LOG, webInf);
             builder.setErrorHandler(errorHandler);
             document = builder.parse(webXml);
-            document.getDocumentElement().normalize();/*
-            document.normalizeDocument();
-            NodeList nList = document.getElementsByTagName("web-app");
-            Element element = (Element) nList.item(0);
-            element.removeAttribute("xsi:schemaLocation");
-            element.removeAttribute("xsi");
-            document.setXmlStandalone(true);*/
+            document.getDocumentElement().normalize();
             SchemaFactory factory =
                     SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
             Source xmlFile = new StreamSource(webXml);
-            //Schema schema = factory.newSchema(new File("modules/deployment/src/main/resources/web-app_2_4.xsd"));
-            Schema schema = factory.newSchema();
+            Schema schema = factory.newSchema(new URL("http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"));
             Validator validator = schema.newValidator();
             validator.validate(xmlFile);
             isValid = errorHandler.isXmlValid();
@@ -137,5 +136,6 @@ public class WebXMLAnalyzer {
     public ConcurrentHashMap<String, Class> getDataMap() {
         return dataMap;
     }
+
 
 }

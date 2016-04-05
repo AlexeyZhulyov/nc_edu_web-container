@@ -12,6 +12,10 @@ import static org.apache.commons.io.FileUtils.deleteQuietly;
 import static org.apache.commons.io.IOUtils.copy;
 import static org.apache.commons.lang3.StringUtils.split;
 
+/**
+ * Class that provides auto-extracting .war files.
+ * @author Vinogradov M.O.
+ */
 public class ArchiveExtractor {
     private static final Logger LOG = LoggerFactory.getLogger(ArchiveExtractor.class);
     private final File wwwDirectory;
@@ -34,7 +38,7 @@ public class ArchiveExtractor {
         }
     }
 
-    private void extractFile(String jarFile, JarFile jar, Enumeration entries) throws IOException {
+    protected void extractFile(String jarFile, JarFile jar, Enumeration entries) throws IOException {
         JarEntry jarEntry = (JarEntry) entries.nextElement();
         File file = new File(wwwDirectory.getPath() + separator + split(jarFile, ".")[0] + separator + jarEntry.getName());
         if (jarEntry.isDirectory()) {
@@ -44,7 +48,7 @@ public class ArchiveExtractor {
         createFile(jar, jarEntry, file);
     }
 
-    void createFile(JarFile jar, JarEntry jarEntry, File file) throws IOException {
+    protected void createFile(JarFile jar, JarEntry jarEntry, File file) throws IOException {
         try (InputStream in = new BufferedInputStream(jar.getInputStream(jarEntry));
              OutputStream out = new BufferedOutputStream(new FileOutputStream(file))
         ) {
