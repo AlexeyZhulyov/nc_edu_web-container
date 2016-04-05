@@ -1,4 +1,4 @@
-2016/04/05 12:52:35-992 [main] [WARN] nc.sumy.edu.webcontainer.deployment.ArchiveExtractor - Cannot read/write/found file: 
+2016/04/05 13:48:58-795 [main] [WARN] nc.sumy.edu.webcontainer.deployment.ArchiveExtractor - Cannot read/write/found file: 
 java.io.FileNotFoundException: src\test\resources\www_extractor_test\www\sampleNotExist.war (Не удается найти указанный файл)
 	at java.util.zip.ZipFile.open(Native Method)
 	at java.util.zip.ZipFile.<init>(ZipFile.java:219)
@@ -37,7 +37,7 @@ java.io.FileNotFoundException: src\test\resources\www_extractor_test\www\sampleN
 	at org.apache.maven.surefire.booter.ProviderFactory.invokeProvider(ProviderFactory.java:87)
 	at org.apache.maven.surefire.booter.ForkedBooter.runSuitesInProcess(ForkedBooter.java:153)
 	at org.apache.maven.surefire.booter.ForkedBooter.main(ForkedBooter.java:95)
-2016/04/05 12:52:36-630 [main] [WARN] nc.sumy.edu.webcontainer.deployment.WebXMLAnalyzer - C:\Users\maksim\Desktop\nc_web_container\server7\nc_edu_web-container\modules\deployment\src\test\resources\folder_listener\www\notWebInf\WEB-INF\web.xml cannot be parsed.
+2016/04/05 13:48:59-290 [main] [WARN] nc.sumy.edu.webcontainer.deployment.WebXMLAnalyzer - C:\Users\maksim\Desktop\nc_web_container\server7\nc_edu_web-container\modules\deployment\src\test\resources\folder_listener\www\notWebInf\WEB-INF\web.xml cannot be parsed.
 java.io.FileNotFoundException: C:\Users\maksim\Desktop\nc_web_container\server7\nc_edu_web-container\modules\deployment\src\test\resources\folder_listener\www\notWebInf\WEB-INF\web.xml (Системе не удается найти указанный путь)
 	at java.io.FileInputStream.open0(Native Method)
 	at java.io.FileInputStream.open(FileInputStream.java:195)
@@ -58,7 +58,7 @@ java.io.FileNotFoundException: C:\Users\maksim\Desktop\nc_web_container\server7\
 	at nc.sumy.edu.webcontainer.deployment.AutoDeployment.createDomain(AutoDeployment.java:99)
 	at nc.sumy.edu.webcontainer.deployment.AutoDeployment.initialDeployment(AutoDeployment.java:62)
 	at nc.sumy.edu.webcontainer.deployment.AutoDeployment.<init>(AutoDeployment.java:34)
-	at nc.sumy.edu.webcontainer.deployment.AutoDeploymentTest.setInitData(AutoDeploymentTest.java:30)
+	at nc.sumy.edu.webcontainer.deployment.AutoDeploymentTest.testDeploymentOnStart(AutoDeploymentTest.java:26)
 	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
 	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
 	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
@@ -66,8 +66,7 @@ java.io.FileNotFoundException: C:\Users\maksim\Desktop\nc_web_container\server7\
 	at org.junit.runners.model.FrameworkMethod$1.runReflectiveCall(FrameworkMethod.java:50)
 	at org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:12)
 	at org.junit.runners.model.FrameworkMethod.invokeExplosively(FrameworkMethod.java:47)
-	at org.junit.internal.runners.statements.RunBefores.evaluate(RunBefores.java:24)
-	at org.junit.internal.runners.statements.RunAfters.evaluate(RunAfters.java:27)
+	at org.junit.internal.runners.statements.InvokeMethod.evaluate(InvokeMethod.java:17)
 	at org.junit.runners.ParentRunner.runLeaf(ParentRunner.java:325)
 	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:78)
 	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:57)
@@ -89,16 +88,16 @@ java.io.FileNotFoundException: C:\Users\maksim\Desktop\nc_web_container\server7\
 	at org.apache.maven.surefire.booter.ProviderFactory.invokeProvider(ProviderFactory.java:87)
 	at org.apache.maven.surefire.booter.ForkedBooter.runSuitesInProcess(ForkedBooter.java:153)
 	at org.apache.maven.surefire.booter.ForkedBooter.main(ForkedBooter.java:95)
-2016/04/05 12:52:50-946 [Thread-1] [WARN] nc.sumy.edu.webcontainer.deployment.AutoDeployment - Cannot take watch service in my folder: 
+2016/04/05 13:49:03-908 [Thread-1] [WARN] nc.sumy.edu.webcontainer.deployment.AutoDeployment - Cannot take watch service in my folder: 
 java.lang.InterruptedException
-	at java.util.concurrent.locks.AbstractQueuedSynchronizer$ConditionObject.reportInterruptAfterWait(AbstractQueuedSynchronizer.java:2014)
-	at java.util.concurrent.locks.AbstractQueuedSynchronizer$ConditionObject.await(AbstractQueuedSynchronizer.java:2048)
+	at java.util.concurrent.locks.AbstractQueuedSynchronizer$ConditionObject.await(AbstractQueuedSynchronizer.java:2034)
 	at java.util.concurrent.LinkedBlockingDeque.takeFirst(LinkedBlockingDeque.java:492)
 	at java.util.concurrent.LinkedBlockingDeque.take(LinkedBlockingDeque.java:680)
 	at sun.nio.fs.AbstractWatchService.take(AbstractWatchService.java:118)
 	at nc.sumy.edu.webcontainer.deployment.AutoDeployment.run(AutoDeployment.java:44)
-2016/04/05 12:52:51-22 [Thread-1] [INFO] nc.sumy.edu.webcontainer.deployment.AutoDeployment - File deleted: Servlets_demo-master
-2016/04/05 12:52:53-420 [main] [WARN] nc.sumy.edu.webcontainer.deployment.WebXMLAnalyzer - C:\Users\maksim\Desktop\nc_web_container\server7\nc_edu_web-container\modules\deployment\src\test\1\WEB-INF\web.xml cannot be parsed.
+2016/04/05 13:49:04-51 [Thread-1] [INFO] nc.sumy.edu.webcontainer.deployment.AutoDeployment - File deleted: Servlets_demo-master
+2016/04/05 13:49:04-51 [Thread-1] [INFO] nc.sumy.edu.webcontainer.deployment.AutoDeployment - File deleted: sample
+2016/04/05 13:49:06-366 [main] [WARN] nc.sumy.edu.webcontainer.deployment.WebXMLAnalyzer - C:\Users\maksim\Desktop\nc_web_container\server7\nc_edu_web-container\modules\deployment\src\test\1\WEB-INF\web.xml cannot be parsed.
 java.io.FileNotFoundException: C:\Users\maksim\Desktop\nc_web_container\server7\nc_edu_web-container\modules\deployment\src\test\1\WEB-INF\web.xml (Системе не удается найти указанный путь)
 	at java.io.FileInputStream.open0(Native Method)
 	at java.io.FileInputStream.open(FileInputStream.java:195)
@@ -146,7 +145,7 @@ java.io.FileNotFoundException: C:\Users\maksim\Desktop\nc_web_container\server7\
 	at org.apache.maven.surefire.booter.ProviderFactory.invokeProvider(ProviderFactory.java:87)
 	at org.apache.maven.surefire.booter.ForkedBooter.runSuitesInProcess(ForkedBooter.java:153)
 	at org.apache.maven.surefire.booter.ForkedBooter.main(ForkedBooter.java:95)
-2016/04/05 12:52:55-776 [main] [WARN] nc.sumy.edu.webcontainer.deployment.WebXMLAnalyzer - C:\Users\maksim\Desktop\nc_web_container\server7\nc_edu_web-container\modules\deployment\src\test\resources\xml_test_files\test10\WEB-INF\web.xml cannot be parsed.
+2016/04/05 13:49:08-738 [main] [WARN] nc.sumy.edu.webcontainer.deployment.WebXMLAnalyzer - C:\Users\maksim\Desktop\nc_web_container\server7\nc_edu_web-container\modules\deployment\src\test\resources\xml_test_files\test10\WEB-INF\web.xml cannot be parsed.
 java.io.FileNotFoundException: C:\Users\maksim\Desktop\nc_web_container\server7\nc_edu_web-container\modules\deployment\src\test\resources\xml_test_files\test10\WEB-INF\web.xml (Системе не удается найти указанный путь)
 	at java.io.FileInputStream.open0(Native Method)
 	at java.io.FileInputStream.open(FileInputStream.java:195)
@@ -194,7 +193,7 @@ java.io.FileNotFoundException: C:\Users\maksim\Desktop\nc_web_container\server7\
 	at org.apache.maven.surefire.booter.ProviderFactory.invokeProvider(ProviderFactory.java:87)
 	at org.apache.maven.surefire.booter.ForkedBooter.runSuitesInProcess(ForkedBooter.java:153)
 	at org.apache.maven.surefire.booter.ForkedBooter.main(ForkedBooter.java:95)
-2016/04/05 12:52:58-114 [main] [WARN] nc.sumy.edu.webcontainer.deployment.WebXMLAnalyzer - Class cannot be found: 
+2016/04/05 13:49:11-91 [main] [WARN] nc.sumy.edu.webcontainer.deployment.WebXMLAnalyzer - Class cannot be found: 
 java.lang.ClassNotFoundException: servlets.Servlet
 	at java.net.URLClassLoader.findClass(URLClassLoader.java:381)
 	at java.lang.ClassLoader.loadClass(ClassLoader.java:424)
@@ -232,7 +231,7 @@ java.lang.ClassNotFoundException: servlets.Servlet
 	at org.apache.maven.surefire.booter.ProviderFactory.invokeProvider(ProviderFactory.java:87)
 	at org.apache.maven.surefire.booter.ForkedBooter.runSuitesInProcess(ForkedBooter.java:153)
 	at org.apache.maven.surefire.booter.ForkedBooter.main(ForkedBooter.java:95)
-2016/04/05 12:52:58-117 [main] [WARN] nc.sumy.edu.webcontainer.deployment.WebXMLAnalyzer - Class cannot be found: 
+2016/04/05 13:49:11-94 [main] [WARN] nc.sumy.edu.webcontainer.deployment.WebXMLAnalyzer - Class cannot be found: 
 java.lang.ClassNotFoundException: servlets.Servlet2
 	at java.net.URLClassLoader.findClass(URLClassLoader.java:381)
 	at java.lang.ClassLoader.loadClass(ClassLoader.java:424)
@@ -270,7 +269,7 @@ java.lang.ClassNotFoundException: servlets.Servlet2
 	at org.apache.maven.surefire.booter.ProviderFactory.invokeProvider(ProviderFactory.java:87)
 	at org.apache.maven.surefire.booter.ForkedBooter.runSuitesInProcess(ForkedBooter.java:153)
 	at org.apache.maven.surefire.booter.ForkedBooter.main(ForkedBooter.java:95)
-2016/04/05 12:52:58-120 [main] [WARN] nc.sumy.edu.webcontainer.deployment.WebXMLAnalyzer - C:\Users\maksim\Desktop\nc_web_container\server7\nc_edu_web-container\modules\deployment\src\test\resources\xml_test_files\test2\WEB-INF is not valid.
+2016/04/05 13:49:11-98 [main] [WARN] nc.sumy.edu.webcontainer.deployment.WebXMLAnalyzer - C:\Users\maksim\Desktop\nc_web_container\server7\nc_edu_web-container\modules\deployment\src\test\resources\xml_test_files\test2\WEB-INF is not valid.
 org.xml.sax.SAXParseException; systemId: file:/C:/Users/maksim/Desktop/nc_web_container/server7/nc_edu_web-container/modules/deployment/src/test/resources/xml_test_files/test2/WEB-INF/web.xml; lineNumber: 28; columnNumber: 1; XML document structures must start and end within the same entity.
 	at com.sun.org.apache.xerces.internal.util.ErrorHandlerWrapper.createSAXParseException(ErrorHandlerWrapper.java:203)
 	at com.sun.org.apache.xerces.internal.util.ErrorHandlerWrapper.fatalError(ErrorHandlerWrapper.java:177)
@@ -325,7 +324,7 @@ org.xml.sax.SAXParseException; systemId: file:/C:/Users/maksim/Desktop/nc_web_co
 	at org.apache.maven.surefire.booter.ProviderFactory.invokeProvider(ProviderFactory.java:87)
 	at org.apache.maven.surefire.booter.ForkedBooter.runSuitesInProcess(ForkedBooter.java:153)
 	at org.apache.maven.surefire.booter.ForkedBooter.main(ForkedBooter.java:95)
-2016/04/05 12:52:58-123 [main] [WARN] nc.sumy.edu.webcontainer.deployment.WebXMLAnalyzer - C:\Users\maksim\Desktop\nc_web_container\server7\nc_edu_web-container\modules\deployment\src\test\resources\xml_test_files\test2\WEB-INF\web.xml cannot be parsed.
+2016/04/05 13:49:11-116 [main] [WARN] nc.sumy.edu.webcontainer.deployment.WebXMLAnalyzer - C:\Users\maksim\Desktop\nc_web_container\server7\nc_edu_web-container\modules\deployment\src\test\resources\xml_test_files\test2\WEB-INF\web.xml cannot be parsed.
 org.xml.sax.SAXParseException; systemId: file:/C:/Users/maksim/Desktop/nc_web_container/server7/nc_edu_web-container/modules/deployment/src/test/resources/xml_test_files/test2/WEB-INF/web.xml; lineNumber: 28; columnNumber: 1; XML document structures must start and end within the same entity.
 	at com.sun.org.apache.xerces.internal.parsers.DOMParser.parse(DOMParser.java:257)
 	at com.sun.org.apache.xerces.internal.jaxp.DocumentBuilderImpl.parse(DocumentBuilderImpl.java:339)
