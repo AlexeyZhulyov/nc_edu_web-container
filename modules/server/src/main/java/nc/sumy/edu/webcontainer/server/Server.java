@@ -29,12 +29,13 @@ public class Server {
             config.checkSystemVariable("SERVER_HOME");
         } catch (JsonReadingException e) {
             LOG.error("Server could not be started. System variable 'SERVER_HOME' is not defined", e);
-            System.exit(-1);
+            throw new ServerFailException("Server could not be started. System variable 'SERVER_HOME' is not defined",e);
         }
         if(!(config.getServerLocationAsFile().exists()) || !(new File(config.getServerLocation()).isDirectory())) {
             LOG.error("Server could not be started. System variable 'SERVER_HOME' defined, but location does not" +
                     "exist.");
-            System.exit(-1);
+            throw new ServerFailException("Server could not be started. " +
+                    "System variable 'SERVER_HOME' defined, but location does not exist.");
         }
         LOG.info("Configuration loaded successfully");
 
@@ -45,7 +46,7 @@ public class Server {
             LOG.info("Listener created successfully");
         } catch (IOException e) {
             LOG.error("Server fall as Listner could not be created. IOException appeared.", e);
-            System.exit(-1);
+            throw new ServerFailException("Server fall as Listner could not be created.",e);
         }
     }
 
@@ -60,7 +61,7 @@ public class Server {
         listener.stopListening();
         //deploy.stopDeployControll();
         LOG.info("Server stopped successfully.");
-        System.exit(0);
+        //System.exit(0);
     }
 }
 
