@@ -5,7 +5,7 @@ import org.junit.Test;
 public class ServerTest {
     @Test
     public void maiTest() throws InterruptedException {
-        System.setProperty("SERVER_HOME", "C:\\Users\\Вадим\\IdeaProjects\\nc_edu_web-container-3\\modules");
+        System.setProperty("SERVER_HOME", "src\\test\\resources");
         Server server = new Server();
         server.startServer();
         Thread.sleep(3000);
