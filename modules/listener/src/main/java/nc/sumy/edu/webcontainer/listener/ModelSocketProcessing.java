@@ -13,6 +13,8 @@ import org.slf4j.LoggerFactory;
 import java.io.*;
 import java.net.Socket;
 
+import static nc.sumy.edu.webcontainer.common.ClassUtil.readInputStreamToString;
+
 /**
  * Class that processes client socket.
  * @author Lukianykhin O.V.
@@ -65,7 +67,8 @@ public class ModelSocketProcessing {
     }
 
     public String readStringFromSocket(InputStream clientInput) throws IOException {
-        //    2nd method of reading Socket to String
+        return readInputStreamToString(clientInput);
+        /*   2nd method of reading Socket to String
         BufferedReader clientBufferedReader = new BufferedReader(new InputStreamReader(clientInput));
         StringBuilder requestStringBuilder = new StringBuilder();
         String temp;
@@ -77,7 +80,7 @@ public class ModelSocketProcessing {
             requestStringBuilder.append("\r\n");
         }
         return new String(requestStringBuilder);
-
+        */
         /* 1st method of reading Socket to String (works but kostyl' stail)
             StringBuffer request = new StringBuffer(20480);
             int readedSize;
