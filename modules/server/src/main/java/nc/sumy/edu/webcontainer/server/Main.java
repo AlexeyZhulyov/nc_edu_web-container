@@ -10,6 +10,8 @@ import java.io.InputStreamReader;
  * @author Lukianykhin O.V.
  */
 public class Main {
+    private static final Logger LOG = LoggerFactory.getLogger(Main.class);
+    
     public static void main(String[] args) {
         Server server = new Server();
         server.startServer();
