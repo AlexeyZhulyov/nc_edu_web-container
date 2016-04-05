@@ -6,7 +6,11 @@ import org.junit.Test;
 
 import java.io.File;
 import java.io.IOException;
-import java.net.*;
+import java.io.OutputStream;
+import java.net.ServerSocket;
+import java.net.Socket;
+import java.net.URISyntaxException;
+import java.net.URL;
 
 import static org.junit.Assert.*;
 
@@ -78,5 +82,28 @@ public class ClassUtilTest {
     @Test(expected = FileNotReadException.class)
     public void fileToStringException() {
         ClassUtil.fileToString(new File("Absent"));
+    }
+
+    @Test
+    public void readingFromSocketTest() throws IOException {
+        ServerSocket serverSocket = new ServerSocket(7002);
+        Socket socketOnClientSide = new Socket("localhost", 7002);
+        OutputStream clientOutput = socketOnClientSide.getOutputStream();
+        clientOutput.write("Test request\n\n".getBytes());
+        Socket socketOnServerSide = serverSocket.accept();
+        String actual = ClassUtil.readInputStreamToString(socketOnServerSide.getInputStream());
+        assertEquals("Read string must be 'Test request'","Test request\n", actual.replace("\r", "") );
+        socketOnClientSide.close();
+        serverSocket.close();
+    }
+
+    @Test(expected = IOException.class)
+    public void readingFromClosedSocketTest() throws IOException {
+        try(ServerSocket serverSocket = new ServerSocket(7002);
+            Socket socketOnClientSide = new Socket("localhost", 7002);
+            Socket socketOnServerSide = serverSocket.accept(); ) {
+            socketOnServerSide.close();
+            ClassUtil.readInputStreamToString(socketOnServerSide.getInputStream());
+        }
     }
 }
