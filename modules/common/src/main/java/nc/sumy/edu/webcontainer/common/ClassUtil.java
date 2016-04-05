@@ -2,9 +2,7 @@ package nc.sumy.edu.webcontainer.common;
 
 import org.apache.commons.io.FileUtils;
 
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.net.MalformedURLException;
@@ -96,5 +94,25 @@ public class ClassUtil {
      */
     public static URL[] getUrlFromSysClassPath() {
         return ((URLClassLoader) ClassLoader.getSystemClassLoader()).getURLs();
+    }
+
+    /**
+     * Method to read InputStream to String
+     * @param clientInput is InputStream that should be read
+     * @return String that was read from InputStream
+     * @throws IOException
+     */
+    public static String readInputStreamToString(InputStream clientInput) throws IOException {
+        BufferedReader clientBufferedReader = new BufferedReader(new InputStreamReader(clientInput));
+        StringBuilder requestStringBuilder = new StringBuilder();
+        String temp;
+        while((temp = clientBufferedReader.readLine()) != null) {
+            if("".equals(temp)) {
+                break;
+            }
+            requestStringBuilder.append(temp);
+            requestStringBuilder.append("\r\n");
+        }
+        return new String(requestStringBuilder);
     }
 }
