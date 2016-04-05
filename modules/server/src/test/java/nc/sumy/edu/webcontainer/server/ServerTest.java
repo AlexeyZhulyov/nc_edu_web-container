@@ -23,20 +23,20 @@ public class ServerTest {
 
     @Test(expected = ServerFailException.class)
     public void startServerWithBadSystemVariableTest()  {
-        System.setProperty(VARIABLE_NAME, "src\\test\\resources\\badpath");
+        System.setProperty(VARIABLE_NAME, "src/test/resources/badpath");
         new Server();
     }
 
     @Test(expected = ServerFailException.class)
     public void systemVariableAtFileTest() {
-        System.setProperty(VARIABLE_NAME, "src\\test\\resources\\test.txt");
+        System.setProperty(VARIABLE_NAME, "src/test/resources/test.txt");
         new Server();
     }
 
     @Test(expected = ServerFailException.class)
     public void usedPortTest() throws  IOException {
         try(ServerSocket serverSocket = new ServerSocket(8096)){
-            System.setProperty(VARIABLE_NAME, "src\\test\\resources");
+            System.setProperty(VARIABLE_NAME, "src/test/resources/");
             new Server();
         }
     }
