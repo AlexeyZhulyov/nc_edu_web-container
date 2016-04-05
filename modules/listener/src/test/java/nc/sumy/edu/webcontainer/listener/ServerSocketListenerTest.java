@@ -12,6 +12,7 @@ import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
 
+import static nc.sumy.edu.webcontainer.common.ClassUtil.readInputStreamToString;
 import static org.mockito.Mockito.*;
 import static org.junit.Assert.*;
 
@@ -60,18 +61,7 @@ public class ServerSocketListenerTest {
 
             clientOutput.write("Test request\n\n".getBytes());
             Thread.sleep(3000);
-            BufferedReader clientBufferedReader = new BufferedReader(
-                    new InputStreamReader(clientInput));
-            StringBuilder requestStringBuilder = new StringBuilder();
-            String temp;
-            while ((temp = clientBufferedReader.readLine()) != null) {
-                if ("".equals(temp)) {
-                    break;
-                }
-                requestStringBuilder.append(temp);
-                requestStringBuilder.append("\r\n");
-            }
-            String actual = new String(requestStringBuilder);
+            String actual = readInputStreamToString(clientInput);
             assertEquals("Response must be", "HTTP/1.1 200 OK\n", actual.replace("\r", ""));
         } finally {
             listener.stopListening();

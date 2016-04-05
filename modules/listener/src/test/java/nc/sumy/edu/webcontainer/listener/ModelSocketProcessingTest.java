@@ -6,18 +6,19 @@ import nc.sumy.edu.webcontainer.dispatcher.ServerDispatcher;
 import nc.sumy.edu.webcontainer.http.HttpResponse;
 import org.junit.Test;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
 
+import static nc.sumy.edu.webcontainer.common.ClassUtil.readInputStreamToString;
+import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.*;
-import static org.junit.Assert.*;
 
 public class
 ModelSocketProcessingTest {
+    private static final String DOMAIN ="localhost";
+
 
     @Test
     public void readingFromSocketTest() throws IOException {
@@ -25,7 +26,7 @@ ModelSocketProcessingTest {
         ServerConfiguration config = mock(ServerConfiguration.class);
         ModelSocketProcessing model = new ModelSocketProcessing(config,deployment);
         ServerSocket serverSocket = new ServerSocket(7002);
-        Socket socketOnClientSide = new Socket("localhost", 7002);
+        Socket socketOnClientSide = new Socket(DOMAIN, 7002);
         //write request
         OutputStream clientOutput = socketOnClientSide.getOutputStream();
         clientOutput.write("Test request\n\n".getBytes());
@@ -41,11 +42,48 @@ ModelSocketProcessingTest {
         Deployment deployment = mock(Deployment.class);
         ServerConfiguration config = mock(ServerConfiguration.class);
         ModelSocketProcessing model = new ModelSocketProcessing(config,deployment);
-        ServerSocket serverSocket = new ServerSocket(7002);
-        new Socket("localhost", 7002);
+        try(ServerSocket serverSocket = new ServerSocket(7002);
+            Socket socketOnClientSide = new Socket(DOMAIN, 7002);
+            Socket socketOnServerSide = serverSocket.accept(); ) {
+            socketOnServerSide.close();
+            model.readStringFromSocket(socketOnServerSide.getInputStream());
+        }
+    }
+
+    @Test
+    public void processingClosedSocketTest() throws IOException {
+        ModelSocketProcessing model = mock(ModelSocketProcessing.class);
+        when(model.readStringFromSocket(any())).thenCallRealMethod();
+        when(model.processRequest(any())).thenCallRealMethod();
+        ServerDispatcher dispatcher = mock(ServerDispatcher.class);
+        when(model.getDispatcher()).thenReturn(dispatcher);
+        ServerSocket serverSocket = new ServerSocket(7003);
+        Socket socketOnClientSide = new Socket(DOMAIN, 7003);
         Socket socketOnServerSide = serverSocket.accept();
         socketOnServerSide.close();
-        model.readStringFromSocket(socketOnServerSide.getInputStream());
+        boolean resultOfProcessing = model.processRequest(socketOnServerSide);
+        assertEquals("Processing of closed socket must return false", false, resultOfProcessing);
+        socketOnClientSide.close();
+        serverSocket.close();
+
+    }
+    @Test
+    public void processingEmptySocketTest() throws IOException {
+        ModelSocketProcessing model = mock(ModelSocketProcessing.class);
+        when(model.readStringFromSocket(any())).thenCallRealMethod();
+        when(model.processRequest(any())).thenCallRealMethod();
+        ServerDispatcher dispatcher = mock(ServerDispatcher.class);
+        when(model.getDispatcher()).thenReturn(dispatcher);
+        ServerSocket serverSocket = new ServerSocket(7003);
+        Socket socketOnClientSide = new Socket(DOMAIN, 7003);
+        OutputStream clientOutput = socketOnClientSide.getOutputStream();
+        clientOutput.write("\n".getBytes());
+        Socket socketOnServerSide = serverSocket.accept();
+        boolean resultOfProcessing = model.processRequest(socketOnServerSide);
+        String response = readInputStreamToString(socketOnClientSide.getInputStream());
+        assertEquals("Processing of empty socket must return true", true, resultOfProcessing);
+        assertEquals("Processing of empty socket must return empty response", "", response);
+        socketOnClientSide.close();
         serverSocket.close();
     }
 
@@ -59,26 +97,13 @@ ModelSocketProcessingTest {
         response.setBody("This is good response".getBytes());
         when(dispatcher.getResponse(any())).thenReturn(response);
         when(model.getDispatcher()).thenReturn(dispatcher);
-
         ServerSocket serverSocket = new ServerSocket(7002);
-        Socket socketOnClientSide = new Socket("localhost", 7002);
+        Socket socketOnClientSide = new Socket(DOMAIN, 7002);
         OutputStream clientOutput = socketOnClientSide.getOutputStream();
         clientOutput.write("Test request\n\n".getBytes());
         Socket socketOnServerSide = serverSocket.accept();
         model.processRequest(socketOnServerSide);
-
-        BufferedReader clientBufferedReader = new BufferedReader(
-                new InputStreamReader(socketOnClientSide.getInputStream()));
-        StringBuilder requestStringBuilder = new StringBuilder();
-        String temp;
-        while((temp = clientBufferedReader.readLine()) != null) {
-            if("".equals(temp)) {
-                break;
-            }
-            requestStringBuilder.append(temp);
-            requestStringBuilder.append("\r\n");
-        }
-        String actual = new String(requestStringBuilder);
+        String actual = readInputStreamToString(socketOnClientSide.getInputStream());
         assertEquals("Response must be", "HTTP/1.1 200 OK\n", actual.replace("\r", ""));
         serverSocket.close();
         socketOnClientSide.close();
