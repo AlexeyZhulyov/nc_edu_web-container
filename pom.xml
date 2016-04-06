@@ -173,7 +173,11 @@
                     </executions>
                     <configuration>
                         <excludes>
-                            <exclude>**/deployment/ParsingErrorHandler.*</exclude>
+                            <!--
+                                Coveralls+Jacoco doesn't work with already generated code
+                                https://github.com/trautonen/coveralls-maven-plugin/issues/57
+                             -->
+                            <exclude>**/nc/sumy/edu/webcontainer/deployment/*.*</exclude>
                         </excludes>
                         <rules>
                             <rule implementation="org.jacoco.maven.RuleConfiguration">
