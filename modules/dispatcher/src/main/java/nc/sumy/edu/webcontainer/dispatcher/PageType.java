@@ -19,7 +19,7 @@ public enum PageType {
     GIF("gif", "image/gif"),
     JPEG("jpeg", "image/jpeg"),
     JPG("jpg", "image/jpg"),
-    SWG("swg", "image/swg"),
+    SWG("swg", "image/swg+xml"),
     PNG("png", "image/png"),
     DEFAULT("-", "text/html");
 
